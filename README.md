@@ -27,7 +27,7 @@
 | CAN 控制器 | 使用芯片内部 FDCAN 外设，当前设备按经典 CAN 通信 |
 | CAN 收发器 | 当前单路外部实验使用 SN65HVD230 模块；每条独立 CAN 总线各配一块收发器 |
 | 调试接口 | 板载 ST-LINK，用于烧录、调试及虚拟串口日志 |
-| CAN 调试工具 | USB-CAN 适配器及配套软件，用于发帧、接收与抓包 |
+| CAN 调试工具 | [Waveshare USB-CAN-A 适配器及配套软件](https://www.waveshare.net/wiki/USB-CAN-A)，用于发帧、接收与抓包 |
 | 关节模组 | RobStride RS-10P、RS-00，按各型号协议与参数范围分别配置 |
 | 电源设备 | RobStride 电源板、带 CAN 接口的电池 BMS，方案见电气设计仓库 |
 | 开发工具 | STM32CubeMX、VS Code STM32 扩展、编译与烧录工具 |
@@ -257,3 +257,4 @@ flowchart LR
 - [STM32G474RE 数据手册](https://www.st.com/resource/en/datasheet/stm32g474re.pdf)
 - [NUCLEO-G474RE 板卡手册](https://www.st.com/resource/en/user_manual/um2505-stm32g4-nucleo64-boards-mb1367-stmicroelectronics.pdf)
 - [SN65HVD230 数据手册](https://www.ti.com/lit/ds/symlink/sn65hvd230.pdf)
+- [Waveshare USB-CAN-A 官方使用说明](https://www.waveshare.net/wiki/USB-CAN-A)：驱动与配置工具下载、硬件接线、CAN 参数设置及收发测试。
