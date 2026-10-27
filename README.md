@@ -21,6 +21,7 @@
 
 | 入口 | 内容 |
 | --- | --- |
+| [每周工作汇总](docs/weekly/README.md) | [本周：10/26—11/01，截至 10/27](docs/weekly/2026-10-26.md)、历周记录与周报模板 |
 | [验证工程](firmware/PICO_CAN/IMPORT.md) | 源码、ELF / HEX / BIN、构建与烧录入口、文件校验 |
 | [硬件与接线](docs/hardware/README.md) | 开发板、收发器、三路 CAN、蜂鸣器和 LED 引脚 |
 | [通信方案](docs/communication/README.md) | 关节 / BMS / 电源板协议、CAN 分路、上下位机分工 |
