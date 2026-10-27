@@ -1,0 +1,6 @@
+# Preserve the imported project's original bytes, including Windows line endings.
+firmware/PICO_CAN/** -text
+logs/** -text
+archives/*.zip binary
+*.elf binary
+*.bin binary

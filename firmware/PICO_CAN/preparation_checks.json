@@ -1,0 +1,39 @@
+{
+  "Loopback_elf": {
+    "bytes": 1410928,
+    "sha256": "b5f78e686bc0b934a8b2fa365f51ec5ec94ca2d21815458eadfc6810aeb05a4b"
+  },
+  "Loopback_bin": {
+    "bytes": 23160,
+    "sha256": "0956d7bad8f0a4b1c3d4c88641cd9834192e734897f378fc8bc1a34462fd08a9"
+  },
+  "Loopback_hex": {
+    "bytes": 65205,
+    "sha256": "019f2a0406e3310c54564eaf5f452eac7ceeb92da3ce691357e96f59435e46ea"
+  },
+  "External_elf": {
+    "bytes": 1410892,
+    "sha256": "dabeaac106d9f9559f81c2fe724bd8d38346e6d3f6b8d96a582727d1b23432d1"
+  },
+  "External_bin": {
+    "bytes": 23128,
+    "sha256": "633b25d6217791bdaf9da667efd3916f21e30ff2aa86f2dc380e7c352c687796"
+  },
+  "External_hex": {
+    "bytes": 65128,
+    "sha256": "52a31dc8a7c6a6f60d77d5a7797141a416c65f9b9a0962523b33fdd046793a69"
+  },
+  "source_files_local": true,
+  "synthetic_log_checker_tests": {
+    "valid_internal": true,
+    "valid_external": true,
+    "reject_missing": true,
+    "reject_duplicate": true,
+    "reject_bad_payload": true,
+    "reject_no_summary": true,
+    "reject_board_error": true
+  },
+  "checked_date": "2026-10-23",
+  "project_missing_bundles": "NothingToInstall",
+  "hardware_validation": "not_run"
+}

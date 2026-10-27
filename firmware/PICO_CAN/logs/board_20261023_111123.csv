@@ -1,0 +1,1 @@
+# RESULT=PASS tx_submit=100 tx_done=100 rx_unique=100 rx_missing=0 rx_duplicate=0 rx_invalid=0 tx_submit_failed=0 rx_fifo_lost_events=0 rx_queue_dropped=0 rx_read_failed=0 tx_event_lost_events=0 bus_off_events=0 fatal=0 tec=0 rec=0

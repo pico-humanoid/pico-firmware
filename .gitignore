@@ -1,0 +1,15 @@
+**/__pycache__/
+*.py[cod]
+
+# Keep the supplied flash images, while regenerating machine-specific build caches.
+firmware/PICO_CAN/build/*
+!firmware/PICO_CAN/build/Loopback/
+!firmware/PICO_CAN/build/External/
+firmware/PICO_CAN/build/Loopback/*
+firmware/PICO_CAN/build/External/*
+!firmware/PICO_CAN/build/Loopback/PICO_CAN.elf
+!firmware/PICO_CAN/build/Loopback/PICO_CAN.hex
+!firmware/PICO_CAN/build/Loopback/PICO_CAN.bin
+!firmware/PICO_CAN/build/External/PICO_CAN.elf
+!firmware/PICO_CAN/build/External/PICO_CAN.hex
+!firmware/PICO_CAN/build/External/PICO_CAN.bin

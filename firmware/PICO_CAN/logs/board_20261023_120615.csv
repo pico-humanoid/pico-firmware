@@ -1,0 +1,3 @@
+# PICO G474 CAN bring-up; timestamps are board uptime milliseconds
+# mode=EXTERNAL_NORMAL; wait for first valid 0x321 frame
+t_ms,event,format,id,dlc,data

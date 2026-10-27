@@ -1,0 +1,13 @@
+{
+  "cmake.cmakePath": "cube-cmake",
+  "cmake.useCMakePresets": "always",
+  "cmake.configureOnOpen": false,
+  "C_Cpp.default.compileCommands": "${workspaceFolder}/build/Loopback/compile_commands.json",
+  "stm32cube-ide-core.configuration.productSTM32CubeMX.executablePath": "D:/STM32Tools/STM32CubeMX-6.18.1/MX/STM32CubeMX.exe",
+  "cmake.configureArgs": [
+    "-DCMAKE_COMMAND=cube-cmake"
+  ],
+  "cmake.preferredGenerators": [
+    "Ninja"
+  ]
+}

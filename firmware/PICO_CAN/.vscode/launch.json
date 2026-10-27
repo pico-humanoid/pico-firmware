@@ -1,0 +1,69 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "G474 internal loopback (ST-LINK)",
+      "type": "stlinkgdbtarget",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "deviceName": "STM32G474RET6",
+      "deviceCore": "Cortex-M4",
+      "runEntry": "main",
+      "preBuild": "",
+      "preLaunchTask": "Build internal loopback",
+      "imagesAndSymbols": [
+        {
+          "imageFileName": "${workspaceFolder}/build/Loopback/PICO_CAN.elf"
+        }
+      ],
+      "gdb": "C:/Users/21615/AppData/Local/stm32cube/bundles/gnu-gdb-for-stm32/14.3.1+st.2/bin/arm-none-eabi-gdb.exe",
+      "serverExe": "C:/Users/21615/AppData/Local/stm32cube/bundles/stlink-gdbserver/7.14.0+st.2/bin/ST-LINK_gdbserver.exe",
+      "serverCubeProgPath": "C:/Users/21615/AppData/Local/stm32cube/bundles/programmer/2.23.0/bin",
+      "serverInterface": "SWD",
+      "serverInterfaceFrequency": "1000",
+      "serverVerify": true,
+      "serverRtos": {
+        "enabled": false
+      },
+      "serverSemihosting": {
+        "enabled": false
+      },
+      "liveWatch": {
+        "enabled": false
+      },
+      "svdPath": "C:/Users/21615/AppData/Local/stm32cube/packs/STMicroelectronics/stm32g4xx_dfp/1.2.0/SVD/STM32G474.svd"
+    },
+    {
+      "name": "G474 external CAN (ST-LINK)",
+      "type": "stlinkgdbtarget",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "deviceName": "STM32G474RET6",
+      "deviceCore": "Cortex-M4",
+      "runEntry": "main",
+      "preBuild": "",
+      "preLaunchTask": "Build external CAN",
+      "imagesAndSymbols": [
+        {
+          "imageFileName": "${workspaceFolder}/build/External/PICO_CAN.elf"
+        }
+      ],
+      "gdb": "C:/Users/21615/AppData/Local/stm32cube/bundles/gnu-gdb-for-stm32/14.3.1+st.2/bin/arm-none-eabi-gdb.exe",
+      "serverExe": "C:/Users/21615/AppData/Local/stm32cube/bundles/stlink-gdbserver/7.14.0+st.2/bin/ST-LINK_gdbserver.exe",
+      "serverCubeProgPath": "C:/Users/21615/AppData/Local/stm32cube/bundles/programmer/2.23.0/bin",
+      "serverInterface": "SWD",
+      "serverInterfaceFrequency": "1000",
+      "serverVerify": true,
+      "serverRtos": {
+        "enabled": false
+      },
+      "serverSemihosting": {
+        "enabled": false
+      },
+      "liveWatch": {
+        "enabled": false
+      },
+      "svdPath": "C:/Users/21615/AppData/Local/stm32cube/packs/STMicroelectronics/stm32g4xx_dfp/1.2.0/SVD/STM32G474.svd"
+    }
+  ]
+}

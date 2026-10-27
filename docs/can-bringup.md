@@ -43,7 +43,7 @@ USB-CAN-A 的驱动、配置工具与操作说明见[微雪官方文档](https:/
 - 单触发功能的操作为：电脑发送一条有效 `0x321`，板端开始发送自己的 100 条 `0x123`，数据长度为 8 字节，返回间隔约 100 ms。
 - 返回第一字节是测试序号 `00`—`63`（十六进制，即十进制 0—99），后 7 字节固定。
 - 本轮功能核对要求电脑触发记录与板端 RX 对应，板端 100 条 TX_DONE 与电脑 100 条返回记录按 ID、DLC、数据和顺序一致。
-- 历史源码中的自动 PASS 条件仍要求板端 `rx_unique=100`，因此单次触发后会打印 FAIL。这个自动判据与单触发功能目标存在差异，原始 RESULT 保留，并在测试报告中解释。
+- 已上传的[实际源码](../firmware/PICO_CAN/App/can_bringup.c)中，自动 PASS 条件仍要求板端 `rx_unique=100`，因此单次触发后会打印 FAIL。这个自动判据与单触发功能目标存在差异，原始 RESULT 保留，并在测试报告中解释。
 - 若另做每方向 100 帧的测试，电脑侧保持 ID 为 `0x321`，仅使第一字节从 `00` 递增到 `63`，每 100 ms 发送一次。相同载荷重复 100 次不符合唯一序号要求。
 
 2026-10-27 两端日志已验证“一条触发、100 条返回”。单触发功能核对通过，固件自动 RESULT 仍为 FAIL；后续若修改外部模式的自动判据，需重新编译、测试和记录版本，不能回写旧日志中的结果。
@@ -93,13 +93,13 @@ t_ms,event,format,id,dlc,data
 
 ## 每次如何采集日志
 
-以下启动项和脚本位于已准备的 Windows 本地工程 `D:\STM32Projects\PICO_CAN`，目前尚未随仓库上传，不能仅克隆本仓库后直接执行。
+以下启动项和脚本已收录在 [firmware/PICO_CAN](../firmware/PICO_CAN/)。原机工程路径为 `D:\STM32Projects\PICO_CAN`，换位置使用时以实际工程目录为准。原脚本依赖已安装的 Windows STM32 工具及对应路径，配置说明见[工程导入说明](../firmware/PICO_CAN/IMPORT.md)。
 
 | 本地启动项 | 作用 |
 | --- | --- |
-| `03_Flash_Loopback.cmd` | 烧录内部回环固件，测试控制器内部发送与接收 |
-| `04_Capture_Log.cmd` | 读取 ST-LINK 虚拟串口并保存 CSV，不负责烧录 |
-| `05_Flash_External.cmd` | 烧录经收发器和 USB-CAN 进行外部收发的固件 |
+| [03_Flash_Loopback.cmd](../firmware/PICO_CAN/03_Flash_Loopback.cmd) | 经 flash.ps1 加载 build/Loopback/PICO_CAN.elf，测试控制器内部发送与接收 |
+| [04_Capture_Log.cmd](../firmware/PICO_CAN/04_Capture_Log.cmd) | 调用 capture.ps1，读取 ST-LINK 虚拟串口并保存 CSV，不负责烧录 |
+| [05_Flash_External.cmd](../firmware/PICO_CAN/05_Flash_External.cmd) | 经 flash.ps1 加载 build/External/PICO_CAN.elf，运行外部收发测试 |
 
 只有切换实验模式或修改固件后才需要重新烧录，开发板运行最近一次烧入的版本。内部回环不经过外部收发器和线束，结果与外部收发分别记录。
 
@@ -123,6 +123,8 @@ D:\STM32Projects\PICO_CAN\logs\board_YYYYMMDD_HHMMSS.csv
 ```
 
 未开启采集时，开发板仍可运行，但串口输出不会自动保存到电脑。保留启动信息、列头、全部逐帧记录和末尾 RESULT，并记录固件版本、模式、接线及工具设置。
+
+如果在克隆后的 `firmware/PICO_CAN` 中运行，新 CSV 会保存到该工程自己的 `logs` 目录；仓库根目录按日期整理的 `logs/2026-10-27` 是已归档实验记录，脚本不会自动将新日志发布到 GitHub。原工程的 20 份历史 CSV 已[原样保留](../firmware/PICO_CAN/logs/)，其状态见[日志索引](validation/log-archive.md)。
 
 ## 已约定的提示器件
 
