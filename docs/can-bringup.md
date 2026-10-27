@@ -1,21 +1,10 @@
 # CAN 验证配置、串口消息与日志采集
 
-本文记录 NUCLEO-G474RE 验证工程已约定的引脚、通信参数、报文和操作流程。2026-10-27 的实际结果见[测试记录](validation/2026-10-27.md)，项目进度见[仓库首页](../README.md)。
+本文记录 NUCLEO-G474RE 验证工程的通信参数、报文与操作流程。硬件与引脚见[接线文档](hardware/README.md)，实际结果见[2026-10-27 测试记录](validation/2026-10-27.md)，项目进度见[仓库首页](../README.md)。
 
-## 已确定的通信引脚
+## 开始前
 
-| 通道 | TX / 开发板排针 | RX / 开发板排针 | 复用 | 当前用途与验证状态 |
-| --- | --- | --- | --- | --- |
-| FDCAN1 | PA12 / CN10-12 | PA11 / CN10-14 | AF9 | 当前基础收发实验；规划接入关节与电源板 |
-| FDCAN2 | PB13 / CN10-30 | PB12 / CN10-16 | AF9 | 规划接入 BMS，已选脚、待配置和实测 |
-| FDCAN3 | PA15 / CN7-17 | PA8 / CN10-23 | AF11 | 预留整机扩展，已选脚、待配置和实测 |
-| 日志 LPUART1 | PA2 | PA3 | 由当前工程配置 | 经板载 ST-LINK 虚拟串口输出日志 |
-
-CAN 的 TX 接收发器 TXD / D，RX 接收发器 RXD / R；收发器的 CANH、CANL 才连接总线。每条独立总线需要各自的收发器，当前单路实验使用 3.3 V SN65HVD230 模块。终端电阻按实际总线两端配置。
-
-PA15 用于 FDCAN3 后采用 SWD 调试，PA13、PA14保留。PA11、PA12 与芯片原生 USB 数据脚复用；当前 CAN1 接法下，原生 USB 需要重新规划引脚。板载 ST-LINK 的 USB 调试与虚拟串口仍可使用。
-
-上述 CAN 引脚对应 STM32G474RE 的封装和 NUCLEO-G474RE 排针，依据 [G474 数据手册](https://www.st.com/resource/en/datasheet/stm32g474re.pdf)和[开发板手册](https://www.st.com/resource/en/user_manual/um2505-stm32g4-nucleo64-boards-mb1367-stmicroelectronics.pdf)。
+按[硬件与接线](hardware/README.md)连接开发板、收发器与 USB-CAN，核对 3.3 V 供电和总线两端的终端电阻。日志使用 LPUART1（PA2 TX、PA3 RX）经 ST-LINK 虚拟串口输出。
 
 ## 三种速率与两类 COM 口
 
@@ -28,8 +17,6 @@ PA15 用于 FDCAN3 后采用 SWD 调试，PA13、PA14保留。PA11、PA12 与芯
 此前 Windows 上 ST-LINK 为 COM5、USB-CAN-A 为 COM6；端口号会随电脑和连接方式变化，使用前从设备管理器核对。采集脚本选择 ST-LINK 的 COM 口，USBCAN 软件选择适配器的 COM 口；两者可以同时工作。
 
 USB-CAN-A 的驱动、配置工具与操作说明见[微雪官方文档](https://www.waveshare.net/wiki/USB-CAN-A)。适配器的串口速率和 CAN 位速率分别设置，不能将开发板日志用的 115200 套用到适配器端口。
-
-这些参数来自已约定的实验配置；本次上传的两个 CSV 都未包含启动参数头，不能仅凭原始帧记录重新确认全部初始化设置。
 
 ## 基础收发测试报文
 
@@ -126,12 +113,6 @@ D:\STM32Projects\PICO_CAN\logs\board_YYYYMMDD_HHMMSS.csv
 
 如果在克隆后的 `firmware/PICO_CAN` 中运行，新 CSV 会保存到该工程自己的 `logs` 目录；仓库根目录按日期整理的 `logs/2026-10-27` 是已归档实验记录，脚本不会自动将新日志发布到 GitHub。原工程的 20 份历史 CSV 已[原样保留](../firmware/PICO_CAN/logs/)，其状态见[日志索引](validation/log-archive.md)。
 
-## 已约定的提示器件
+## 板载状态灯
 
-| 器件 | 引脚 / 排针 | 主板设计约定 |
-| --- | --- | --- |
-| 有源蜂鸣器 | PB0 / CN7-34 | GPIO 经三极管或 MOS 管驱动，用于异常报警 |
-| LED1 | PB1 / CN10-24 | 运行指示，独立串联限流电阻 |
-| LED2 | PB2 / CN10-22 | 通信 / 故障指示，独立串联限流电阻 |
-
-上述为后续外接器件的接线分配，尚未在本轮日志中验证。当前验证程序使用 NUCLEO 板载 PA5 / LD2：慢闪为等待或测试中，常亮为测试通过，快闪为失败。
+当前验证程序使用 NUCLEO 板载 PA5 / LD2：慢闪为等待或测试中，常亮为测试通过，快闪为失败。后续蜂鸣器和两个外接 LED 的接线约定见[提示器件引脚](hardware/README.md#已约定的提示器件引脚)。

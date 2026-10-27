@@ -1,5 +1,5 @@
 {
-  "_说明": "接口填写模板，不是可直接加载的运行配置。null/空列表表示尚未提交，不是零值或已确认。",
+  "_说明": "固件侧维护的上下位机接口草案，不是运行配置。已有资料直接引用；null/空列表表示尚未填写，不代表零值或已确认。",
   "metadata": {
     "owner": null,
     "revision": null,
@@ -66,5 +66,21 @@
     "decoded_values": null,
     "origin_document_or_measurement": null,
     "capture_conditions": null
+  },
+  "_填写分工": {
+    "固件侧先起草": [
+      "报文格式、版本、序号、校验、时间语义、示例和状态机流程"
+    ],
+    "控制侧提供需求": [
+      "控制模式、目标含义、周期与允许延迟、完整或部分更新需求"
+    ],
+    "共同确定": [
+      "物理接口、单位与关节顺序、指令有效期、运行限值、启停和故障恢复条件"
+    ],
+    "已有依据": [
+      "docs/communication/README.md",
+      "docs/hardware/README.md",
+      "docs/collaboration/joint-map.csv"
+    ]
   }
 }

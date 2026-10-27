@@ -1,8 +1,8 @@
 ﻿fault,detection_layer,trigger_condition,threshold,threshold_unit,affected_scope,action,action_executor,action_duration,link_unavailable_fallback,clear_condition,rearm_condition,test_support_and_posture,test_limits,acceptance_criteria,evidence,owner,revision,date,status
-host_command_expired,,,,,,,,,,,,,,,,,,,待确认
-joint_feedback_stale,,,,,,,,,,,,,,,,,,,待确认
-device_offline,,,,,,,,,,,,,,,,,,,待确认
-can_bus_off,,,,,,,,,,,,,,,,,,,待确认
-task_stalled,,,,,,,,,,,,,,,,,,,待确认
-battery_critical,,,,,,,,,,,,,,,,,,,待确认
-physical_estop,,,,,,,,,,,,,,,,,,,待确认
+host_command_expired,指令管理,,,,,,,,,,,,,,,,,,检测方案由固件拟定；动作与恢复共同确认
+joint_feedback_stale,状态有效性,,,,,,,,,,,,,,,,,,检测方案由固件拟定；动作与恢复共同确认
+device_offline,设备管理,,,,,,,,,,,,,,,,,,检测方案由固件拟定；动作与恢复共同确认
+can_bus_off,FDCAN 驱动,,,,,,,,,,,,,,,,,,检测方案由固件拟定；动作与恢复共同确认
+task_stalled,任务健康监测,,,,,,,,,,,,,,,,,,检测方案由固件拟定；动作与恢复共同确认
+battery_critical,电池状态与故障管理,,,,,,,,,,,,,,,,,,检测方案由固件拟定；动作与恢复共同确认
+physical_estop,实际急停链路；可读状态按接线确定,,,,,,,,,,,,,,,,,,检测方案由固件拟定；动作与恢复共同确认

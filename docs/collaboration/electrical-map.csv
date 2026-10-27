@@ -1,1 +1,8 @@
 ﻿hardware_revision,device_name,device_model,device_firmware_version,protocol_version,interface,mcu_pin_or_bus,connector_pin,voltage_level,active_level,clock_source,clock_hz,can_bitrate_bps,can_device_id,transceiver_model,termination_location,power_sequence,estop_behavior,protocol_source,raw_request_example,raw_reply_example,example_origin_document_or_measurement,owner,revision,date,status,pending_items,expected_completion
+NUCLEO-G474RE 验证平台/后续接线约定,FDCAN1,STM32G474RE,,,Classic CAN,PA12 TX / PA11 RX; AF9,CN10-12 TX / CN10-14 RX,3.3 V MCU GPIO,,,,1000000,,SN65HVD230,总线主干两端各 120 ohm,,,docs/hardware/README.md; docs/can-bringup.md,,,,,,2026-10-27,当前单路基础收发已验证,,
+NUCLEO-G474RE 验证平台/后续接线约定,FDCAN2,STM32G474RE,,,Classic CAN,PB13 TX / PB12 RX; AF9,CN10-30 TX / CN10-16 RX,3.3 V MCU GPIO,,,,,,,,,,docs/hardware/README.md; docs/can-bringup.md,,,,,,2026-10-27,已选脚；规划 BMS；待配置与实测,,
+NUCLEO-G474RE 验证平台/后续接线约定,FDCAN3,STM32G474RE,,,Classic CAN,PA15 TX / PA8 RX; AF11,CN7-17 TX / CN10-23 RX,3.3 V MCU GPIO,,,,,,,,,,docs/hardware/README.md; docs/can-bringup.md,,,,,,2026-10-27,已选脚；扩展预留；待配置与实测,,
+NUCLEO-G474RE 验证平台/后续接线约定,ST-LINK 日志,LPUART1,,,UART 115200 bit/s 8N1,PA2 TX / PA3 RX; AF12,经板载 ST-LINK 虚拟串口,3.3 V MCU GPIO,,,,,,,,,,docs/hardware/README.md; docs/can-bringup.md,,,,,,2026-10-27,已用于本轮日志采集,,
+NUCLEO-G474RE 验证平台/后续接线约定,有源蜂鸣器,,,,GPIO 经三极管或 MOS 管驱动,PB0,CN7-34,,,,,,,,,,,docs/hardware/README.md; docs/can-bringup.md,,,,,,2026-10-27,已选脚；待电路与固件验证,,
+NUCLEO-G474RE 验证平台/后续接线约定,LED1 运行指示,,,,GPIO; LED 串联限流电阻,PB1,CN10-24,,,,,,,,,,,docs/hardware/README.md; docs/can-bringup.md,,,,,,2026-10-27,已选脚；待电路与固件验证,,
+NUCLEO-G474RE 验证平台/后续接线约定,LED2 通信/故障指示,,,,GPIO; LED 串联限流电阻,PB2,CN10-22,,,,,,,,,,,docs/hardware/README.md; docs/can-bringup.md,,,,,,2026-10-27,已选脚；待电路与固件验证,,
