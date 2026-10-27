@@ -1,0 +1,8 @@
+﻿fault,detection_layer,trigger_condition,threshold,threshold_unit,affected_scope,action,action_executor,action_duration,link_unavailable_fallback,clear_condition,rearm_condition,test_support_and_posture,test_limits,acceptance_criteria,evidence,owner,revision,date,status
+host_command_expired,,,,,,,,,,,,,,,,,,,待确认
+joint_feedback_stale,,,,,,,,,,,,,,,,,,,待确认
+device_offline,,,,,,,,,,,,,,,,,,,待确认
+can_bus_off,,,,,,,,,,,,,,,,,,,待确认
+task_stalled,,,,,,,,,,,,,,,,,,,待确认
+battery_critical,,,,,,,,,,,,,,,,,,,待确认
+physical_estop,,,,,,,,,,,,,,,,,,,待确认

@@ -1,0 +1,70 @@
+{
+  "_说明": "接口填写模板，不是可直接加载的运行配置。null/空列表表示尚未提交，不是零值或已确认。",
+  "metadata": {
+    "owner": null,
+    "revision": null,
+    "date": null,
+    "status": "草案",
+    "hardware_revision": null,
+    "source": null,
+    "pending_items": [],
+    "expected_completion": null
+  },
+  "transport": {
+    "physical_interface": null,
+    "framing": null,
+    "byte_order": null,
+    "checksum": null,
+    "max_frame_bytes": null,
+    "protocol_version": null
+  },
+  "command": {
+    "supported_modes": [],
+    "fields_by_mode": {},
+    "joint_order": [],
+    "units": {},
+    "full_or_partial_update": null,
+    "missing_joint_behavior": null,
+    "sequence_format": null,
+    "duplicate_and_out_of_order_behavior": null,
+    "period_ms": null,
+    "validity_ms": null,
+    "allowed_latency_ms": null
+  },
+  "feedback": {
+    "fields": [],
+    "units": {},
+    "period_ms": null,
+    "validity_flags": null,
+    "fault_encoding": null
+  },
+  "time": {
+    "timestamp_unit": null,
+    "clock_domain": null,
+    "sync_method": null,
+    "clock_reset_and_wrap_behavior": null,
+    "sample_vs_receive_time": null
+  },
+  "lifecycle": {
+    "startup_handshake": null,
+    "enable_conditions": null,
+    "stop_handshake": null,
+    "fault_clear_conditions": null,
+    "rearm_handshake": null
+  },
+  "fault_policy": {
+    "host_loss": null,
+    "partial_joint_loss": null,
+    "invalid_target": null,
+    "bus_unavailable": null,
+    "action_executor": null,
+    "link_unavailable_fallback": null
+  },
+  "examples": {
+    "raw_request": null,
+    "raw_reply": null,
+    "decoded_values": null,
+    "origin_document_or_measurement": null,
+    "capture_conditions": null
+  }
+}
