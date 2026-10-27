@@ -30,7 +30,7 @@
 | 外部 CAN External | [PICO_CAN.elf](firmware/PICO_CAN/build/External/PICO_CAN.elf) | [PICO_CAN.hex](firmware/PICO_CAN/build/External/PICO_CAN.hex) | [PICO_CAN.bin](firmware/PICO_CAN/build/External/PICO_CAN.bin) | [05_Flash_External.cmd](firmware/PICO_CAN/05_Flash_External.cmd) |
 
 - 日志采集：[04_Capture_Log.cmd](firmware/PICO_CAN/04_Capture_Log.cmd) 调用 [capture.ps1](firmware/PICO_CAN/scripts/capture.ps1)；[check_log.py](firmware/PICO_CAN/scripts/check_log.py) 保留原版检查规则。
-- 全部历史板端记录：[工程内 20 份 CSV](firmware/PICO_CAN/logs/)及[历史日志索引](docs/validation/log-archive.md)。本轮最新内部回环、外部板端日志、USBCAN 导出及较早的内部记录均保留在 [logs/2026-10-27](logs/2026-10-27/)。
+- 全部历史板端记录：[工程内 20 份 CSV](firmware/PICO_CAN/logs/)及[历史日志索引](docs/validation/log-archive.md)。本轮最新内部回环、外部板端日志和 USBCAN 导出见 [logs/2026-10-27](logs/2026-10-27/)。
 
 已展开工程保留完整源码、HAL/CMSIS 依赖、配置和六个烧录文件；编译缓存及中间文件保留在原始 ZIP 中。原脚本依赖 Windows 上已安装的 STM32 工具，换电脑使用时按[导入说明](firmware/PICO_CAN/IMPORT.md)核对工具路径。此次没有修改固件行为或原始日志。
 
@@ -173,7 +173,7 @@ flowchart LR
 
 按“内部回环 → 外部双向收发 → 单设备只读 → 多节点联调 → 上下位机联调”推进。每次测试记录日期、硬件与固件版本、接线、通道、位速率、帧格式、设备 ID、发送周期和帧数；日志保留方向、ID、DLC、原始数据、时间与解析结果。
 
-2026-10-27 的三份板端 CSV 与一份 USBCAN 导出已按原文件归档，详见[源码行为、实测记录与逐帧核对](docs/validation/2026-10-27.md)。内部回环采用最新 17:11:37 的完整日志，各类事件均已独立核对 100 条并通过；外部“电脑发 1 条、板端返回 100 条”已由两端记录核对，原始自动 RESULT 为 FAIL 的原因单独说明，截图位置继续保留。
+2026-10-27 的最新内部回环日志、外部板端日志与 USBCAN 导出已归档，详见[源码行为、实测记录与逐帧核对](docs/validation/2026-10-27.md)。内部回环采用 17:11:37 的完整日志，各类事件均已独立核对 100 条并通过；外部“电脑发 1 条、板端返回 100 条”已由两端记录核对，原始自动 RESULT 为 FAIL 的原因单独说明，截图位置继续保留。
 
 以下为各阶段的结果图片预留位置。后续上传图片时，可使用各处注释中的文件名并取消对应图片语句的注释；新增测试轮次时保留旧记录，追加日期、条件与结果。
 
@@ -183,7 +183,7 @@ flowchart LR
 
 **验证内容：** 检查发送、过滤、Rx FIFO 与日志记录。内部回环不经过外部收发器和总线，结果单独记录。
 
-**本次结果：** 最新 [board_20261027_171137.csv](logs/2026-10-27/board_20261027_171137.csv)明确记录 `mode=INTERNAL_LOOPBACK`，含列头、300 条逐帧事件和 PASS 汇总。`TX_SUBMIT`、`TX_DONE`、`RX` 各有 100 条，序号均完整覆盖 `00`—`63`，ID、长度与载荷一致，无缺失、重复或所列错误。较早的 [16:42:40 日志](logs/2026-10-27/board_20261027_164240.csv)仅作历史记录保留。
+**本次结果：** 最新 [board_20261027_171137.csv](logs/2026-10-27/board_20261027_171137.csv)明确记录 `mode=INTERNAL_LOOPBACK`，含列头、300 条逐帧事件和 PASS 汇总。`TX_SUBMIT`、`TX_DONE`、`RX` 各有 100 条，序号均完整覆盖 `00`—`63`，ID、长度与载荷一致，无缺失、重复或所列错误。
 
 > **结果图片预留：内部回环日志**
 >
@@ -301,7 +301,7 @@ flowchart LR
 
 ## 待确认事项与后续工作
 
-- [x] 归档 2026-10-27 最新内部回环、外部板端日志、USBCAN 导出及较早的内部片段。
+- [x] 归档 2026-10-27 最新内部回环、外部板端日志及 USBCAN 导出。
 - [x] 核对最新内部回环从模式、列头、全部 300 条事件到 RESULT 的完整记录。
 - [ ] 补充内部回环与外部单触发实验的结果截图。
 - [x] 核对单次触发返回 100 帧的两端原始记录，并说明自动 FAIL 的共用判据。
