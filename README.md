@@ -21,12 +21,12 @@
 
 | 入口 | 内容 |
 | --- | --- |
-| [每周工作汇总](docs/weekly/README.md) | [本周：10/26—11/01，截至 10/27](docs/weekly/2026-10-26.md)、历周记录与周报模板 |
+| [每周工作汇总](docs/weekly/README.md) | 每周二晚汇报；[本期：10/21—10/27](docs/weekly/2026-10-27.md)、历期记录与周报模板 |
 | [验证工程](firmware/PICO_CAN/IMPORT.md) | 源码、ELF / HEX / BIN、构建与烧录入口、文件校验 |
 | [硬件与接线](docs/hardware/README.md) | 开发板、收发器、三路 CAN、蜂鸣器和 LED 引脚 |
 | [通信方案](docs/communication/README.md) | 关节 / BMS / 电源板协议、CAN 分路、上下位机分工 |
 | [CAN 验证操作](docs/can-bringup.md) | 串口与 CAN 参数、测试报文、日志消息、每次采集步骤 |
-| [验证与结果](docs/validation/README.md) | 各阶段状态、结果图片预留、实测报告和日志索引 |
+| [验证与结果](docs/validation/README.md) | 各阶段状态、实测报告和日志索引 |
 | [固件开发计划](docs/firmware-development.md) | 九项工作、推进顺序、超时 / 错帧 / 断连与恢复验收 |
 | [协作与资料分工](docs/collaboration/README.md) | 已知信息、固件侧工作、需其他组确认的事项与可选表格 |
 | [参考资料](docs/resources.md) | 项目资料、设备协议、官方手册和工具入口 |
