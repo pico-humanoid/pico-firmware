@@ -1,0 +1,108 @@
+{
+  "source": "/home/zjy/PICO/pico-firmware/logs/g474/20261102-2340-pin-loop-resume.log",
+  "source_sha256": "157d9c0ac6817ec646916f06f9927c72b7e30689142cff46b4c048e1e2f3cf2e",
+  "result": "PASS_PIN_LOOP",
+  "scope": "G474 PA12 output <-> PA11 input jumper loopback; transceiver disconnected; no CAN",
+  "image": {
+    "path": "firmware/PICO_CAN/build/PinLoop/PICO_CAN.elf",
+    "sha256": "b20d96ab4e0ee15645d5d53a72ea1b979a004d769993ea9f704c880093678564"
+  },
+  "samples": 13,
+  "match": 13,
+  "mismatch": 0,
+  "rows": [
+    {
+      "t_ms": 14,
+      "pa12_cmd": 1,
+      "pa12_read": 1,
+      "pa11": 1,
+      "match": 1
+    },
+    {
+      "t_ms": 2015,
+      "pa12_cmd": 0,
+      "pa12_read": 0,
+      "pa11": 0,
+      "match": 1
+    },
+    {
+      "t_ms": 4015,
+      "pa12_cmd": 1,
+      "pa12_read": 1,
+      "pa11": 1,
+      "match": 1
+    },
+    {
+      "t_ms": 6015,
+      "pa12_cmd": 0,
+      "pa12_read": 0,
+      "pa11": 0,
+      "match": 1
+    },
+    {
+      "t_ms": 8015,
+      "pa12_cmd": 1,
+      "pa12_read": 1,
+      "pa11": 1,
+      "match": 1
+    },
+    {
+      "t_ms": 10015,
+      "pa12_cmd": 0,
+      "pa12_read": 0,
+      "pa11": 0,
+      "match": 1
+    },
+    {
+      "t_ms": 12015,
+      "pa12_cmd": 1,
+      "pa12_read": 1,
+      "pa11": 1,
+      "match": 1
+    },
+    {
+      "t_ms": 14015,
+      "pa12_cmd": 0,
+      "pa12_read": 0,
+      "pa11": 0,
+      "match": 1
+    },
+    {
+      "t_ms": 16015,
+      "pa12_cmd": 1,
+      "pa12_read": 1,
+      "pa11": 1,
+      "match": 1
+    },
+    {
+      "t_ms": 18015,
+      "pa12_cmd": 0,
+      "pa12_read": 0,
+      "pa11": 0,
+      "match": 1
+    },
+    {
+      "t_ms": 20015,
+      "pa12_cmd": 1,
+      "pa12_read": 1,
+      "pa11": 1,
+      "match": 1
+    },
+    {
+      "t_ms": 22015,
+      "pa12_cmd": 0,
+      "pa12_read": 0,
+      "pa11": 0,
+      "match": 1
+    },
+    {
+      "t_ms": 24015,
+      "pa12_cmd": 1,
+      "pa12_read": 1,
+      "pa11": 1,
+      "match": 1
+    }
+  ],
+  "interpretation": "PA12 output and PA11 input both follow the commanded state; MCU pins are not damaged. The remaining fault is the SN65HVD230 module or its four wires.",
+  "next": "Reconnect the module TXD/RXD/3V3/GND, disconnect CANH/CANL from the BMS, keep the PinLoop image, and test module local loopback: PA11 should follow PA12. If not, the module is damaged."
+}

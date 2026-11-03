@@ -1,0 +1,194 @@
+{
+  "source": "/home/zjy/PICO/pico-firmware/logs/g474/20261102-2246-g474-bms-500k-dlc0.log",
+  "source_sha256": "e3ef7fbd9661eeb651afedcf77435e119636d4d6ae8d27c4722e94f6545bb7f9",
+  "flash_log": "/home/zjy/PICO/pico-firmware/logs/flash/20261102-2246-g474-bms-500k-dlc0.log",
+  "result": "NOT_PASS",
+  "scope": "G474 FDCAN1 -> BMS 500K read-only first attempt",
+  "build": {
+    "PICO_APP": "BMS",
+    "PICO_DEVICE_BITRATE": 500000,
+    "PICO_BMS_RTR_DLC": 0,
+    "PICO_BMS_CRC_ENDIAN": "BIG"
+  },
+  "image": {
+    "path": "firmware/PICO_CAN/build/Linux-BMS-Read-500K/PICO_CAN.elf",
+    "sha256": "d07cb41b27dcf30b288d9c4a532311ca895203168fb17e83dd83a5893162aa34"
+  },
+  "boot_header": "# PICO device-read v1; READ ONLY; device=BMS bitrate=500000 power_id=0xAA rtr_dlc=0 crc_order=1 status_order=0",
+  "counts": {
+    "tx_submit": 16,
+    "tx_done": 0,
+    "tx_timeout": 16,
+    "rx": 0,
+    "bms_samples": 0,
+    "health": 12
+  },
+  "tx_by_id": {
+    "0x100": 4,
+    "0x101": 3,
+    "0x102": 3,
+    "0x103": 3,
+    "0x105": 3
+  },
+  "first_tx_ms": 1023,
+  "first_bus_off_health": {
+    "t_ms": 15023,
+    "seen": 0,
+    "valid": 0,
+    "replies": 0,
+    "invalid": 0,
+    "ignored": 0,
+    "query_timeouts": 16,
+    "query_failures": 10,
+    "tx_submit": 16,
+    "tx_done": 0,
+    "tx_rejected": 15,
+    "tx_timeout": 16,
+    "rx_fifo_lost": 0,
+    "rx_queue_drop": 0,
+    "rx_read_fail": 0,
+    "rx_unsupported": 0,
+    "tx_event_lost": 0,
+    "tx_event_unknown": 0,
+    "bus_off": 1,
+    "tec": 248,
+    "rec": 0,
+    "counters_ok": 1
+  },
+  "tec_samples": [
+    {
+      "t_ms": 5023,
+      "tec": 176,
+      "rec": 0,
+      "bus_off": 0,
+      "tx_submit": 6,
+      "tx_done": 0,
+      "replies": 0
+    },
+    {
+      "t_ms": 10023,
+      "tec": 232,
+      "rec": 0,
+      "bus_off": 0,
+      "tx_submit": 13,
+      "tx_done": 0,
+      "replies": 0
+    },
+    {
+      "t_ms": 15023,
+      "tec": 248,
+      "rec": 0,
+      "bus_off": 1,
+      "tx_submit": 16,
+      "tx_done": 0,
+      "replies": 0
+    },
+    {
+      "t_ms": 20023,
+      "tec": 248,
+      "rec": 0,
+      "bus_off": 1,
+      "tx_submit": 16,
+      "tx_done": 0,
+      "replies": 0
+    },
+    {
+      "t_ms": 25023,
+      "tec": 248,
+      "rec": 0,
+      "bus_off": 1,
+      "tx_submit": 16,
+      "tx_done": 0,
+      "replies": 0
+    },
+    {
+      "t_ms": 30023,
+      "tec": 248,
+      "rec": 0,
+      "bus_off": 1,
+      "tx_submit": 16,
+      "tx_done": 0,
+      "replies": 0
+    },
+    {
+      "t_ms": 35023,
+      "tec": 248,
+      "rec": 0,
+      "bus_off": 1,
+      "tx_submit": 16,
+      "tx_done": 0,
+      "replies": 0
+    },
+    {
+      "t_ms": 40023,
+      "tec": 248,
+      "rec": 0,
+      "bus_off": 1,
+      "tx_submit": 16,
+      "tx_done": 0,
+      "replies": 0
+    },
+    {
+      "t_ms": 45023,
+      "tec": 248,
+      "rec": 0,
+      "bus_off": 1,
+      "tx_submit": 16,
+      "tx_done": 0,
+      "replies": 0
+    },
+    {
+      "t_ms": 50023,
+      "tec": 248,
+      "rec": 0,
+      "bus_off": 1,
+      "tx_submit": 16,
+      "tx_done": 0,
+      "replies": 0
+    },
+    {
+      "t_ms": 55023,
+      "tec": 248,
+      "rec": 0,
+      "bus_off": 1,
+      "tx_submit": 16,
+      "tx_done": 0,
+      "replies": 0
+    },
+    {
+      "t_ms": 60023,
+      "tec": 248,
+      "rec": 0,
+      "bus_off": 1,
+      "tx_submit": 16,
+      "tx_done": 0,
+      "replies": 0
+    }
+  ],
+  "registers": {
+    "CCCR": "0x00001040",
+    "NBTP": "0x02010C01",
+    "ECR_live": "0x00130098",
+    "PSR_live": "0x0000076D",
+    "ECR_busoff": "0x000200F8",
+    "PSR_busoff": "0x000007E5",
+    "GPIOA_MODER": "0xAABFF7AF",
+    "GPIOA_AFR1": "0x00099000",
+    "GPIOA_IDR_busoff": "0x0000980C"
+  },
+  "interpretation": "No ACK; PSR LEC=5 bit error, not ACK error. Local TXD->transceiver->bus->RXD path or clamped/open bus suspect, not BMS protocol/CRC/DLC.",
+  "not_evidence": [
+    "No 60s window attempted/accepted",
+    "GPIO loopback attempt invalid (GPIOA clock disabled, then target lost; recovered)",
+    "USB-CAN not used in this round"
+  ],
+  "next_checks": [
+    "PA12->TXD, PA11->RXD not swapped",
+    "SN65HVD230 Rs grounded/high-speed mode",
+    "module VCC/GND continuity",
+    "CANH/CANL mapping and common ground with BMS",
+    "120 ohm termination",
+    "BMS awake (sleep may clamp bus)",
+    "USB-CAN 500K in parallel as independent witness"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "port": "/dev/ttyACM0",
+  "baud": 115200,
+  "format": "8N1",
+  "label": "G474-POWER-1M-CROSSCHECK",
+  "started_utc": "2026-11-02T16:20:12.825213+00:00",
+  "capture_only_not_device_pass": true,
+  "bytes": 6865,
+  "reason": "duration_complete",
+  "ended_utc": "2026-11-02T16:20:52.848835+00:00"
+}

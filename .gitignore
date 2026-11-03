@@ -13,3 +13,13 @@ firmware/PICO_CAN/build/External/*
 !firmware/PICO_CAN/build/External/PICO_CAN.elf
 !firmware/PICO_CAN/build/External/PICO_CAN.hex
 !firmware/PICO_CAN/build/External/PICO_CAN.bin
+
+# Local cleanup backups and intermediate experiments, not publication artifacts.
+/archives/logs-obsolete-20261103/
+/archives/logs-pre-cleanup-20261103.tar.gz
+/archives/local-only-*/
+
+# Local editor/runtime state; never ignore canonical *.log / *.jsonl evidence globally.
+/.agents/
+/.codex/
+.DS_Store

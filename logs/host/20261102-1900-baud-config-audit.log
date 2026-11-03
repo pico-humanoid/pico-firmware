@@ -1,0 +1,39 @@
+Software-only baud configuration audit; no flash, SWD or CAN activity.
+2026-11-02T19:00:30.490040+08:00
+
+$ ctest --test-dir firmware/PICO_CAN/build/Host-Tests --output-on-failure
+Internal ctest changing into directory: /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Host-Tests
+Test project /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Host-Tests
+      Start  1: device_protocols_and_scheduler
+ 1/11 Test  #1: device_protocols_and_scheduler .......   Passed    0.00 sec
+      Start  2: can_transport_fake_hal
+ 2/11 Test  #2: can_transport_fake_hal ...............   Passed    0.00 sec
+      Start  3: device_application_fake_io
+ 3/11 Test  #3: device_application_fake_io ...........   Passed    0.00 sec
+      Start  4: bms_application_fake_io
+ 4/11 Test  #4: bms_application_fake_io ..............   Passed    0.00 sec
+      Start  5: board_log_capture_pty
+ 5/11 Test  #5: board_log_capture_pty ................   Passed    0.79 sec
+      Start  6: power_big_application_fake_io
+ 6/11 Test  #6: power_big_application_fake_io ........   Passed    0.00 sec
+      Start  7: power_baud_gate_forward
+ 7/11 Test  #7: power_baud_gate_forward ..............   Passed    0.00 sec
+      Start  8: power_baud_gate_reverse
+ 8/11 Test  #8: power_baud_gate_reverse ..............   Passed    0.00 sec
+      Start  9: power_baud_force_operator_one_shot
+ 9/11 Test  #9: power_baud_force_operator_one_shot ...   Passed    0.00 sec
+      Start 10: power_baud_application_fake_io
+10/11 Test #10: power_baud_application_fake_io .......   Passed    0.00 sec
+      Start 11: power_capture_analysis_synthetic
+11/11 Test #11: power_capture_analysis_synthetic .....   Passed    0.10 sec
+
+100% tests passed, 0 tests failed out of 11
+
+Total Test time (real) =   0.90 sec
+exit_code=0
+
+$ /tmp/pico-baud-config-drain-audit
+REPRODUCED: historical timeout prevents DRAIN completion despite no pending work
+REPRODUCED: Age does not expire pending read while scheduler is paused
+Audit confirms software limitations; NOT a hardware/device test or PASS
+exit_code=0

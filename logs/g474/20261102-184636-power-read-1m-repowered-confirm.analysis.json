@@ -1,0 +1,7 @@
+{
+  "result": "NOT_PASS",
+  "issues": [
+    "No fully fresh HEALTH yet"
+  ],
+  "boot_header": "# PICO device-read v1; READ ONLY; device=POWER bitrate=1000000 power_id=0xAA rtr_dlc=8 crc_order=1 status_order=1"
+}

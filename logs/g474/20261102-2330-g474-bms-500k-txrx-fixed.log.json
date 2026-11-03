@@ -1,0 +1,11 @@
+{
+  "port": "/dev/ttyACM0",
+  "baud": 115200,
+  "format": "8N1",
+  "label": "G474-BMS-500K-DLC0-TXRX-FIXED",
+  "started_utc": "2026-11-02T15:30:29.859248+00:00",
+  "capture_only_not_device_pass": true,
+  "bytes": 12457,
+  "reason": "duration_complete",
+  "ended_utc": "2026-11-02T15:31:44.929938+00:00"
+}

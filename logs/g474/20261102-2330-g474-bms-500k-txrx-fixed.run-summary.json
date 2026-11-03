@@ -1,0 +1,71 @@
+{
+  "source": "/home/zjy/PICO/pico-firmware/logs/g474/20261102-2330-g474-bms-500k-txrx-fixed.log",
+  "source_sha256": "759ccf7f0508cca3809aa7af31642e686d8d9d30e57c15ab2b11ba1e637db261",
+  "flash_log": "logs/flash/20261102-2330-g474-bms-500k-txrx-fixed.reset-run.log",
+  "result": "NOT_PASS",
+  "scope": "G474 FDCAN1 -> BMS 500K read-only after user corrected TX/RX reversal",
+  "build": {
+    "PICO_APP": "BMS",
+    "PICO_DEVICE_BITRATE": 500000,
+    "PICO_BMS_RTR_DLC": 0,
+    "PICO_BMS_CRC_ENDIAN": "BIG"
+  },
+  "image_sha256": "d07cb41b27dcf30b288d9c4a532311ca895203168fb17e83dd83a5893162aa34",
+  "boot_headers_in_capture": 2,
+  "main_boot_line": 55,
+  "main_boot_header": "# PICO device-read v1; READ ONLY; device=BMS bitrate=500000 power_id=0xAA rtr_dlc=0 crc_order=1 status_order=0",
+  "counts": {
+    "tx_submit": 16,
+    "tx_done": 0,
+    "tx_timeout": 16,
+    "rx": 0,
+    "bms_samples": 0,
+    "health": 13
+  },
+  "tx_by_id": {
+    "0x100": 4,
+    "0x101": 3,
+    "0x102": 3,
+    "0x103": 3,
+    "0x105": 3
+  },
+  "first_bus_off_health": {
+    "t_ms": 15023,
+    "seen": 0,
+    "valid": 0,
+    "replies": 0,
+    "invalid": 0,
+    "ignored": 0,
+    "query_timeouts": 16,
+    "query_failures": 10,
+    "tx_submit": 16,
+    "tx_done": 0,
+    "tx_rejected": 15,
+    "tx_timeout": 16,
+    "rx_fifo_lost": 0,
+    "rx_queue_drop": 0,
+    "rx_read_fail": 0,
+    "rx_unsupported": 0,
+    "tx_event_lost": 0,
+    "tx_event_unknown": 0,
+    "bus_off": 1,
+    "tec": 248,
+    "rec": 0,
+    "counters_ok": 1
+  },
+  "registers": {
+    "CCCR": "0x00001041",
+    "NBTP": "0x02010C01",
+    "ECR": "0x000000F8",
+    "PSR": "0x000007E5",
+    "GPIOA_IDR": "0x0000980C"
+  },
+  "interpretation": "TX/RX correction did not change the symptom: still no ACK, LEC=5 bit error, bus-off. Remaining possibilities: incorrect module pinout/continuity, damaged SN65HVD230 RXD output from the reversed connection, damaged G474 PA12/PA11, Rs/VCC/GND, or CANH/CANL path.",
+  "next_checks": [
+    "confirm module header labels (6-pin VCC/GND/TX/RX/H/L vs 8-pin chip)",
+    "continuity PA12->TXD/D and PA11->RXD/R",
+    "swap SN65HVD230 module",
+    "PA12<->PA11 jumper loopback test if module swap fails",
+    "measure Rs/VCC/GND and CANH-CANL resistance"
+  ]
+}

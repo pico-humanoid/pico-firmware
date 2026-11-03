@@ -1,0 +1,15 @@
+{
+  "port": "/dev/serial/by-id/usb-STMicroelectronics_STLINK-V3_002000303335511635383531-if02",
+  "baud": 115200,
+  "format": "8N1",
+  "duration_requested_s": 65,
+  "host_input_buffer_discarded": true,
+  "mcu_reset": false,
+  "serial_bytes_written": 0,
+  "capture_only_not_device_pass": true,
+  "bytes": 111010,
+  "started_utc": "2026-11-01T08:46:47.617344+00:00",
+  "duration_actual_s": 65.03877212699808,
+  "reason": "duration_complete",
+  "ended_utc": "2026-11-01T08:47:52.658405+00:00"
+}

@@ -1,0 +1,31 @@
+Open On-Chip Debugger 0.11.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+hla_swd
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+adapter speed: 1000 kHz
+
+Info : clock speed 1000 kHz
+Info : STLINK V3J9M3 (API v3) VID:PID 0483:374E
+Info : Target voltage: 3.274468
+Info : stm32g4x.cpu: hardware has 6 breakpoints, 4 watchpoints
+Info : starting gdb server for stm32g4x.cpu on 3333
+Info : Listening on port 3333 for gdb connections
+Info : Unable to match requested speed 2000 kHz, using 1000 kHz
+Info : Unable to match requested speed 2000 kHz, using 1000 kHz
+target halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080051c0 msp: 0x20020000
+** Programming Started **
+Info : device idcode = 0x20036469 (STM32G47/G48xx - Rev 'unknown' : 0x2003)
+Info : flash size = 512kbytes
+Info : flash mode : dual-bank
+Info : Padding image section 1 at 0x08004ddc with 4 bytes (bank write end alignment)
+Warn : Adding extra erase range, 0x08004de0 .. 0x08004fff
+** Programming Finished **
+** Verify Started **
+** Verified OK **
+** Resetting Target **
+Info : Unable to match requested speed 2000 kHz, using 1000 kHz
+Info : Unable to match requested speed 2000 kHz, using 1000 kHz
+shutdown command invoked

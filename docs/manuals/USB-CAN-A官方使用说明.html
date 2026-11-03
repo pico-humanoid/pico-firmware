@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html class="client-nojs" lang="zh-Hans-CN" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>USB-CAN-A - Waveshare Wiki</title>
+<script>document.documentElement.className="client-js";RLCONF={"wgBreakFrames":!1,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"zh","wgMonthNames":["","1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],"wgRequestId":"91361bfc7c3cb4de0be5c548","wgCSPNonce":!1,"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":!1,"wgNamespaceNumber":0,"wgPageName":"USB-CAN-A","wgTitle":"USB-CAN-A","wgCurRevisionId":142158,"wgRevisionId":142158,"wgArticleId":15952,"wgIsArticle":!0,"wgIsRedirect":!1,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["CAN接口","模块","USB-CAN-A"],"wgPageContentLanguage":"zh-cn","wgPageContentModel":"wikitext","wgRelevantPageName":"USB-CAN-A","wgRelevantArticleId":15952,"wgIsProbablyEditable":!1,"wgRelevantPageIsProbablyEditable":!1,"wgRestrictionEdit":[],"wgRestrictionMove":[]};RLSTATE={"ext.gadget.tabber":"ready","site.styles":"ready","noscript":
+"ready","user.styles":"ready","user":"ready","user.options":"loading","jquery.makeCollapsible.styles":"ready","mediawiki.toc.styles":"ready","skins.tweeki.styles":"ready","skins.tweeki.bootstraptheme.styles":"ready","skins.tweeki.externallinks.styles":"ready","skins.tweeki.awesome.styles":"ready"};RLPAGEMODULES=["site","mediawiki.page.startup","mediawiki.page.ready","jquery.makeCollapsible","mediawiki.toc","ext.FancyBoxThumbs","ext.gadget.subnavber","ext.gadget.slidenav","ext.HighlightjsIntegration","skins.tweeki.messages","skins.tweeki.scripts"];</script>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.loader.implement("user.options@1hzgi",function($,jQuery,require,module){/*@nomin*/mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});mw.user.options.set({"variant":"zh-cn"});
+});});</script>
+<link rel="stylesheet" href="/w/load.php?lang=zh-cn&amp;modules=jquery.makeCollapsible.styles%7Cmediawiki.toc.styles%7Cskins.tweeki.awesome.styles%7Cskins.tweeki.bootstraptheme.styles%7Cskins.tweeki.externallinks.styles%7Cskins.tweeki.styles&amp;only=styles&amp;skin=tweeki"/>
+<script async="" src="/w/load.php?lang=zh-cn&amp;modules=startup&amp;only=scripts&amp;raw=1&amp;skin=tweeki"></script>
+<meta name="ResourceLoaderDynamicStyles" content=""/>
+<link rel="stylesheet" href="/w/load.php?lang=zh-cn&amp;modules=ext.gadget.tabber&amp;only=styles&amp;skin=tweeki"/>
+<link rel="stylesheet" href="/w/load.php?lang=zh-cn&amp;modules=site.styles&amp;only=styles&amp;skin=tweeki"/>
+<meta name="generator" content="MediaWiki 1.35.5"/>
+<meta property="og:image" content="https://www.waveshare.net/w/upload/thumb/9/95/USB-CAN-A-1.jpg/1200px-USB-CAN-A-1.jpg"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="Waveshare Wiki (zh-cn)"/>
+<link rel="EditURI" type="application/rsd+xml" href="https://www.waveshare.net/w/api.php?action=rsd"/>
+<link rel="alternate" type="application/atom+xml" title="Waveshare Wiki的Atom feed" href="/w/index.php?title=%E7%89%B9%E6%AE%8A:%E6%9C%80%E8%BF%91%E6%9B%B4%E6%94%B9&amp;feed=atom"/>
+<!--[if lt IE 9]><script src="/w/resources/lib/html5shiv/html5shiv.js"></script><![endif]-->
+</head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-USB-CAN-A rootpage-USB-CAN-A skin-tweeki action-view tweeki-animateLayout tweeki-non-advanced tweeki-user-anon">			<!-- navbar -->
+			<div id="mw-navigation" class="navbar navbar-default navbar-fixed-top navbar-expand-lg fixed-top navbar-light bg-light" role="navigation">
+				<h2>导航菜单</h2>
+				<div id="mw-head" class="navbar-inner">
+					<div class="container">
+
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+
+							<a href="/wiki/Main_Page" class="navbar-brand"><img src="https://www.waveshare.net/w/upload/b/b6/Waveshare-logo.png" alt="Waveshare Wiki" /></a>
+						</div>
+
+						<div id="navbar" class="navbar-collapse collapse">
+													<ul class="nav navbar-nav">
+							<li class="nav"><a href="https://www.waveshare.net" id="n-https.253A.252F.252Fwww.waveshare.net" rel="nofollow" target="_blank">微雪商城</a></li><li class="nav"><a href="#" id="n-raspberry-pi" class="dropdown-toggle" data-toggle="dropdown">Raspberry Pi <b class="caret"></b></a><ul class="dropdown-menu " role="menu"><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-boards-.25E4.25B8.25BB.25E6.259D.25BF.252F.25E5.25A5.2597.25E4.25BB.25B6.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Boards 主板/套件]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Boards">主板/套件</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-displays-.25E6.2598.25BE.25E7.25A4.25BA.25E5.25B1.258F.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Displays 显示屏]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Displays">显示屏</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-cameras-.25E6.2591.2584.25E5.2583.258F.25E5.25A4.25B4.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Cameras 摄像头]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Cameras">摄像头</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-expansions-.25E6.2589.25A9.25E5.25B1.2595.25E6.259D.25BF.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Expansions 扩展板]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Expansions">扩展板</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-laptops-.25E7.25AC.2594.25E8.25AE.25B0.25E6.259C.25AC.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Laptops 笔记本]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Laptops">笔记本</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-robots-.25E6.259C.25BA.25E5.2599.25A8.25E4.25BA.25BA.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Robots 机器人]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Robots">机器人</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-games-.25E6.25B8.25B8.25E6.2588.258F.25E6.259C.25BA.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Games 游戏机]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Games">游戏机</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523android-linux-boards-android.252Flinux.25E4.25B8.25BB.25E6.259D.25BF.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Android-Linux-Boards Android/Linux主板]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Android-Linux-Boards">Android/Linux主板</a></a></li></ul></li><li class="nav"><a href="#" id="n-.25E4.25BA.25BA.25E5.25B7.25A5.25E6.2599.25BA.25E8.2583.25BD" class="dropdown-toggle" data-toggle="dropdown">人工智能 <b class="caret"></b></a><ul class="dropdown-menu " role="menu"><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523jetson-ai-boards-.25E4.25B8.25BB.25E6.259D.25BF.252F.25E5.25A5.2597.25E4.25BB.25B6.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Boards 主板/套件]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Boards">主板/套件</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523jetson-ai-displays-.25E6.2598.25BE.25E7.25A4.25BA.25E5.25B1.258F.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Displays 显示屏]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Displays">显示屏</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523jetson-ai-cameras-.25E6.2591.2584.25E5.2583.258F.25E5.25A4.25B4.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Cameras 摄像头]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Cameras">摄像头</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523jetson-ai-hat-.25E6.2589.25A9.25E5.25B1.2595.25E6.259D.25BF.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Jetson-AI-HAT 扩展板]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Jetson-AI-HAT">扩展板</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523jetson-ai-robots-.25E6.259C.25BA.25E5.2599.25A8.25E4.25BA.25BA.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Robots 机器人]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Robots">机器人</a></a></li></ul></li><li class="nav"><a href="#" id="n-.25E6.2598.25BE.25E7.25A4.25BA.25E5.25B1.258F" class="dropdown-toggle" data-toggle="dropdown">显示屏 <b class="caret"></b></a><ul class="dropdown-menu " role="menu"><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523display-lcd-oleds-lcd.252Foled.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Display-LCD-OLEDs LCD/OLED]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Display-LCD-OLEDs">LCD/OLED</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523display-e-paper-e-paper.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Display-e-Paper e-Paper]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Display-e-Paper">e-Paper</a></a></li></ul></li><li class="nav"><a href="#" id="n-.25E6.25A8.25A1.25E5.259D.2597" class="dropdown-toggle" data-toggle="dropdown">模块 <b class="caret"></b></a><ul class="dropdown-menu " role="menu"><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523long-range-wireless-comm-.25E8.25BF.259C.25E8.25B7.259D.25E7.25A6.25BB.25E6.2597.25A0.25E7.25BA.25BF.25E9.2580.259A.25E4.25BF.25A1.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Long-range-wireless-comm 远距离无线通信]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Long-range-wireless-comm">远距离无线通信</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523short-range-wireless-comm-.25E8.25BF.2591.25E8.25B7.259D.25E7.25A6.25BB.25E6.2597.25A0.25E7.25BA.25BF.25E9.2580.259A.25E4.25BF.25A1.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Short-range-wireless-comm 近距离无线通信]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Short-range-wireless-comm">近距离无线通信</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523wired-communication-.25E6.259C.2589.25E7.25BA.25BF.25E9.2580.259A.25E4.25BF.25A1.252F.25E6.258E.25A5.25E5.258F.25A3.25E8.25BD.25AC.25E6.258D.25A2.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Wired-communication 有线通信/接口转换]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Wired-communication">有线通信/接口转换</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523misc-cameras-av-.25E6.2591.2584.25E5.2583.258F.25E5.25A4.25B4.252F.25E9.259F.25B3.25E8.25A7.2586.25E9.25A2.2591.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Misc-cameras-av 摄像头/音视频]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Misc-cameras-av">摄像头/音视频</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523misc-sensor-modules-.25E4.25BC.25A0.25E6.2584.259F.25E5.2599.25A8.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Misc-sensor-modules 传感器]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Misc-sensor-modules">传感器</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523misc-servos-motors-.25E7.2594.25B5.25E6.259C.25BA.252F.25E8.2588.25B5.25E6.259C.25BA.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Misc-servos-motors 电机/舵机]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Misc-servos-motors">电机/舵机</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523misc-other-modules-.25E5.25A4.25A7.25E6.259D.2582.25E7.2583.25A9.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Misc-other-modules 大杂烩]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Misc-other-modules">大杂烩</a></a></li></ul></li><li class="nav"><a href="#" id="n-.25E6.259C.25BA.25E5.2599.25A8.25E4.25BA.25BA" class="dropdown-toggle" data-toggle="dropdown">机器人 <b class="caret"></b></a><ul class="dropdown-menu " role="menu"><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523robotics-cars-.25E6.2599.25BA.25E8.2583.25BD.25E8.25BD.25A6.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Robotics-cars 智能车]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Robotics-cars">智能车</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523robotics-drivers-sensors-.25E9.25A9.25B1.25E5.258A.25A8.25E5.2599.25A8.252F.25E4.25BC.25A0.25E6.2584.259F.25E5.2599.25A8.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Robotics-drivers-sensors 驱动器/传感器]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Robotics-drivers-sensors">驱动器/传感器</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523robotics-robot-arms-.25E6.259C.25BA.25E6.25A2.25B0.25E6.2589.258B.252F.25E4.25BA.2591.25E5.258F.25B0.25E6.258E.25A7.25E5.2588.25B6.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Robotics-robot-arms 机械手/云台控制]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Robotics-robot-arms">机械手/云台控制</a></a></li></ul></li><li class="nav"><a href="#" id="n-mcu.252Ffpga" class="dropdown-toggle" data-toggle="dropdown">MCU/FPGA <b class="caret"></b></a><ul class="dropdown-menu " role="menu"><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523arduino-main-boards-arduino.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Arduino-main-boards Arduino]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Arduino-main-boards">Arduino</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523micro.253Abit-micro.253Abit.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#micro:bit micro:bit]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#micro:bit">micro:bit</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523mcu.2farm-stm32" class="PIC"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#MCU.2FARM STM32" tabindex="-1">LPC</a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523fpga-fpga.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#FPGA FPGA]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#FPGA">FPGA</a></a></li></ul></li>							</ul>
+						
+													<ul class="nav navbar-nav navbar-right">
+							</ul>
+				<form class="navbar-form navbar-right" action="/w/index.php" id="searchform">
+					<div class="form-group"><input type="search" name="search" placeholder="搜索" title="搜索Waveshare Wiki[f]" accesskey="f" id="searchInput" class="search-query form-control"/><input type="submit" name="go" value="前往" title="若相同标题存在，则直接前往该页面" id="mw-searchButton" class="searchButton btn hidden"/>
+					</div>
+				</form><ul class="nav navbar-nav navbar-right"><li class="nav"><a href="https://docs.waveshare.net" id="n-https.253A.252F.252Fdocs.waveshare.net" rel="nofollow" target="_blank">微雪文档</a></li>							</ul>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<!-- /navbar -->
+					<div id="mw-page-base"></div>
+			<div id="mw-head-base"></div>
+			<a id="top"></a>
+
+			<!-- content -->
+			<div id="contentwrapper" class="user-loggedout not-editable container with-navbar with-navbar-fixed">
+
+				
+				<div class="row">
+					<div class="col-md-offset-2 col-md-10" role="main">
+								<div class="mw-body" id="content">
+			<div id="mw-js-message" style="display:none;"></div>
+									<h1 id="firstHeading" class="firstHeading page-header" lang="zh-Hans-CN"><span dir="auto">USB-CAN-A</span></h1>
+									<!-- bodyContent -->
+			<div id="bodyContent">
+								<div id="siteSub">来自Waveshare Wiki</div>
+								<div id="contentSub"></div>
+												<div id="jump-to-nav" class="mw-jump">
+					跳转至：					<a href="#mw-navigation">导航</a>、					<a href="#p-search">搜索</a>
+				</div>
+				<div id="mw-content-text" lang="zh-Hans-CN" dir="ltr" class="mw-content-ltr"><div class="mw-parser-output"><style data-mw-deduplicate="TemplateStyles:r75601">.mw-parser-output .note{background-position:left 7px top 50%;padding:0.5em 0.5em 0.5em 40px;margin:0.5em 0;overflow:hidden;background-color:#f8f9fa;background-repeat:no-repeat;border:1px solid #ddd}.mw-parser-output .note-inline{display:inline-block;vertical-align:middle}.mw-parser-output .note-info{background-color:#f6efe5;background-size:25px;border-color:#ac6600;padding-left:40px;min-height:28px}.mw-parser-output .note-reminder{background-color:#fff9ea;background-size:25px;border-color:#fc3;min-height:28px}.mw-parser-output .note-warn{background-color:#fff9ea;background-size:25px;border-color:#fc3;min-height:28px}.mw-parser-output .note-error{background-color:#fee7e6;background-size:25px;border-color:#c33;min-height:28px}</style><div role="note" class="note note-info">USB-CAN-A是USB-串口-CAN方案，在几乎所有的应用场景下，串口波特率默认2M即可，不用改！！</div>
+<div class="wiki-pages blue-color">
+<div class="tabberlive newwsnav" id="wsnavbar">
+<ul class="tabbernav">
+<li class="nav-link"><a href="#myintro">说明</a></li>
+<li class="nav-link"><a href="#myresources">资料</a></li>
+<li class="nav-link"><a href="#myfaq">FAQ</a></li>
+<li class="nav-link"><a href="#mysupport">售后</a></li>
+</ul>
+</div>
+<div class="tabber">
+<table id="infotable" class="a-r at-c roundy bgd-blue bl-blue" style="margin-left: 5px; margin-bottom: 5px;">
+
+<tbody><tr>
+<td colspan="2">
+<table class="at-c roundy" style="background: transparent;width:100%;">
+
+<tbody><tr>
+<td class="at-c textwhite" style="display: none;"><span style="font-size:1.5em; line-height: 36px;"><b>USB_CAN-A</b></span>
+</td></tr>
+<tr>
+<td class="at-c bgwhite" style="margin:5px;"><a href="https://www.waveshare.net/shop/USB-CAN-A.htm" title="USB-CAN-A" target="_blank" rel="nofollow noreferrer noopener"><img alt="USB-CAN-A" src="/w/upload/thumb/9/95/USB-CAN-A-1.jpg/360px-USB-CAN-A-1.jpg" decoding="async" loading="lazy" width="360" height="270" srcset="/w/upload/thumb/9/95/USB-CAN-A-1.jpg/540px-USB-CAN-A-1.jpg 1.5x, /w/upload/thumb/9/95/USB-CAN-A-1.jpg/720px-USB-CAN-A-1.jpg 2x" /></a>
+</td></tr></tbody></table>
+</td></tr>
+<tr style="display:none;">
+<td colspan="2">
+<table class="roundy" style="background: transparent;width:100%;">
+
+<tbody><tr>
+<td class="at-c textwhite"><b>{{{name2}}}</b>
+</td></tr>
+<tr>
+<td class="at-c bgwhite" style="margin:5px;">
+</td></tr></tbody></table>
+</td></tr>
+<tr style="display:none;">
+<td>
+<table class="roundy" style="background: transparent;width:100%;">
+
+<tbody><tr>
+<td class="at-c textwhite"><b>{{{name3}}}</b>
+</td></tr>
+<tr>
+<td class="at-c bgwhite" style="margin:5px;">
+</td></tr></tbody></table>
+</td></tr>
+<tr>
+<td colspan="2">
+<table class="roundy" style="background: transparent; border-collapse:collapse;width:100%;display: none;">
+<tbody><tr>
+<td style="width:2%;">
+</td>
+<td style="width:3%;">
+</td>
+<th colspan="2" width="90%" class="alignt-center roundytop bgl-white">基本信息
+</th>
+<td style="width:3%;">
+</td>
+<td style="width:2%;">
+</td></tr>
+<tr>
+<th colspan="3" width="90px" class="alignt-right roundytl bgwhite b-blue" style="border-width: 0 0 1px 0;">分类：
+</th>
+<td colspan="3" class="at-l roundytr b-blue bgwhite" style="border-width: 0 0 1px 0;">USB-CAN-A模块
+</td></tr>
+<tr style="display:none;">
+<th colspan="3" width="90px" class="alignt-right bgwhite b-blue" style="border-width: 0 0 1px 0;">{{{userDefinedInfo1}}}：
+</th>
+<td colspan="3" class="at-l b-blue bgwhite" style="border-width: 0 0 1px 0;">{{{userdefinedvalue1}}}
+</td></tr>
+<tr style="display:none;">
+<th colspan="3" width="90px" class="alignt-right bgwhite b-blue" style="border-width: 0 0 1px 0;">{{{userDefinedInfo2}}}：
+</th>
+<td colspan="3" class="at-l b-blue bgwhite" style="border-width: 0 0 1px 0;">{{{userdefinedvalue2}}}
+</td></tr>
+<tr style="display:none;">
+<th colspan="3" width="90px" class="alignt-right bgwhite b-blue" style="border-width: 0 0 1px 0;">{{{userDefinedInfo3}}}：
+</th>
+<td colspan="3" class="at-l b-blue bgwhite" style="border-width: 0 0 1px 0;">{{{userdefinedvalue3}}}
+</td></tr>
+<tr>
+<th colspan="3" width="90px" class="alignt-right roundybl bgwhite">品牌：
+</th>
+<td colspan="3" class="at-l roundybr bgwhite">Waveshare
+</td></tr></tbody></table>
+</td></tr>
+<tr>
+<td colspan="2">
+<table class="align-right roundy" style="background: transparent; border-collapse:collapse;width:100%;">
+<tbody><tr>
+<td style="width:2%;">
+</td>
+<td style="width:3%;">
+</td>
+<th colspan="2" width="90%" class="alignt-center roundytop"><font color="white">功能简介</font>
+</th>
+<td style="width:3%;">
+</td>
+<td style="width:2%;">
+</td></tr>
+<tr>
+<td colspan="6" class="at-c">
+<table class="roundy bd-未知 bgl-未知 textblack bw-1 fulltable">
+
+<tbody><tr>
+<td>
+<table class="roundy bgwhite fulltable" style="text-align:center">
+
+<tbody><tr>
+<td class="roundyleft textwhite bgd-blue bl-blue bw-1" style="width:25%;opacity: 0.8;padding-bottom: 5px;"><small><b>特性</b></small>
+</td>
+<td class="roundyright bl-blue bw-1" colspan="3" style="width:75%;padding-bottom: 5px;color: #666;"><small>USB转CAN</small>
+</td></tr>
+<tr style="display:none;">
+<td class="roundyleft textwhite bgd-blue bl-blue bw-1" style="width:25%;opacity: 0.8;padding-bottom: 5px;"><small>'<b><i></i></b></small>
+</td>
+<td class="roundyright bl-blue bw-1" colspan="3" style="width:75%;padding-bottom: 5px;color: #666;"><small>无特性，不解释</small>
+</td></tr>
+<tr style="display:none;">
+<td class="roundyleft textwhite bgd-blue bl-blue bw-1" style="width:25%;opacity: 0.8;padding-bottom: 5px;"><small>'<b><i></i></b></small>
+</td>
+<td class="roundyright bl-blue bw-1" colspan="3" style="width:75%;padding-bottom: 5px;color: #666;"><small>无特性，不解释</small>
+</td></tr>
+<tr style="display:none;">
+<td class="roundyleft textwhite bgd-blue bl-blue bw-1" style="width:25%;opacity: 0.8;padding-bottom: 5px;"><small>'<b><i></i></b></small>
+</td>
+<td class="roundyright bl-blue bw-1" colspan="3" style="width:75%;padding-bottom: 5px;color: #666;"><small>无特性，不解释</small>
+</td></tr>
+<tr style="display:none;">
+<td class="roundyleft textwhite bgd-blue bl-blue bw-1" style="width:25%;opacity: 0.8;padding-bottom: 5px;"><small>'<b><i></i></b></small>
+</td>
+<td class="roundyright bl-blue bw-1" colspan="3" style="width:75%;padding-bottom: 5px;color: #666;"><small>无特性，不解释</small>
+</td></tr>
+<tr>
+<td class="roundyleft textwhite bgd-blue bl-blue bw-1" style="width:25%;opacity: 0.8;padding-bottom: 5px;"><small><b>接口</b></small>
+</td>
+<td class="roundyright bl-blue bw-1 hide" style="width:25%;padding-bottom: 5px;color: #666;"><small></small>
+</td>
+<td class="roundyright bl-blue bw-1 hide" style="width:25%;padding-bottom: 5px;color: #666;"><small></small>
+</td>
+<td class="roundyright bl-blue bw-1" style="width:25%;padding-bottom: 5px;color: #666;"><small><a href="/wiki/%E5%88%86%E7%B1%BB:CAN%E6%8E%A5%E5%8F%A3" title="分类:CAN接口">CAN</a></small>
+</td></tr></tbody></table>
+</td></tr></tbody></table>
+</td></tr></tbody></table>
+</td></tr>
+<tr>
+<td colspan="2">
+<table class="align-right roundy" style="background: transparent; border-collapse:collapse;width:100%;display:none;">
+<tbody><tr>
+<td style="width:2%;">
+</td>
+<td style="width:3%;">
+</td>
+<th colspan="2" width="90%" class="alignt-center roundytop bgl-white">相关产品
+</th>
+<td style="width:3%;">
+</td>
+<td style="width:2%;">
+</td></tr>
+<tr>
+<td colspan="6" class="at-c">
+<table class="roundy bw-1 fulltable table table-striped table-bordered mw-collapsed align-left">
+
+<tbody><tr>
+<th>
+</th></tr>
+<tr style="display:none;">
+<th>♦   {{{Product1}}}
+</th></tr>
+<tr style="display:none;">
+<th>♦   {{{Product2}}}
+</th></tr>
+<tr style="display:none;">
+<th>♦   {{{Product3}}}
+</th></tr>
+<tr style="display:none;">
+<th>♦   {{{Product4}}}
+</th></tr>
+<tr style="display:none;">
+<th>♦   {{{Product5}}}
+</th></tr>
+<tr style="display:none;">
+<td>—— <span style="font-size:14px;text-align: left;font-weight: bold;">类目1</span> ——
+</td></tr>
+<tr>
+<td>
+<table class="mw-collapsible mw-collapsed align-left">
+
+<tbody><tr style="display:none;">
+<td><span style="font-size:14px;text-align: left;color: #0645ad;font-weight: bold;">♦   类目1</span>
+</td></tr>
+<tr style="font-size:13px; text-align: left;">
+<td>
+<p>列表1
+</p>
+</td></tr></tbody></table>
+</td></tr>
+<tr>
+<td>
+<table class="mw-collapsible mw-collapsed align-left">
+
+<tbody><tr style="display:none;">
+<td><span style="font-size:14px;text-align: left;color: #0645ad;font-weight: bold;">♦   类目2</span>
+</td></tr>
+<tr style="font-size:13px; text-align: left;">
+<td>
+<p>列表2
+</p>
+</td></tr></tbody></table>
+</td></tr>
+<tr>
+<td>
+<table class="mw-collapsible mw-collapsed align-left">
+
+<tbody><tr style="display:none;">
+<td><span style="font-size:14px;text-align: left;color: #0645ad;font-weight: bold;">♦   类目3</span>
+</td></tr>
+<tr style="font-size:13px; text-align: left;">
+<td>
+<p>列表3
+</p>
+</td></tr></tbody></table>
+</td></tr>
+<tr>
+<td>
+<table class="mw-collapsible mw-collapsed align-left">
+
+<tbody><tr style="display:none;">
+<td><span style="font-size:14px;text-align: left;color: #0645ad;font-weight: bold;">♦   类目4</span>
+</td></tr>
+<tr style="font-size:13px; text-align: left;">
+<td>
+<p>列表4
+</p>
+</td></tr></tbody></table>
+</td></tr>
+<tr>
+<td>
+<table class="mw-collapsible mw-collapsed align-left">
+
+<tbody><tr style="display:none;">
+<td><span style="font-size:14px;text-align: left;color: #0645ad;font-weight: bold;">♦   类目5</span>
+</td></tr>
+<tr style="font-size:13px; text-align: left;">
+<td>
+<p>列表5
+</p>
+</td></tr></tbody></table>
+</td></tr></tbody></table>
+</td></tr></tbody></table>
+</td></tr></tbody></table>
+<div class="tabbertab" title="说明" id="myintro">
+<div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none" /><div class="toctitle" lang="zh-Hans-CN" dir="ltr"><h2 id="mw-toc-heading">目录</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#.E8.AF.B4.E6.98.8E"><span class="tocnumber">1</span> <span class="toctext">说明</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#.E4.BA.A7.E5.93.81.E7.89.B9.E6.80.A7"><span class="tocnumber">1.1</span> <span class="toctext">产品特性</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="#.E5.9F.BA.E6.9C.AC.E5.8A.9F.E8.83.BD"><span class="tocnumber">1.2</span> <span class="toctext">基本功能</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-4"><a href="#Windows.E7.B3.BB.E7.BB.9F.E4.BD.BF.E7.94.A8"><span class="tocnumber">2</span> <span class="toctext">Windows系统使用</span></a>
+<ul>
+<li class="toclevel-2 tocsection-5"><a href="#USB.E9.A9.B1.E5.8A.A8.E5.AE.89.E8.A3.85"><span class="tocnumber">2.1</span> <span class="toctext">USB驱动安装</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="#CAN.E9.85.8D.E7.BD.AE.E5.B7.A5.E5.85.B7.E4.BD.BF.E7.94.A8.E8.AF.B4.E6.98.8E"><span class="tocnumber">2.2</span> <span class="toctext">CAN配置工具使用说明</span></a>
+<ul>
+<li class="toclevel-3 tocsection-7"><a href="#CAN.E9.85.8D.E7.BD.AE.E5.B7.A5.E5.85.B7.E4.BD.BF.E7.94.A8"><span class="tocnumber">2.2.1</span> <span class="toctext">CAN配置工具使用</span></a></li>
+<li class="toclevel-3 tocsection-8"><a href="#.E9.85.8D.E7.BD.AE.E9.A1.B5.E9.9D.A2.E5.8A.9F.E8.83.BD.E8.AF.B4.E6.98.8E"><span class="tocnumber">2.2.2</span> <span class="toctext">配置页面功能说明</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-9"><a href="#.E7.A1.AC.E4.BB.B6.E6.B5.8B.E8.AF.95"><span class="tocnumber">2.3</span> <span class="toctext">硬件测试</span></a></li>
+<li class="toclevel-2 tocsection-10"><a href="#USB-CAN-A.E7.8E.AF.E5.9B.9E.E6.A8.A1.E5.BC.8F.E6.B5.8B.E8.AF.95"><span class="tocnumber">2.4</span> <span class="toctext">USB-CAN-A环回模式测试</span></a>
+<ul>
+<li class="toclevel-3 tocsection-11"><a href="#.E6.8E.A5.E5.88.B02-CH_CAN_FD_HAT.E6.B5.8B.E8.AF.95"><span class="tocnumber">2.4.1</span> <span class="toctext">接到2-CH CAN FD HAT测试</span></a></li>
+<li class="toclevel-3 tocsection-12"><a href="#.E6.8E.A5.E5.88.B0USB-CAN-B.E6.B5.8B.E8.AF.95"><span class="tocnumber">2.4.2</span> <span class="toctext">接到USB-CAN-B测试</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-13"><a href="#Linux.E7.B3.BB.E7.BB.9F.E4.BD.BF.E7.94.A8"><span class="tocnumber">3</span> <span class="toctext">Linux系统使用</span></a>
+<ul>
+<li class="toclevel-2 tocsection-14"><a href="#.E7.A1.AC.E4.BB.B6.E5.87.86.E5.A4.87"><span class="tocnumber">3.1</span> <span class="toctext">硬件准备</span></a></li>
+<li class="toclevel-2 tocsection-15"><a href="#.E4.BE.8B.E7.A8.8B.E6.B5.8B.E8.AF.95"><span class="tocnumber">3.2</span> <span class="toctext">例程测试</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#.E8.B5.84.E6.96.99"><span class="tocnumber">4</span> <span class="toctext">资料</span></a>
+<ul>
+<li class="toclevel-2 tocsection-16"><a href="#.E8.BD.AF.E4.BB.B6"><span class="tocnumber">4.1</span> <span class="toctext">软件</span></a></li>
+<li class="toclevel-2 tocsection-17"><a href="#.E7.A8.8B.E5.BA.8F"><span class="tocnumber">4.2</span> <span class="toctext">程序</span></a></li>
+<li class="toclevel-2 tocsection-18"><a href="#.E6.96.87.E6.A1.A3"><span class="tocnumber">4.3</span> <span class="toctext">文档</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-19"><a href="#FAQ"><span class="tocnumber">5</span> <span class="toctext">FAQ</span></a>
+<ul>
+<li class="toclevel-2 tocsection-20"><a href="#.E8.BD.AF.E4.BB.B6.E9.85.8D.E7.BD.AE"><span class="tocnumber">5.1</span> <span class="toctext">软件配置</span></a></li>
+<li class="toclevel-2 tocsection-21"><a href="#.E7.A1.AC.E4.BB.B6.E6.8E.A5.E5.8F.A3"><span class="tocnumber">5.2</span> <span class="toctext">硬件接口</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#.E6.8A.80.E6.9C.AF.E6.94.AF.E6.8C.81"><span class="tocnumber">6</span> <span class="toctext">技术支持</span></a></li>
+</ul>
+</div>
+
+<h1><span id="说明"></span><span class="mw-headline" id=".E8.AF.B4.E6.98.8E">说明</span></h1>
+<h2><span id="产品特性"></span><span class="mw-headline" id=".E4.BA.A7.E5.93.81.E7.89.B9.E6.80.A7">产品特性</span></h2>
+<ul><li>支持 CAN2.0A（标准帧）和 CAN2.0B（扩展帧）</li>
+<li>支持 CAN 通讯波特率范围：5kbps~1Mbps，可自定义 CAN 波特率</li>
+<li>支持四种工作模式：正常模式、环回模式、静默模式、静默环回模式</li>
+<li>支持多种 CAN 数据发送方式：单帧发送、多帧发送、手动发送、定时发送和循环发送</li>
+<li>支持多种 CAN 数据接收方式：可配置只接收指定 ID 的数据，也可指定 ID 自动应答配置好的数据</li>
+<li>支持收发 CAN 数据保存为 TXT 或 EXCEL 文本</li>
+<li>支持 CAN 总线检测，方便查看 CAN 总线状态</li>
+<li>CAN 收发数据显示都带时间标识，可顺序显示，也可刷新显示</li>
+<li>支持设置 USB 虚拟 COM 口的通信波特率 (9600 ~ 2000000bps)，默认为 2000000bps</li>
+<li>支持通过配置软件或串口指令设置工作参数，可断电保存</li>
+<li>采用 STM32 进口芯片方案，通信稳定可靠</li>
+<li>板载 TVS(瞬态电压抑制管)，有效抑制电路的浪涌电压和瞬态尖峰电压</li>
+<li>提供 Windows 版本的中英文上位机软件，使用方便</li>
+<li>支持二次开发，只需处理收发命令即可</li></ul>
+<h2><span id="基本功能"></span><span class="mw-headline" id=".E5.9F.BA.E6.9C.AC.E5.8A.9F.E8.83.BD">基本功能</span></h2>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-A-details-5.jpg" class="image"><img alt="USB-CAN-A-details-5.jpg" src="/w/upload/6/61/USB-CAN-A-details-5.jpg" decoding="async" loading="lazy" width="960" height="220" /></a>
+</p>
+<h1><span id="Windows系统使用"></span><span class="mw-headline" id="Windows.E7.B3.BB.E7.BB.9F.E4.BD.BF.E7.94.A8">Windows系统使用</span></h1>
+<h2><span id="USB驱动安装"></span><span class="mw-headline" id="USB.E9.A9.B1.E5.8A.A8.E5.AE.89.E8.A3.85">USB驱动安装</span></h2>
+<ul><li>下载<a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/w/upload/c/c4/CH341SER.zip">CH341SER驱动</a>，双击CH341SER.EXE文件，点击安装，出现驱动安装成功后，点击确定完成驱动安装：<br /></li></ul>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-A-serial.png" class="image"><img alt="USB-CAN-A-serial.png" src="/w/upload/3/3d/USB-CAN-A-serial.png" decoding="async" loading="lazy" width="600" height="453" /></a>
+</p>
+<h2><span id="CAN配置工具使用说明"></span><span class="mw-headline" id="CAN.E9.85.8D.E7.BD.AE.E5.B7.A5.E5.85.B7.E4.BD.BF.E7.94.A8.E8.AF.B4.E6.98.8E">CAN配置工具使用说明</span></h2>
+<h5><span id="CAN配置工具使用"></span><span class="mw-headline" id="CAN.E9.85.8D.E7.BD.AE.E5.B7.A5.E5.85.B7.E4.BD.BF.E7.94.A8">CAN配置工具使用</span></h5>
+<ul><li>工具免安装，下载*<a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://files.waveshare.com/wiki/USB-CAN-A/Tool/USBCANV2.12_Chinese.zip">USB-CAN-A_TOOL_2.12</a>并解压文件后，打开USB-CAN.exe文件：<br /></li></ul>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-A-config.png" class="image"><img alt="USB-CAN-A-config.png" src="/w/upload/8/8b/USB-CAN-A-config.png" decoding="async" loading="lazy" width="1166" height="746" /></a><br />
+</p>
+<h5><span id="配置页面功能说明"></span><span class="mw-headline" id=".E9.85.8D.E7.BD.AE.E9.A1.B5.E9.9D.A2.E5.8A.9F.E8.83.BD.E8.AF.B4.E6.98.8E">配置页面功能说明</span></h5>
+<p><b>① 端口设置区: <br /></b>
+将把 USB 转 CAN 插入电脑后，安装驱动，设备管理器会出现com口，上位机配置工具选择对应设备管理器的端口，可以打开或关闭端口，这个跟串口调试助手类似，通讯波特率默认是的2000000bps。<br />
+</p>
+<link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r75601"/><div role="note" class="note note-info">2M波特率能兼容大部分CAN速率（串口波特率设定为最大的2M，CAN速率最高可以到1M），一般情况默认2M波特率就可以，将CAN速率改为和外接CAN设备对应的速率（最高支持1M）即可。如果改了别的波特率，可以
+通电前按下复位按钮，通电后松开，恢复出厂设置重置USB-CAN-A恢复2M串口波特率:<a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-A-reset.png" class="image"><img alt="USB-CAN-A-reset.png" src="/w/upload/d/d5/USB-CAN-A-reset.png" decoding="async" loading="lazy" width="770" height="480" /></a></div>
+<p><br />
+有些串口助手（走底层hex数据）可能没有2M，若须改小波特率，可参考下文：
+更改 COM(232)波特率说明：
+1. 用 USB 数据线插上转换器，同时注意发送及接受指示灯同时闪几下：
+</p>
+<pre class="code2highlight lang-txt">闪 1 下，对应串口的波特率为 2000000bps
+闪 2 下，对应串口的波特率为 1228800bps
+闪 3 下，对应串口的波特率为 115200bps
+闪 4 下，对应串口的波特率为 38400bps
+闪 5 下，对应串口的波特率为 19200bps
+闪 6 下，对应串口的波特率为 9600bps</pre>
+<p>2. 打开软件，选择对应 COM 端口号及波特率，点击打开按钮（比如转换器插上 USB 数据线上电时收发指示灯同时闪 1 下，我们应该选波特率 2000000bps）<br />
+3. 点击打开按钮 <br />
+4. 点击更改波特率按钮,此时会跳出一个对话框，我们在波特率组合框里面选择我们准备设置的波特率后，点击更改即可；若不想更改，点击取消按钮。<br />
+5. 比如我们要设置波特率为 9600bps ：
+</p>
+<ul><li>在波特率组合框里面 9600.</li>
+<li>点击更改按钮，同时注意观察转换器收发指示灯闪烁，</li>
+<li>对应 9600 波特率转换器收发指示灯会同时闪 6 下。</li>
+<li>由于端口波特率已经更改，需要关闭端口后，选择更改后的波特率重新打开</li></ul>
+<p>6. 点击关闭按钮 <br />
+7. 将波特率选择为更改后的波特率 <br />
+8. 重新点击打开按钮即可<br />
+</p><p><b>② CAN 设置区:<br /></b>
+工作模式包含正常模式，环回模式，静默模式，环回及静默模式
+</p>
+<ul><li>正常模式：就是 CAN 正常通讯的模式，可以正常向总线收发数据</li>
+<li>环回模式：发送的数据可以发往 CAN 总线，同时反馈的内部的接受区，忽略接受引脚的实际状态，可用于自测试</li>
+<li>静默模式：可以正常接受数据，但只能发送隐性位，而不能真正发送报文，常用于分析 CAN 总线活动</li>
+<li>环回静默模式：该模式可以用于“热自测试”，即在线自测试。可以像环回模式那样自测试，但却不影响 CAN 总线系统。</li>
+<li>帧类型：标准帧（CAN2.0A 11 位 ID） 扩展帧（CAN2.0B 29 位 ID）</li>
+<li>CAN 波特率：可以直接选择 CAN 通讯常用的波特率：1M,800K,500K,400K,250K,200K,125K,100K,50K,20K,10K,5K；若上面可直接设置的波特率与你的 CAN 设备的波特率不一致，可选择。</li>
+<li>滤波 ID 与屏蔽 ID:都是 16 进制数据，标准帧时滤波 ID 及屏蔽 ID 低11 位有效（范围：0x00000000~0x000007ff）,扩展帧 滤波 ID 及屏蔽ID低 29 位有效（范围 0x00000000~0x1fffffff）</li>
+<li>固定 20 字节收发:CAN 转换器内部有 2 种转换协议，一个是可以长度的通讯协议，一种是固定 20 字节的通讯协议，选中后将是固定 20 接通讯协议，不选中则是可变协议通讯选择之后会跳出一个自定义波特率的对话框最上面位 CAN 波特率的计算公式，同时设置相位缓冲区 1，相位缓冲区 2，及预分频就可以了</li>
+<li>禁止报文自动重发：CAN 通讯一般都是发送不成功自动重发，如果一直循环发送数据，可以设置禁止报文自动重发,点击设置并启动 ，就可以进行 CAN 通讯了。</li></ul>
+<p><b>③ 发送单帧数据区： <br /></b>
+帧格式包含数据帧及远程帧，帧ID是16进制数据，对于标准帧帧ID范围为 0x00000000~0x000007fff ， 对于扩展帧帧 ID 范围为0x00000000~0x1fffffff。发送的数据也为16进制数据，图中的数据分别为 0x11 0x22 0x33 0x44 0x55 0x66 0x77 0x88点击发送单帧按钮则将该帧数据发送到 CAN 总线
+</p><p><b>④ 多帧发送数据区：<br /></b>
+</p>
+<ul><li>增加按钮：在发送多帧区域选中行下面将增加一条发送帧数据</li>
+<li>删除按钮：将删除选中行</li>
+<li>清空按钮：将清除发送多帧发送区所有数据</li>
+<li>间隔时间：多帧发送区相连两帧的间隔发送时间（毫秒）</li>
+<li>发送选中帧：点击此按钮将发送多帧区内选中的一行进行发送</li>
+<li>顺序：选中后点击发送选中帧将自动切换到下一帧</li>
+<li>循环：选中后点击发送选中帧将循环发送</li>
+<li>停止：取消发送多帧命令</li></ul>
+<p><b>⑤ 自动应答区：<br /></b>
+</p>
+<ul><li>增加按钮：在自动应答区域选中行下面将增加一条自动应答数据</li>
+<li>删除按钮：将删除选中行</li>
+<li>清空按钮：将清除发送自动应答区所有数据</li>
+<li>自动应答：将选中后接到到接受 ID 将自动回复对应的帧 ID 及数据</li></ul>
+<p><b>⑥ CAN 总线状态区：<br /></b>
+主要用于查看 USB 转 CAN 装置的 CAN 通讯状态
+</p><p><b>⑦ 配置接受 ID 区：<br /></b>
+增加按钮：在配置接受区域选中行下面将增加一条自动应答数据删除按钮：将删除选中行启用按钮：点击此按钮后转换器将只上传配置接受 ID 区里面设置的ID,其他 ID 都不上传到电脑不启用按钮：点击此按钮后转换器将所有 ID 数据都上传到电脑
+</p><p><b>⑧ 收发数据显示区：<br /></b>
+</p>
+<ul><li>清空：清空收发数据显示器所以数据</li>
+<li>暂停：暂停在收发显示区显示其他数据</li>
+<li>继续：继续显示收发数据</li>
+<li>保存: 可以将收发数据缓冲区的数据保存，可以保存两种格式，excel 或 txt 文本</li>
+<li>不显示发送帧：可以在收发数据区只显示接受的数据</li>
+<li>自动刷新：当只显示接受的数据时，可以选择自动刷新，这时候数据是实时刷新，而不是不断增加列显示，该功能可以归纳 CAN 总结的 ID 数据选中任意一行</li></ul>
+<h2><span id="硬件测试"></span><span class="mw-headline" id=".E7.A1.AC.E4.BB.B6.E6.B5.8B.E8.AF.95">硬件测试</span></h2>
+<h2><span id="USB-CAN-A环回模式测试"></span><span class="mw-headline" id="USB-CAN-A.E7.8E.AF.E5.9B.9E.E6.A8.A1.E5.BC.8F.E6.B5.8B.E8.AF.95">USB-CAN-A环回模式测试</span></h2>
+<ul><li>首先确认下波特率，如果通电瞬间，TX和RX灯闪烁一下，那就是对的，默认2M串口波特率请将模块设置为回环模式，2M 串口波特率(串口波特率是电脑USB这边的，固定就行)，CAN速率和功能码自定义（和外接设备一样的速率，比方说电机CAN速率1Mbps，IDx123,那就设定CAN速率1Mbps和ID0x123），设置并启动:</li></ul>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-A-2.12.png" class="image"><img alt="USB-CAN-A-2.12.png" src="/w/upload/f/fc/USB-CAN-A-2.12.png" decoding="async" loading="lazy" width="1545" height="924" /></a>
+</p>
+<ul><li>然后点击手动发送界面，发送数据并接受同样的数据，功能OK：</li></ul>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:CAN-A-2.12-TR.png" class="image"><img alt="CAN-A-2.12-TR.png" src="/w/upload/9/9b/CAN-A-2.12-TR.png" decoding="async" loading="lazy" width="1560" height="943" /></a>
+</p>
+<h3><span id="接到2-CH_CAN_FD_HAT测试"></span><span class="mw-headline" id=".E6.8E.A5.E5.88.B02-CH_CAN_FD_HAT.E6.B5.8B.E8.AF.95">接到2-CH CAN FD HAT测试</span></h3>
+<ul><li>将USB-CAN-A和<a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/shop/2-CH-CAN-FD-HAT.htm">2-CH CAN FD HAT</a>通过杜邦线，将A--&gt;A和B--&gt;B相连，USB-CAN-A的USB端接到电脑USB口：</li>
+<li>在电脑端打开USB-CAN调试工具，默认波特率为2M，打开对应的端口号，选择正常模式，标准帧和程序对应的速率1Mbps(USB-CAN-A 高支持1M)，设置并启动；<a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/2-CH_CAN_FD_HAT">2-CH CAN FD HAT</a>和USB-CAN-A实现数据互发互收：</li></ul>
+<p>如下图所示：<br />
+<a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-A%26%26FD.png" class="image"><img alt="USB-CAN-A&amp;&amp;FD.png" src="/w/upload/thumb/1/19/USB-CAN-A%26%26FD.png/700px-USB-CAN-A%26%26FD.png" decoding="async" loading="lazy" width="700" height="619" srcset="/w/upload/1/19/USB-CAN-A%26%26FD.png 1.5x" /></a>
+</p>
+<h3><span id="接到USB-CAN-B测试"></span><span class="mw-headline" id=".E6.8E.A5.E5.88.B0USB-CAN-B.E6.B5.8B.E8.AF.95">接到USB-CAN-B测试</span></h3>
+<ul><li>通过杜邦线等导线将USB-CAN-A和<a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.com/wiki/USB-CAN-B">USB-CAN-B</a>的H--&gt;H和L--&gt;L相连；然后打开两者的120欧姆电阻开关：</li></ul>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-A-B.jpg" class="image"><img alt="USB-CAN-A-B.jpg" src="/w/upload/thumb/d/d5/USB-CAN-A-B.jpg/600px-USB-CAN-A-B.jpg" decoding="async" loading="lazy" width="600" height="688" srcset="/w/upload/thumb/d/d5/USB-CAN-A-B.jpg/900px-USB-CAN-A-B.jpg 1.5x, /w/upload/d/d5/USB-CAN-A-B.jpg 2x" /></a>
+</p>
+<ul><li>进入USBCAN配置工具配置界面-&gt;确认CAN配置正确无误后设置并启动-&gt;填入数据信息并点击发送单帧；USB-CAN-A发送数据USB-CAN-B收到,反之亦然，测试OK</li></ul>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-AB.png" class="image"><img alt="USB-CAN-AB.png" src="/w/upload/4/49/USB-CAN-AB.png" decoding="async" loading="lazy" width="700" height="905" /></a>
+</p>
+<h1><span id="Linux系统使用"></span><span class="mw-headline" id="Linux.E7.B3.BB.E7.BB.9F.E4.BD.BF.E7.94.A8">Linux系统使用</span></h1>
+<h2><span id="硬件准备"></span><span class="mw-headline" id=".E7.A1.AC.E4.BB.B6.E5.87.86.E5.A4.87">硬件准备</span></h2>
+<ul><li>2个USB-CAN-A的L和H分别对应连接起来，打开两者的120欧姆电阻开关（开关拨到靠近绿色接线端子一边），USB端分别接到树莓派的USB口，硬件连接情况如下图：<br /></li></ul>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:2-USB-CAN-A.jpg" class="image"><img alt="2-USB-CAN-A.jpg" src="/w/upload/7/79/2-USB-CAN-A.jpg" decoding="async" loading="lazy" width="1814" height="652" /></a>
+</p>
+<ul><li>通过以下指令可以查询和确认树莓派识别到USB-CAN-A和加载相关的驱动</li></ul>
+<pre>lsusb
+ls /dev
+</pre>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-A-2-USB.png" class="image"><img alt="USB-CAN-A-2-USB.png" src="/w/upload/thumb/3/33/USB-CAN-A-2-USB.png/600px-USB-CAN-A-2-USB.png" decoding="async" loading="lazy" width="600" height="145" srcset="/w/upload/3/33/USB-CAN-A-2-USB.png 1.5x" /></a>
+</p>
+<ul><li>对于部分没有自动加载驱动描述符的linux 系统，可以用以下指令加载驱动:</li></ul>
+<pre>sudo su
+sudo modprobe option
+sudo sh -c 'echo "1a86 7523" &gt; /sys/bus/usb-serial/drivers/option1/new_id'
+</pre>
+<h2><span id="例程测试"></span><span class="mw-headline" id=".E4.BE.8B.E7.A8.8B.E6.B5.8B.E8.AF.95">例程测试</span></h2>
+<ul><li>复制以下指令到树莓派终端:</li></ul>
+<pre>wget https://www.waveshare.net/w/upload/7/72/USB-CAN-A.zip
+sudo apt-get install unzip
+unzip USB-CAN-A.zip
+cd USB-CAN-A
+sudo make clean
+sudo make
+</pre>
+<ul><li>在终端界面输入以下接受指令：</li></ul>
+<pre>sudo ./canusb -t -d /dev/ttyUSB0 -s 1000000 -t
+</pre>
+<ul><li>再打开多一个终端界面，运行以下发送指令：</li></ul>
+<pre>sudo ./canusb -d /dev/ttyUSB1 -s 1000000 -t -i 5 -j BEEE
+</pre>
+<ul><li>一个USB-CAN-A(ttyUSB0)发送数据，另一个USB-CAN-A(ttyUSB1)接收到对应的数据,效果如下图：</li></ul>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-A-RPI.png" class="image"><img alt="USB-CAN-A-RPI.png" src="/w/upload/c/c6/USB-CAN-A-RPI.png" decoding="async" loading="lazy" width="1460" height="382" /></a>
+</p>
+</div>
+<div class="tabbertab" title="资料" id="myresources">
+<h1><span id="资料"></span><span class="mw-headline" id=".E8.B5.84.E6.96.99">资料</span></h1>
+<h2><span id="软件"></span><span class="mw-headline" id=".E8.BD.AF.E4.BB.B6">软件</span></h2>
+<ul><li><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/w/upload/c/c4/CH341SER.zip">CH341SER驱动</a></li>
+<li><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/w/upload/9/99/USB-CAN-A_TOOL.zip">USB-CAN-A_TOOL_1.2 （默认2M串口波特率，无需改）</a></li>
+<li><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://files.waveshare.com/wiki/USB-CAN-A/Tool/USBCANV2.12_Chinese.zip">USB-CAN-A_TOOL_2.12 (当前最新版本)</a></li></ul>
+<h2><span id="程序"></span><span class="mw-headline" id=".E7.A8.8B.E5.BA.8F">程序</span></h2>
+<ul><li><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/w/upload/7/72/USB-CAN-A.zip">Linux-C例程</a></li>
+<li><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://files.waveshare.com/wiki/USB-CAN-A/Demo/python/USB-CAN-A-py.zip">Linux-Python例程</a></li></ul>
+<h2><span id="文档"></span><span class="mw-headline" id=".E6.96.87.E6.A1.A3">文档</span></h2>
+<p><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91%E2%80%94%E4%B8%B2%E8%A1%8C%E8%BD%AC%E6%8D%A2CAN%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%AE%9A%E4%B9%89">程序指令说明 &amp;&amp; 二次开发文档 &amp;&amp; 串口转CAN的定义和配置</a>
+</p>
+</div>
+<div class="tabbertab" title="FAQ" id="myfaq">
+<h1><span class="mw-headline" id="FAQ">FAQ</span></h1>
+<h2><span id="软件配置"></span><span class="mw-headline" id=".E8.BD.AF.E4.BB.B6.E9.85.8D.E7.BD.AE">软件配置</span></h2>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion1">
+								<b>问题：</b>手上只有一个USB-CAN-A，怎么判断其功能是OK的？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion1" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<ul><li>首先确认下波特率，如果通电瞬间，TX和RX灯闪烁一下，那就是对的，默认2M串口波特率</li>
+<li>请将模块设置为回环模式，2M 串口波特率(串口波特率是电脑USB这边的，固定就行)，CAN速率自定义（和外接设备一样的速率，比方说CAN电机1M，那就设定1M），设置并启动，发送数据有接受同样的数据，功能OK：</li></ul>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:USB-A-T-R.png" class="image"><img alt="USB-A-T-R.png" src="/w/upload/thumb/f/f2/USB-A-T-R.png/600px-USB-A-T-R.png" decoding="async" loading="lazy" width="600" height="320" srcset="/w/upload/thumb/f/f2/USB-A-T-R.png/900px-USB-A-T-R.png 1.5x, /w/upload/f/f2/USB-A-T-R.png 2x" /></a>
+</p>
+<ul><li>如果不行的话，请将模块恢复出厂设置再重复前面步骤测试</li></ul>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-A-res.png" class="image"><img alt="USB-CAN-A-res.png" src="/w/upload/thumb/3/3a/USB-CAN-A-res.png/600px-USB-CAN-A-res.png" decoding="async" loading="lazy" width="600" height="716" srcset="/w/upload/3/3a/USB-CAN-A-res.png 1.5x" /></a>
+</p>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion2">
+								<b>问题：</b>回环测试没问题，确认模块没问题后，外接can设备怎么测试呢？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion2" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<ul><li>在CAN通信中，不同设备(电机，板载can的主板)参数（如CAN速率、ID及数据帧格式）可能存在差异，因此在实际应用时，需严格参照对应CAN设备的规格书进行确认和配置。以一款默认CAN速率为1Mbps、ID为141（十六进制）、数据帧为88 00 00 00 00 00 77 88（8字节）的CAN电机为例，若需通过CAN-Tool工具实现通信，需按以下步骤操作：首先，在CAN-Tool中设置CAN速率为1Mbps；其次，配置接收/发送ID为141；最后，在数据帧编辑区输入示例数据88 00 00 00 00 00 77 88。完成配置后，即可进行通信测试。若实际设备参数与默认值不符，务必以规格书为准调整配置，以确保通信正常。</li></ul>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-A-CAN.png" class="image"><img alt="USB-CAN-A-CAN.png" src="/w/upload/e/e3/USB-CAN-A-CAN.png" decoding="async" loading="lazy" width="989" height="629" /></a>
+</p>
+<ul><li>如果还是不行，请确认将滤波ID 和 屏蔽 ID 改为0000 0000</li></ul>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:ID-CAN-0000.png" class="image"><img alt="ID-CAN-0000.png" src="/w/upload/c/c7/ID-CAN-0000.png" decoding="async" loading="lazy" width="1539" height="725" /></a>
+</p>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;"></div>
+<p><font color="red" style="display:none;"></font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion3">
+								<b>问题：</b>调试线可以发报文控制其他家的CAN通讯的电机吗？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion3" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>要can设备满足以下条件，才可以支持：
+</p>
+<ul><li>1）板载普通CAN接口，支持CAN 2.0 AB 协议（A-标准帧； B-扩展帧）</li>
+<li>2）不指定位机工具（部分设备指定厂家工具的，就不支持），支持用我们的配套工具和发送指令控制</li></ul>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;"></div>
+<p><font color="red" style="display:none;"></font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p><p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion4">
+								<b>问题：</b>
+linux 指令相关参数分别代表什么？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion4" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<pre> sudo ./canusb -d /dev/ttyUSB1 -s 1000000 -t -i 5 -j BEEE </pre>
+<p>以下是部分参数的说明：
+</p>
+<pre>  -t 在 stderr 上打印 TTY/串行流量调试信息。
+   -d 设备 使用 TTY 设备。
+   -s SPEED 以 bps 为单位设置 CAN 速度。
+   -b BAUDRATE 设置 TTY/串行波特率（默认值：2000000）。
+   -i ID 使用 ID（指定为十六进制字符串）注入。
+   -j DATA CAN DATA 要注入（指定为十六进制字符串）。
+   -n COUNT 在 COUNT 帧后终止（默认值：无限）。
+   -g MS 以 MS 毫秒为单位注入睡眠间隙（默认值：200 毫秒）。
+   -m MODE 注入负载模式（0 = 随机，1 = 增量，2 = 固定）。
+</pre>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;"></div>
+<p><font color="red" style="display:none;"></font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion5">
+								<b>问题：</b>
+两个USB-CAN-A怎么测试数据收发？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion5" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>发送方的帧ID是接收方的滤波ID；双方的CAN 速率要对应，串口波特率都默认2Mbps
+<a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-A*2.png" class="image"><img alt="USB-CAN-A*2.png" src="/w/upload/thumb/e/ed/USB-CAN-A%2A2.png/600px-USB-CAN-A%2A2.png" decoding="async" loading="lazy" width="600" height="189" srcset="/w/upload/thumb/e/ed/USB-CAN-A%2A2.png/900px-USB-CAN-A%2A2.png 1.5x, /w/upload/thumb/e/ed/USB-CAN-A%2A2.png/1200px-USB-CAN-A%2A2.png 2x" /></a>
+</p>
+
+</div>
+<div style="display:none;"></div>
+<div style="display:none;"></div>
+<p><font color="red" style="display:none;"></font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion6">
+								<b>问题：</b>
+为什么数据会丢包？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion6" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<ul><li>数据发送太快，,第一个数据还没发送成功，又开始发下一个，也会导致丢包;数据发送的时候正好总线上有数据，这种情况会导致丢包;建议将发送的数据包间隔一定的时间（建议&gt;1s）或加入适当的延迟，使其他设备有足够的时间进行数据包处理,模块性能有限，速率有上限的, 数据量比较多又不能削减情况下，需要频率降下来</li>
+<li>此外，也和通信的距离，线缆，通信数据量相关，还有外接的设备的参数配置相关， 比方说，在相同的条件下，线缆越短，可以到的波特率越大</li></ul>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;"></div>
+<p><font color="red" style="display:none;"></font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion7">
+								<b>问题：</b>USB-CAN-A支持哪些协议？
+
+							</a>
+						</h4>
+					</div>
+					<div id="accordion7" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>目前支持CAN2.0A和CAN 2.0B，也就是支持最基本和最常见的CAN标准，支持最高1 Mbps的数据传输速率
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion8">
+								<b>问题：</b>为什么USB-CAN-A的串口波特率要用2M？
+
+							</a>
+						</h4>
+					</div>
+					<div id="accordion8" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>这个是USBN转串口再转CAN方案，2M串口波特率能兼容大部分CAN速率，一般情况默认2M波特率就可以，将CAN速率改为和外接CAN设备对应的速率（最高支持1M）即可。
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion9">
+								<b>问题：</b>为什么波特率改了，但是没成功？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion9" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>非常不建议改波特率的，2M 就能通用于99%的情况，如果1% 要改，请选用默认的2M改，因为默认是2M的，选用2M 改，就生效；
+如果还是不行，请复位为默认的2M后再改:<br />
+<a href="/wiki/%E6%96%87%E4%BB%B6:USB-CAN-A-reset.png" class="image"><img alt="USB-CAN-A-reset.png" src="/w/upload/thumb/d/d5/USB-CAN-A-reset.png/600px-USB-CAN-A-reset.png" decoding="async" loading="lazy" width="600" height="374" srcset="/w/upload/d/d5/USB-CAN-A-reset.png 1.5x" /></a>
+</p>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion10">
+								<b>问题：</b> USB-CAN-A有报文缓存么？如果有，能缓存多条？
+
+							</a>
+						</h4>
+					</div>
+					<div id="accordion10" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>有的，转换器数据放到缓存是为了防止出错，因为如果接受到数据直接转发的话如果再接受到数据就会出错，所有才需要缓存；内部最多可有20条缓存，转换器基本是实时转换的；
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion11">
+								<b>问题：</b> 可以用别的can-tool 上位机么
+							</a>
+						</h4>
+					</div>
+					<div id="accordion11" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<ul><li>不同的can配置工具，底层指令是不一样的，请使用我们配套的上位机工具，可以良好支持</li>
+<li>您可以基于这边的集成了对应配置指令的上位机工具的<a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://files.waveshare.com/wiki/USB-CAN-A/Demo/USBCANDemo.zip">CAN-TOOL SDK 源码文件</a>去二次开发上位机工具</li>
+<li>还有种方式，还可以用串口调试助手工具发送底层指令使用，注意请勾选上固定20字节收发如图:</li></ul>
+<p><a href="/wiki/%E6%96%87%E4%BB%B6:Usb-can-sscom.png" class="image"><img alt="Usb-can-sscom.png" src="/w/upload/4/49/Usb-can-sscom.png" decoding="async" loading="lazy" width="1765" height="585" /></a>
+</p>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion12">
+								<b>问题：</b>怎么确认波特率多少？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion12" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>闪 1 下，对应串口的波特率为 2000000bps
+闪 2 下，对应串口的波特率为 1228800bps
+闪 3 下，对应串口的波特率为 115200bps
+闪 4 下，对应串口的波特率为 38400bps
+闪 5 下，对应串口的波特率为 19200bps
+闪 6 下，对应串口的波特率为 9600bps
+</p>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion13">
+								<b>问题：</b> USB-CAN-A 这个可以接受车子上can报文吗？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion13" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>车子满足以下条件，可以支持：
+</p>
+<ul><li>有普通的CAN接口，支持CAN2.0 A/B 协议（A-标准帧； B-扩展帧）</li>
+<li>汽车的接口不一样，协议也比较复杂，USB-CAN-A可能用不好，通信时把120欧姆开关关闭，其他的跟正常设备通讯类似，只要波特率一致就可以正常收发数据了</li>
+<li>如果要求用到工业级或者汽车专用SAE J1939协议，请用这款 <a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/shop/USB-CAN-B.htm">USB-CAN-B</a></li></ul>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion14">
+								<b>问题：</b> USB-CAN-A 可以作为节点进行数据收发么？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion14" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>可以作为 CAN 总线上的一个节点进行数据收发的，通过USB接口连接到PC或其他主机系统，然后通过其集成的CAN控制器与CAN总线网络通信，允许主机系统通过USB接口访问CAN网络，实现数据的发送与接收。
+</p>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion15">
+								<b>问题：</b>USB-CAN-A支持哪些协议？
+
+							</a>
+						</h4>
+					</div>
+					<div id="accordion15" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>目前支持CAN2.0A和CAN 2.0B，也就是支持最基本和最常见的CAN标准，支持最高1 Mbps的数据传输速率
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion16">
+								<b>问题：</b>USB-CAN-A支持opencan 么？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion16" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>不支持，推荐用支持opencan的<a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/shop/USB-CAN-B.htm">USB-CAN-B</a>
+</p>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion17">
+								<b>问题：</b>有上位机can-tool的SDK么,有对应的库函数吗？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion17" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>请戳链接下载<a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://files.waveshare.com/wiki/USB-CAN-A/Demo/USBCANDemo.zip">CAN-TOOL SDK 源码文件</a>
+</p>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion18">
+								<b>问题：</b>LINUX下支持SOCKETCAN 吗？？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion18" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>不支持，这个是串口转CAN，加载USB COM口设备(ttyUSB0)，无法加载can0设备
+</p>
+<ul><li>USB-CAN-A -&gt; 串口CAN ,高性价比,简化系统架构，易于学习或兼容旧设备</li>
+<li>USB-CAN-B USB-CAN-FD/B  -&gt; USB2CAN /PCAN-USB ,商用标杆，工业轻量级应用</li>
+<li>树莓派CAN HAT 系列-&gt; socket can, 用于树莓派编程学习</li></ul>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion19">
+								<b>问题：</b>为什么接受不到数据，发送OK的？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion19" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>可能是ID屏蔽问题，请将屏蔽ID改为00000000，就可以接受任意ID数据
+</p>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion20">
+								<b>问题：</b>支持Jetson orin nx么， 其他linux平台需要配合驱动吗？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion20" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<ul><li>有验证过debian，ubuntu，centos等主流完整的系统，部分精简内核系统可能不支持</li>
+<li>对于部分没有自动加载驱动描述符的linux 系统，可以用以下指令加载驱动:</li></ul>
+<pre>sudo su
+sudo modprobe option
+sudo sh -c 'echo "1a86 7523" &gt; /sys/bus/usb-serial/drivers/option1/new_id'
+</pre>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion21">
+								<b>问题：</b>ubuntu下使用lsusb可以看到设备，但是ls /dev/ttyUSB*命令无法识别到设备怎么办？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion21" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<ul><li>可以插拔一下设备，然后执行下方命令</li></ul>
+<pre>dmesg | tail -20
+</pre>
+<ul><li>假如看到有类似下方的日志</li></ul>
+<pre>usbfs: interface 0 claimed by ch341 while 'brltty' sets config #1
+ch341-uart ttyUSB0: ch341-uart converter now disconnected from ttyUSB0
+</pre>
+<ul><li>可以输入</li></ul>
+<pre>ls /lib/udev/rules.d |  grep brltty
+</pre>
+<ul><li>看下有没有</li></ul>
+<pre>85-brltty.rules
+</pre>
+<ul><li>有的话，可以执行指令禁用udev 规则。注：brltty是盲文终端辅助服务，假如有需要请勿执行下方步骤，对于大多数用户而言，删除完全不会影响系统功能</li></ul>
+<pre>sudo mv /lib/udev/rules.d/85-brltty.rules /lib/udev/rules.d/85-brltty.rules.disabled
+</pre>
+<ul><li>再然后重新加载 udev 规则</li></ul>
+<pre>sudo udevadm control --reload-rules
+sudo udevadm trigger
+</pre>
+<ul><li>最后插拔一次设备就可以看到了</li></ul>
+<pre>ls /dev/ttyUSB*
+</pre>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p><p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion22">
+								<b>问题：</b>模块是否支持linux arm32？？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion22" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>支持ARM 32-bit Linux 和 32-bit userland on 64-bit kernel，分别在pi3和pi4上实测过。<br />
+pi3和pi4测试用的系统是Raspberry Pi OS (32-bit)，此系统已预装驱动无需另行安装，部分linux板子的定制系统可能需要另行安装驱动.<br />
+</p>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p><p><br />
+</p><p><br />
+</p>
+<h2><span id="硬件接口"></span><span class="mw-headline" id=".E7.A1.AC.E4.BB.B6.E6.8E.A5.E5.8F.A3">硬件接口</span></h2>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion23">
+								<b>问题：</b>绿色接线端子的规格是？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion23" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>KF2EDG-3P，间距3.81mm 
+</p>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion24">
+								<b>问题：</b>USB-CAN-A的Gnd是必须连接的吗
+							</a>
+						</h4>
+					</div>
+					<div id="accordion24" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>可选的，CAN和RS485 都是差分信号，以下情况建议接GND：
+</p>
+<ul><li>长距离通信（&gt;1米）——防止地电位差干扰信号。</li>
+<li>不同电源设备互联——避免共模电压损坏芯片。</li>
+<li>高干扰环境（如工业、电机附近）——增强抗干扰能力。</li></ul>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion" href="#accordion25">
+								<b>问题：</b>模块的功耗？
+							</a>
+						</h4>
+					</div>
+					<div id="accordion25" class="panel-collapse collapse in">
+						<div class="panel-body">
+<div>
+<p>0.021W <br />
+模块通过USB接口供电，供电范围在4.8~5.2v，电流在0.04A左右
+</p>
+</div>
+<div style="display:none;"></div>
+<div style="display:none;">{{{4}}}</div>
+<p><font color="red" style="display:none;">{{{5}}}</font>
+</p>
+						</div>
+					</div>
+				</div>
+</div>
+<p><br />
+</p>
+</div>
+<div class="tabbertab" title="售后" id="mysupport">
+<h1><span id="技术支持"></span><span class="mw-headline" id=".E6.8A.80.E6.9C.AF.E6.94.AF.E6.8C.81">技术支持</span></h1>
+<p><br />联系人：邓工<br />
+EMAIL：3005766107@qq.com<br />
+QQ：3005766107<br />
+微信：扫下方二维码添加<br />
+<a href="/wiki/%E6%96%87%E4%BB%B6:Dhz-wx.png" class="image"><img alt="Dhz-wx.png" src="/w/upload/thumb/5/58/Dhz-wx.png/200px-Dhz-wx.png" decoding="async" loading="lazy" width="200" height="200" srcset="/w/upload/thumb/5/58/Dhz-wx.png/300px-Dhz-wx.png 1.5x, /w/upload/5/58/Dhz-wx.png 2x" /></a><br />
+</p>
+<link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r75601"/><div role="note" class="note note-error">说明：进行售后服务前，请准备好客户信息（定货单位、定货人等），以供验证</div></div>
+</div></div>
+<!-- 
+NewPP limit report
+Cached time: 20261031083747
+Cache expiry: 86400
+Dynamic content: false
+Complications: []
+CPU time usage: 0.118 seconds
+Real time usage: 0.151 seconds
+Preprocessor visited node count: 1360/1000000
+Post‐expand include size: 13653/2097152 bytes
+Template argument size: 18172/2097152 bytes
+Highest expansion depth: 6/40
+Expensive parser function count: 1/100
+Unstrip recursion depth: 1/20
+Unstrip post‐expand size: 27101/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%   64.319      1 -total
+ 63.63%   40.929     25 模板:FAQ
+ 19.81%   12.741      3 模板:Note
+  9.84%    6.327      1 模板:外围模块
+  3.61%    2.321      1 模板:Eng70
+-->
+
+<!-- Saved in parser cache with key ws_wiki_135_cn:pcache:idhash:15952-0!canonical!groups=* and timestamp 20261031083747 and revision id 142158
+ -->
+</div></div>								<div class="printfooter">
+				取自“<a dir="ltr" href="https://www.waveshare.net/w/index.php?title=USB-CAN-A&amp;oldid=142158">https://www.waveshare.net/w/index.php?title=USB-CAN-A&amp;oldid=142158</a>”				</div>
+												<div id="catlinks" class="catlinks" data-mw="interface"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/%E7%89%B9%E6%AE%8A:%E9%A1%B5%E9%9D%A2%E5%88%86%E7%B1%BB" title="特殊:页面分类">分类</a>：<ul><li><a href="/wiki/%E5%88%86%E7%B1%BB:%E6%A8%A1%E5%9D%97" title="分类:模块">模块</a></li><li><a href="/w/index.php?title=%E5%88%86%E7%B1%BB:USB-CAN-A&amp;action=edit&amp;redlink=1" class="new" title="分类:USB-CAN-A（页面不存在）">USB-CAN-A</a></li></ul></div><div id="mw-hidden-catlinks" class="mw-hidden-catlinks mw-hidden-cats-hidden">隐藏分类：<ul><li><a href="/wiki/%E5%88%86%E7%B1%BB:CAN%E6%8E%A5%E5%8F%A3" title="分类:CAN接口">CAN接口</a></li></ul></div></div>												<div class="visualClear"></div>
+							</div>
+			<!-- /bodyContent -->
+		</div>
+						</div>
+				</div>
+			</div>
+			<!-- /content -->
+
+			<!-- sidebar-left -->
+			<div class="sidebar-wrapper sidebar-left-wrapper">
+				<div class="sidebar-container container">
+					<div class="row">
+						<div id="sidebar-left" class="col-md-2 col-md-offset-0">
+							<div id="tweekiTOC"></div>						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /sidebar-left -->
+					<!-- footer -->
+			<div id="footer" role="contentinfo" class="footer container footer-sticky bg-light">
+			<ul id="footer-custom"><li class="dropup"><a href="/w/index.php?title=%E7%89%B9%E6%AE%8A:%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95&amp;returnto=USB-CAN-A" title="我们鼓励您登录；然而，这不是强制性的[o]" accesskey="o">Login / Create Account</a></li><li class="dropup"><a href="INVALID-TITLE:[https://www.waveshare.net Copyright © 2022 深圳市微雪电子有限公司 版权所有]" id="n-.255Bhttps.253A.252F.252Fwww.waveshare.net-copyright-.25C2.25A9-2022-.25E6.25B7.25B1.25E5.259C.25B3.25E5.25B8.2582.25E5.25BE.25AE.25E9.259B.25AA.25E7.2594.25B5.25E5.25AD.2590.25E6.259C.2589.25E9.2599.2590.25E5.2585.25AC.25E5.258F.25B8-.25E7.2589.2588.25E6.259D.2583.25E6.2589.2580.25E6.259C.2589.255D"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net">Copyright © 2022 深圳市微雪电子有限公司 版权所有</a></a></li></ul><div style="clear:both"></div>			</div>
+			<!-- /footer -->
+		
+<script>
+var fbtFancyBoxOptions = {"openEffect":"elastic","closeEffect":"elastic","helpers":{"title":{"type":"inside"}}};
+</script>
+
+<script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgPageParseReport":{"limitreport":{"cputime":"0.118","walltime":"0.151","ppvisitednodes":{"value":1360,"limit":1000000},"postexpandincludesize":{"value":13653,"limit":2097152},"templateargumentsize":{"value":18172,"limit":2097152},"expansiondepth":{"value":6,"limit":40},"expensivefunctioncount":{"value":1,"limit":100},"unstrip-depth":{"value":1,"limit":20},"unstrip-size":{"value":27101,"limit":5000000},"timingprofile":["100.00%   64.319      1 -total"," 63.63%   40.929     25 模板:FAQ"," 19.81%   12.741      3 模板:Note","  9.84%    6.327      1 模板:外围模块","  3.61%    2.321      1 模板:Eng70"]},"cachereport":{"timestamp":"20261031083747","ttl":86400,"transientcontent":false}}});mw.config.set({"wgBackendResponseTime":114});});</script>	</body>
+</html>

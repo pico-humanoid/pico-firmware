@@ -29,6 +29,105 @@
       "cacheVariables": {
         "PICO_EXTERNAL_CAN": "ON"
       }
+    },
+    {
+      "name": "linux-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "toolchainFile": "${sourceDir}/cmake/gcc-arm-none-eabi.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "Linux-Loopback",
+      "displayName": "Linux: G474 internal loopback",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_EXTERNAL_CAN": "OFF",
+        "PICO_APP": "Bringup"
+      }
+    },
+    {
+      "name": "Linux-External",
+      "displayName": "Linux: G474 external CAN 1 Mbit/s",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_EXTERNAL_CAN": "ON",
+        "PICO_APP": "Bringup"
+      }
+    },
+    {
+      "name": "Linux-BMS-Read-500K",
+      "displayName": "Linux: read-only BMS-Read-500K",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_APP": "BMS",
+        "PICO_DEVICE_BITRATE": "500000"
+      }
+    },
+    {
+      "name": "Linux-Power-Read-1M",
+      "displayName": "Linux: read-only Power-Read-1M",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_APP": "Power",
+        "PICO_DEVICE_BITRATE": "1000000",
+        "PICO_POWER_STATUS_ENDIAN": "BIG"
+      }
+    },
+    {
+      "name": "Linux-Power-Read-500K",
+      "displayName": "Linux: read-only Power-Read-500K",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_APP": "Power",
+        "PICO_DEVICE_BITRATE": "500000",
+        "PICO_POWER_STATUS_ENDIAN": "BIG"
+      }
+    },
+    {
+      "name": "Linux-Power-Baud-1M-to-500K",
+      "displayName": "Linux: GATED Linux-Power-Baud-1M-to-500K",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_APP": "PowerBaud",
+        "PICO_DEVICE_BITRATE": "1000000",
+        "PICO_POWER_BAUD_TARGET": "500000",
+        "PICO_POWER_ID": "0xAA",
+        "PICO_POWER_STATUS_ENDIAN": "BIG"
+      }
+    },
+    {
+      "name": "Linux-Power-Baud-500K-to-1M",
+      "displayName": "Linux: GATED Linux-Power-Baud-500K-to-1M",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_APP": "PowerBaud",
+        "PICO_DEVICE_BITRATE": "500000",
+        "PICO_POWER_BAUD_TARGET": "1000000",
+        "PICO_POWER_ID": "0xAA",
+        "PICO_POWER_STATUS_ENDIAN": "BIG"
+      }
+    },
+    {
+      "name": "Linux-Dual-Read-500K",
+      "displayName": "Linux: BMS + Power read-only on shared FDCAN1 500K",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_APP": "Dual",
+        "PICO_DEVICE_BITRATE": "500000",
+        "PICO_POWER_ID": "0xAA",
+        "PICO_BMS_RTR_DLC": "0",
+        "PICO_BMS_CRC_ENDIAN": "BIG",
+        "PICO_POWER_STATUS_ENDIAN": "BIG"
+      }
     }
   ],
   "buildPresets": [
@@ -39,6 +138,38 @@
     {
       "name": "External",
       "configurePreset": "External"
+    },
+    {
+      "name": "Linux-Loopback",
+      "configurePreset": "Linux-Loopback"
+    },
+    {
+      "name": "Linux-External",
+      "configurePreset": "Linux-External"
+    },
+    {
+      "name": "Linux-BMS-Read-500K",
+      "configurePreset": "Linux-BMS-Read-500K"
+    },
+    {
+      "name": "Linux-Power-Read-1M",
+      "configurePreset": "Linux-Power-Read-1M"
+    },
+    {
+      "name": "Linux-Power-Read-500K",
+      "configurePreset": "Linux-Power-Read-500K"
+    },
+    {
+      "name": "Linux-Power-Baud-1M-to-500K",
+      "configurePreset": "Linux-Power-Baud-1M-to-500K"
+    },
+    {
+      "name": "Linux-Power-Baud-500K-to-1M",
+      "configurePreset": "Linux-Power-Baud-500K-to-1M"
+    },
+    {
+      "name": "Linux-Dual-Read-500K",
+      "configurePreset": "Linux-Dual-Read-500K"
     }
   ]
 }

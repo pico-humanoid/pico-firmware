@@ -1,0 +1,447 @@
+{
+  "source": "/home/zjy/PICO/pico-firmware/logs/usb-can/20261102-215849-134211-bms-read.jsonl",
+  "sha256": "cf2fbffe5d25219b4393b6d6a839a0f659ab2e88fb482fdd4f61c83243eef476",
+  "start": {
+    "time": "2026-11-02T21:58:49.134331+08:00",
+    "elapsed_s": 9.5e-05,
+    "event": "start",
+    "port": "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0",
+    "serial_baud": 2000000,
+    "can_baud": 500000,
+    "frame_format": "STD/RTR requests; STD/DATA replies",
+    "cycles": 65,
+    "rtr_dlc": 0,
+    "crc_endian": "big",
+    "interval_s": 0.2,
+    "timeout_s": 0.7,
+    "allowed_ids": [
+      "0x100",
+      "0x101",
+      "0x102",
+      "0x103",
+      "0x105"
+    ],
+    "bms_writes": 0,
+    "note": "Read-only; stop on first timeout/invalid reply; no retries."
+  },
+  "summary": {
+    "time": "2026-11-02T22:00:01.060932+08:00",
+    "elapsed_s": 71.926697,
+    "event": "summary",
+    "result": "READ_WINDOW_OK",
+    "submitted": 325,
+    "matched": 325,
+    "invalid_replies": 0,
+    "replies_by_id": {
+      "0x100": 65,
+      "0x101": 65,
+      "0x102": 65,
+      "0x103": 65,
+      "0x105": 65
+    },
+    "reply_span_s": 71.39998,
+    "stable_60s_window_pass": true,
+    "note": "UART submit is not CAN TX_DONE; no TEC/REC telemetry. No transaction sequence number; same-ID late reply attribution is limited."
+  },
+  "event_counts": {
+    "start": 1,
+    "serial_write_intent": 326,
+    "serial_submitted": 326,
+    "rx_raw": 645,
+    "can": 325,
+    "read_reply": 325,
+    "summary": 1
+  },
+  "first_reply": "2026-11-02T21:58:49.463200+08:00",
+  "last_reply": "2026-11-02T22:00:00.863181+08:00",
+  "offline_checks": {
+    "all_65_cycles_in_expected_order": true,
+    "raw_reassembly_matches_can_events": true,
+    "all_325_crc_and_decoded_fields_rechecked": true,
+    "only_adapter_config_and_325_allowlisted_dlc0_rtr_submissions": true,
+    "reply_after_matching_submission": true,
+    "method": "Offline reparse using the same repository codec; not an independent hardware CAN analyzer."
+  },
+  "host_response_ms": {
+    "min": 2.779,
+    "mean": 3.0720276923076923,
+    "max": 7.56
+  },
+  "max_adjacent_reply_gap_s": 0.22489799999999605,
+  "values": {
+    "0x100": {
+      "current_a": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "voltage_v": {
+        "min": 45.85,
+        "max": 45.86
+      },
+      "remaining_capacity_ah": {
+        "min": 4.84,
+        "max": 4.84
+      }
+    },
+    "0x101": {
+      "cycles": {
+        "min": 0,
+        "max": 0
+      },
+      "full_capacity_ah": {
+        "min": 12.0,
+        "max": 12.0
+      },
+      "soc_percent": {
+        "min": 40,
+        "max": 40
+      }
+    },
+    "0x102": {
+      "balance_low": [
+        "0x0000"
+      ],
+      "protection": [
+        "0x0000"
+      ],
+      "balance_high": [
+        "0x0000"
+      ]
+    },
+    "0x103": {
+      "discharge_mos_on": [
+        true
+      ],
+      "production_date_raw": [
+        "0x353C"
+      ],
+      "mos_status_raw": [
+        "0x0003"
+      ],
+      "software_version_raw": {
+        "min": 36,
+        "max": 36
+      },
+      "charge_mos_on": [
+        true
+      ]
+    },
+    "0x105": {
+      "temperature_c": [
+        {
+          "min": 21.5,
+          "max": 22.0
+        },
+        {
+          "min": 21.1,
+          "max": 21.2
+        },
+        {
+          "min": 21.4,
+          "max": 21.4
+        }
+      ]
+    }
+  },
+  "first_can": {
+    "time": "2026-11-02T21:58:49.463130+08:00",
+    "elapsed_s": 0.328877,
+    "event": "can",
+    "id": "0x100",
+    "extended": false,
+    "remote": false,
+    "dlc": 8,
+    "data": "11 ea 00 00 01 e4 56 1b"
+  },
+  "last_reply_per_id": {
+    "0x100": {
+      "time": "2026-11-02T21:59:59.981544+08:00",
+      "elapsed_s": 70.847289,
+      "event": "read_reply",
+      "cycle": 65,
+      "id": "0x100",
+      "host_elapsed_since_send_ms": 2.927,
+      "crc_ok": true,
+      "crc_endian": "big",
+      "crc16": "0x561B",
+      "voltage_v": 45.86,
+      "current_a": 0.0,
+      "remaining_capacity_ah": 4.84
+    },
+    "0x101": {
+      "time": "2026-11-02T22:00:00.202002+08:00",
+      "elapsed_s": 71.067747,
+      "event": "read_reply",
+      "cycle": 65,
+      "id": "0x101",
+      "host_elapsed_since_send_ms": 2.945,
+      "crc_ok": true,
+      "crc_endian": "big",
+      "crc16": "0x5B40",
+      "full_capacity_ah": 12.0,
+      "cycles": 0,
+      "soc_percent": 40
+    },
+    "0x102": {
+      "time": "2026-11-02T22:00:00.422338+08:00",
+      "elapsed_s": 71.288083,
+      "event": "read_reply",
+      "cycle": 65,
+      "id": "0x102",
+      "host_elapsed_since_send_ms": 2.931,
+      "crc_ok": true,
+      "crc_endian": "big",
+      "crc16": "0x1B00",
+      "balance_low": "0x0000",
+      "balance_high": "0x0000",
+      "protection": "0x0000"
+    },
+    "0x103": {
+      "time": "2026-11-02T22:00:00.642784+08:00",
+      "elapsed_s": 71.508528,
+      "event": "read_reply",
+      "cycle": 65,
+      "id": "0x103",
+      "host_elapsed_since_send_ms": 2.862,
+      "crc_ok": true,
+      "crc_endian": "big",
+      "crc16": "0xC08B",
+      "mos_status_raw": "0x0003",
+      "charge_mos_on": true,
+      "discharge_mos_on": true,
+      "production_date_raw": "0x353C",
+      "software_version_raw": 36
+    },
+    "0x105": {
+      "time": "2026-11-02T22:00:00.863181+08:00",
+      "elapsed_s": 71.728926,
+      "event": "read_reply",
+      "cycle": 65,
+      "id": "0x105",
+      "host_elapsed_since_send_ms": 2.899,
+      "crc_ok": true,
+      "crc_endian": "big",
+      "crc16": "0xD241",
+      "temperature_c": [
+        22.0,
+        21.2,
+        21.4
+      ],
+      "note": "Sensor presence/plausibility requires independent confirmation"
+    }
+  },
+  "history": [
+    {
+      "file": "/home/zjy/PICO/pico-firmware/logs/usb-can/20261102-213438-754152-bms-read.jsonl",
+      "start": "2026-11-02T21:34:38.754305+08:00",
+      "counts": {
+        "start": 1,
+        "serial_write_intent": 2,
+        "serial_submitted": 2,
+        "read_timeout": 1,
+        "summary": 1
+      },
+      "summary": {
+        "time": "2026-11-02T21:34:39.787503+08:00",
+        "elapsed_s": 1.033318,
+        "event": "summary",
+        "result": "READ_TIMEOUT",
+        "submitted": 1,
+        "matched": 0,
+        "invalid_replies": 0,
+        "replies_by_id": {
+          "0x100": 0,
+          "0x101": 0,
+          "0x102": 0,
+          "0x103": 0,
+          "0x105": 0
+        },
+        "reply_span_s": 0,
+        "stable_60s_window_pass": false,
+        "note": "UART submit is not CAN TX_DONE; no TEC/REC telemetry. No transaction sequence number; same-ID late reply attribution is limited."
+      }
+    },
+    {
+      "file": "/home/zjy/PICO/pico-firmware/logs/usb-can/20261102-213528-677830-bms-read.jsonl",
+      "start": "2026-11-02T21:35:28.677944+08:00",
+      "counts": {
+        "start": 1,
+        "serial_write_intent": 2,
+        "serial_submitted": 2,
+        "read_timeout": 1,
+        "summary": 1
+      },
+      "summary": {
+        "time": "2026-11-02T21:35:29.711635+08:00",
+        "elapsed_s": 1.033786,
+        "event": "summary",
+        "result": "READ_TIMEOUT",
+        "submitted": 1,
+        "matched": 0,
+        "invalid_replies": 0,
+        "replies_by_id": {
+          "0x100": 0,
+          "0x101": 0,
+          "0x102": 0,
+          "0x103": 0,
+          "0x105": 0
+        },
+        "reply_span_s": 0,
+        "stable_60s_window_pass": false,
+        "note": "UART submit is not CAN TX_DONE; no TEC/REC telemetry. No transaction sequence number; same-ID late reply attribution is limited."
+      }
+    },
+    {
+      "file": "/home/zjy/PICO/pico-firmware/logs/usb-can/20261102-213649-205963-bms-read.jsonl",
+      "start": "2026-11-02T21:36:49.206056+08:00",
+      "counts": {
+        "start": 1,
+        "serial_write_intent": 2,
+        "serial_submitted": 2,
+        "read_timeout": 1,
+        "summary": 1
+      },
+      "summary": {
+        "time": "2026-11-02T21:36:50.240330+08:00",
+        "elapsed_s": 1.034361,
+        "event": "summary",
+        "result": "READ_TIMEOUT",
+        "submitted": 1,
+        "matched": 0,
+        "invalid_replies": 0,
+        "replies_by_id": {
+          "0x100": 0,
+          "0x101": 0,
+          "0x102": 0,
+          "0x103": 0,
+          "0x105": 0
+        },
+        "reply_span_s": 0,
+        "stable_60s_window_pass": false,
+        "note": "UART submit is not CAN TX_DONE; no TEC/REC telemetry. No transaction sequence number; same-ID late reply attribution is limited."
+      }
+    },
+    {
+      "file": "/home/zjy/PICO/pico-firmware/logs/usb-can/20261102-215111-770079-bms-read.jsonl",
+      "start": "2026-11-02T21:51:11.770182+08:00",
+      "counts": {
+        "start": 1,
+        "serial_write_intent": 2,
+        "serial_submitted": 2,
+        "read_timeout": 1,
+        "summary": 1
+      },
+      "summary": {
+        "time": "2026-11-02T21:51:12.802582+08:00",
+        "elapsed_s": 1.032489,
+        "event": "summary",
+        "result": "READ_TIMEOUT",
+        "submitted": 1,
+        "matched": 0,
+        "invalid_replies": 0,
+        "replies_by_id": {
+          "0x100": 0,
+          "0x101": 0,
+          "0x102": 0,
+          "0x103": 0,
+          "0x105": 0
+        },
+        "reply_span_s": 0,
+        "stable_60s_window_pass": false,
+        "note": "UART submit is not CAN TX_DONE; no TEC/REC telemetry. No transaction sequence number; same-ID late reply attribution is limited."
+      }
+    },
+    {
+      "file": "/home/zjy/PICO/pico-firmware/logs/usb-can/20261102-215347-459523-bms-read.jsonl",
+      "start": "2026-11-02T21:53:47.459629+08:00",
+      "counts": {
+        "start": 1,
+        "serial_write_intent": 6,
+        "serial_submitted": 6,
+        "rx_raw": 10,
+        "can": 5,
+        "read_reply": 5,
+        "summary": 1
+      },
+      "summary": {
+        "time": "2026-11-02T21:53:48.868338+08:00",
+        "elapsed_s": 1.408818,
+        "event": "summary",
+        "result": "READ_WINDOW_OK",
+        "submitted": 5,
+        "matched": 5,
+        "invalid_replies": 0,
+        "replies_by_id": {
+          "0x100": 1,
+          "0x101": 1,
+          "0x102": 1,
+          "0x103": 1,
+          "0x105": 1
+        },
+        "reply_span_s": 0.881803,
+        "stable_60s_window_pass": false,
+        "note": "UART submit is not CAN TX_DONE; no TEC/REC telemetry. No transaction sequence number; same-ID late reply attribution is limited."
+      }
+    },
+    {
+      "file": "/home/zjy/PICO/pico-firmware/logs/usb-can/20261102-215716-964058-bms-read.jsonl",
+      "start": "2026-11-02T21:57:16.964144+08:00",
+      "counts": {
+        "start": 1,
+        "serial_write_intent": 2,
+        "serial_submitted": 2,
+        "read_timeout": 1,
+        "summary": 1
+      },
+      "summary": {
+        "time": "2026-11-02T21:57:17.998055+08:00",
+        "elapsed_s": 1.033986,
+        "event": "summary",
+        "result": "READ_TIMEOUT",
+        "submitted": 1,
+        "matched": 0,
+        "invalid_replies": 0,
+        "replies_by_id": {
+          "0x100": 0,
+          "0x101": 0,
+          "0x102": 0,
+          "0x103": 0,
+          "0x105": 0
+        },
+        "reply_span_s": 0,
+        "stable_60s_window_pass": false,
+        "note": "UART submit is not CAN TX_DONE; no TEC/REC telemetry. No transaction sequence number; same-ID late reply attribution is limited."
+      }
+    },
+    {
+      "file": "/home/zjy/PICO/pico-firmware/logs/usb-can/20261102-215753-356259-bms-read.jsonl",
+      "start": "2026-11-02T21:57:53.356361+08:00",
+      "counts": {
+        "start": 1,
+        "serial_write_intent": 2,
+        "serial_submitted": 2,
+        "read_timeout": 1,
+        "summary": 1
+      },
+      "summary": {
+        "time": "2026-11-02T21:57:54.390791+08:00",
+        "elapsed_s": 1.034519,
+        "event": "summary",
+        "result": "READ_TIMEOUT",
+        "submitted": 1,
+        "matched": 0,
+        "invalid_replies": 0,
+        "replies_by_id": {
+          "0x100": 0,
+          "0x101": 0,
+          "0x102": 0,
+          "0x103": 0,
+          "0x105": 0
+        },
+        "reply_span_s": 0,
+        "stable_60s_window_pass": false,
+        "note": "UART submit is not CAN TX_DONE; no TEC/REC telemetry. No transaction sequence number; same-ID late reply attribution is limited."
+      }
+    }
+  ]
+}

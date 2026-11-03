@@ -66,3 +66,15 @@ CSV 每行包含板端毫秒时间、事件、帧格式、ID、长度及原始�
 安装验证记录见 `PREPARATION_STATUS.md`。其中的软件检查与真实硬件验证分别记录，尚未上板的结果不会标成通过。
 
 官方参考：[STM32CubeIDE for VS Code](https://dev.st.com/stm32cube-docs/stm32cubeide-vscode/latest/en/index.html)、[STM32CubeG4](https://github.com/STMicroelectronics/STM32CubeG4)、[ST 的 FDCAN 回环说明](https://www.st.com/content/st_com/en/technical-documents/an5348-introduction-to-fdcan-peripherals-for-stm32-mcus-stmicroelectronics_asset/chunk-002-topic-an5348-implementation-can-fd.html)。
+
+
+## Linux：BMS + 电源板双设备500K只读镜像
+
+2026-11-03新增`Dual-Read-500K`：**两个设备共用FDCAN1总线**，不是双CAN通道。BMS使用标准RTR DLC0/CRC大端，电源板使用扩展帧/ID0xAA/状态大端。固定500K，交替轮询、分别统计，不改速、不写控制参数。
+
+```bash
+bash /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/scripts/build.sh Dual-Read-500K
+bash /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/scripts/test-host.sh
+```
+
+镜像目录：`/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Dual-Read-500K/`，内含`PICO_CAN.elf`、`PICO_CAN.hex`、`PICO_CAN.bin`。配置与待上板验收条件见`/home/zjy/PICO/pico-firmware/docs/device-read-validation.md`第9节。编译与主机测试通过不等于硬件通信通过。

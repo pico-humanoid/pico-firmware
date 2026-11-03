@@ -1,0 +1,49 @@
+# HEALTH,t_ms=45024,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=16,query_failures=60,tx_submit=16,tx_done=0,tx_rejected=165,tx_timeout=16,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=1,tec=248,rec=0,counters_ok=1
+# PICO device-read v1; READ ONLY; device=BMS bitrate=500000 power_id=0xAA rtr_dlc=0 crc_order=1 status_order=0
+# timestamps=MCU uptime ms; TX_DONE=software observation time; no automatic configuration writes
+t_ms,event,channel,format,kind,id,dlc,data
+1023,TX_SUBMIT,FDCAN1,STD,RTR,0x00000100,0,
+1323,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000100,0,
+1723,TX_SUBMIT,FDCAN1,STD,RTR,0x00000100,0,
+2023,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000100,0,
+2423,TX_SUBMIT,FDCAN1,STD,RTR,0x00000100,0,
+2723,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000100,0,
+3123,TX_SUBMIT,FDCAN1,STD,RTR,0x00000101,0,
+3423,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000101,0,
+3823,TX_SUBMIT,FDCAN1,STD,RTR,0x00000101,0,
+4123,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000101,0,
+4523,TX_SUBMIT,FDCAN1,STD,RTR,0x00000101,0,
+4823,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000101,0,
+# HEALTH,t_ms=5023,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=6,query_failures=2,tx_submit=6,tx_done=0,tx_rejected=0,tx_timeout=6,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=0,tec=176,rec=0,counters_ok=1
+5223,TX_SUBMIT,FDCAN1,STD,RTR,0x00000102,0,
+5523,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000102,0,
+5923,TX_SUBMIT,FDCAN1,STD,RTR,0x00000102,0,
+6223,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000102,0,
+6623,TX_SUBMIT,FDCAN1,STD,RTR,0x00000102,0,
+6923,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000102,0,
+7323,TX_SUBMIT,FDCAN1,STD,RTR,0x00000103,0,
+7623,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000103,0,
+8023,TX_SUBMIT,FDCAN1,STD,RTR,0x00000103,0,
+8323,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000103,0,
+8723,TX_SUBMIT,FDCAN1,STD,RTR,0x00000103,0,
+9023,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000103,0,
+9423,TX_SUBMIT,FDCAN1,STD,RTR,0x00000105,0,
+9723,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000105,0,
+# HEALTH,t_ms=10023,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=13,query_failures=4,tx_submit=13,tx_done=0,tx_rejected=0,tx_timeout=13,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=0,tec=232,rec=0,counters_ok=1
+10123,TX_SUBMIT,FDCAN1,STD,RTR,0x00000105,0,
+10423,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000105,0,
+10823,TX_SUBMIT,FDCAN1,STD,RTR,0x00000105,0,
+11123,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000105,0,
+11523,TX_SUBMIT,FDCAN1,STD,RTR,0x00000100,0,
+# BUS_OFF latched; inspect bitrate/wiring/termination; reset after correcting fault
+11823,TX_TIMEOUT,FDCAN1,STD,RTR,0x00000100,0,
+# HEALTH,t_ms=15023,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=16,query_failures=10,tx_submit=16,tx_done=0,tx_rejected=15,tx_timeout=16,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=1,tec=248,rec=0,counters_ok=1
+# HEALTH,t_ms=20023,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=16,query_failures=18,tx_submit=16,tx_done=0,tx_rejected=40,tx_timeout=16,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=1,tec=248,rec=0,counters_ok=1
+# HEALTH,t_ms=25023,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=16,query_failures=27,tx_submit=16,tx_done=0,tx_rejected=65,tx_timeout=16,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=1,tec=248,rec=0,counters_ok=1
+# HEALTH,t_ms=30023,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=16,query_failures=35,tx_submit=16,tx_done=0,tx_rejected=90,tx_timeout=16,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=1,tec=248,rec=0,counters_ok=1
+# HEALTH,t_ms=35023,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=16,query_failures=43,tx_submit=16,tx_done=0,tx_rejected=115,tx_timeout=16,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=1,tec=248,rec=0,counters_ok=1
+# HEALTH,t_ms=40023,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=16,query_failures=52,tx_submit=16,tx_done=0,tx_rejected=140,tx_timeout=16,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=1,tec=248,rec=0,counters_ok=1
+# HEALTH,t_ms=45023,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=16,query_failures=60,tx_submit=16,tx_done=0,tx_rejected=165,tx_timeout=16,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=1,tec=248,rec=0,counters_ok=1
+# HEALTH,t_ms=50023,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=16,query_failures=68,tx_submit=16,tx_done=0,tx_rejected=190,tx_timeout=16,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=1,tec=248,rec=0,counters_ok=1
+# HEALTH,t_ms=55023,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=16,query_failures=77,tx_submit=16,tx_done=0,tx_rejected=215,tx_timeout=16,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=1,tec=248,rec=0,counters_ok=1
+# HEALTH,t_ms=60023,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=16,query_failures=85,tx_submit=16,tx_done=0,tx_rejected=240,tx_timeout=16,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=1,tec=248,rec=0,counters_ok=1

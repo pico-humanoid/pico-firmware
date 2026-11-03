@@ -1,0 +1,102 @@
+Build type: DebugPreset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/cmake/gcc-arm-none-eabi.cmake"
+  PICO_APP="PowerBaud"
+  PICO_DEVICE_BITRATE="1000000"
+  PICO_POWER_BAUD_TARGET="500000"
+  PICO_POWER_ID="0xAA"
+  PICO_POWER_STATUS_ENDIAN="BIG"
+
+
+-- GATED baud test: 1000000 -> 500000; SWD ARM+COMMIT required; timeout_override=OFF; force_operator=OFF; baseline_ms=60000
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Power-Baud-1M-to-500K
+[1/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/gpio.c.obj
+[2/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/fdcan.c.obj
+[3/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/usart.c.obj
+[4/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/main.c.obj
+[5/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/sysmem.c.obj
+[6/33] Building ASM object CMakeFiles/PICO_CAN.dir/startup_stm32g474xx.s.obj
+[7/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/syscalls.c.obj
+[8/33] Building C object CMakeFiles/PICO_CAN.dir/App/protocol/bms_protocol.c.obj
+[9/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/stm32g4xx_it.c.obj
+[10/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/stm32g4xx_hal_msp.c.obj
+[11/33] Building C object CMakeFiles/PICO_CAN.dir/App/protocol/power_protocol.c.obj
+[12/33] Building C object CMakeFiles/PICO_CAN.dir/App/device_reader.c.obj
+[13/33] Building C object CMakeFiles/PICO_CAN.dir/App/device_read_app.c.obj
+[14/33] Building C object CMakeFiles/PICO_CAN.dir/App/power_baud_test.c.obj
+[15/33] Building C object CMakeFiles/PICO_CAN.dir/App/transport/can_transport.c.obj
+[16/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g4xx.c.obj
+[17/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c.obj
+[18/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc_ex.c.obj
+[19/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc.c.obj
+[20/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_fdcan.c.obj
+[21/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash.c.obj
+[22/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ex.c.obj
+[23/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ramfunc.c.obj
+[24/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.c.obj
+[25/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_exti.c.obj
+[26/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr.c.obj
+[27/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma_ex.c.obj
+[28/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma.c.obj
+[29/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_cortex.c.obj
+[30/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr_ex.c.obj
+[31/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.c.obj
+[32/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.c.obj
+[33/33] Linking C executable PICO_CAN.elf
+Memory region         Used Size  Region Size  %age Used
+             RAM:        6264 B       128 KB      4.78%
+           FLASH:       38020 B       512 KB      7.25%
+Build type: DebugPreset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/cmake/gcc-arm-none-eabi.cmake"
+  PICO_APP="PowerBaud"
+  PICO_DEVICE_BITRATE="500000"
+  PICO_POWER_BAUD_TARGET="1000000"
+  PICO_POWER_ID="0xAA"
+  PICO_POWER_STATUS_ENDIAN="BIG"
+
+
+-- GATED baud test: 500000 -> 1000000; SWD ARM+COMMIT required; timeout_override=OFF; force_operator=OFF; baseline_ms=60000
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Power-Baud-500K-to-1M
+[1/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/gpio.c.obj
+[2/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/main.c.obj
+[3/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/usart.c.obj
+[4/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/fdcan.c.obj
+[5/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/sysmem.c.obj
+[6/33] Building ASM object CMakeFiles/PICO_CAN.dir/startup_stm32g474xx.s.obj
+[7/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/syscalls.c.obj
+[8/33] Building C object CMakeFiles/PICO_CAN.dir/App/protocol/bms_protocol.c.obj
+[9/33] Building C object CMakeFiles/PICO_CAN.dir/App/protocol/power_protocol.c.obj
+[10/33] Building C object CMakeFiles/PICO_CAN.dir/App/device_reader.c.obj
+[11/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/stm32g4xx_hal_msp.c.obj
+[12/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/stm32g4xx_it.c.obj
+[13/33] Building C object CMakeFiles/PICO_CAN.dir/App/transport/can_transport.c.obj
+[14/33] Building C object CMakeFiles/PICO_CAN.dir/App/device_read_app.c.obj
+[15/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g4xx.c.obj
+[16/33] Building C object CMakeFiles/PICO_CAN.dir/App/power_baud_test.c.obj
+[17/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c.obj
+[18/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_fdcan.c.obj
+[19/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc.c.obj
+[20/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc_ex.c.obj
+[21/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash.c.obj
+[22/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ramfunc.c.obj
+[23/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.c.obj
+[24/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ex.c.obj
+[25/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_exti.c.obj
+[26/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr.c.obj
+[27/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma_ex.c.obj
+[28/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma.c.obj
+[29/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr_ex.c.obj
+[30/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_cortex.c.obj
+[31/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.c.obj
+[32/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.c.obj
+[33/33] Linking C executable PICO_CAN.elf
+Memory region         Used Size  Region Size  %age Used
+             RAM:        6264 B       128 KB      4.78%
+           FLASH:       38020 B       512 KB      7.25%

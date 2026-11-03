@@ -1,0 +1,77 @@
+{"time": "2026-11-03T00:31:14.351529+08:00", "elapsed_s": 8.7e-05, "event": "start", "can_baud": 500000, "cycles": 1, "write_500k": false, "port": "/dev/ttyUSB0", "note": "UART submit is NOT a CAN Tx completion"}
+{"time": "2026-11-03T00:31:14.352306+08:00", "elapsed_s": 0.000851, "event": "serial_write_intent", "purpose": "adapter_configuration_only", "raw": "aa 55 12 03 02 00 00 00 00 00 00 00 00 00 01 00 00 00 00 18"}
+{"time": "2026-11-03T00:31:14.352425+08:00", "elapsed_s": 0.000965, "event": "serial_submitted", "purpose": "adapter_configuration_only", "raw": "aa 55 12 03 02 00 00 00 00 00 00 00 00 00 01 00 00 00 00 18"}
+{"time": "2026-11-03T00:31:14.674793+08:00", "elapsed_s": 0.323352, "event": "serial_write_intent", "purpose": "version", "raw": "aa e8 aa 00 00 05 00 00 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:14.674983+08:00", "elapsed_s": 0.323529, "event": "serial_submitted", "purpose": "version", "raw": "aa e8 aa 00 00 05 00 00 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:14.677892+08:00", "elapsed_s": 0.32645, "event": "rx_raw", "raw": "aa"}
+{"time": "2026-11-03T00:31:14.677988+08:00", "elapsed_s": 0.326529, "event": "rx_raw", "raw": "e8 00 00 aa 05 56 31 2e 30 38 00 00 00 55"}
+{"time": "2026-11-03T00:31:14.678028+08:00", "elapsed_s": 0.326567, "event": "can", "id": "0x05AA0000", "extended": true, "remote": false, "dlc": 8, "data": "56 31 2e 30 38 00 00 00"}
+{"time": "2026-11-03T00:31:14.678067+08:00", "elapsed_s": 0.326604, "event": "read_reply", "cycle": 1, "query": "version", "version": "V1.08"}
+{"time": "2026-11-03T00:31:14.899580+08:00", "elapsed_s": 0.548157, "event": "serial_write_intent", "purpose": "status03", "raw": "aa e8 aa 00 00 02 00 00 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:14.899835+08:00", "elapsed_s": 0.548382, "event": "serial_submitted", "purpose": "status03", "raw": "aa e8 aa 00 00 02 00 00 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:14.902592+08:00", "elapsed_s": 0.551143, "event": "rx_raw", "raw": "aa"}
+{"time": "2026-11-03T00:31:14.902681+08:00", "elapsed_s": 0.551223, "event": "rx_raw", "raw": "e8 00 00 aa 03 11 ef 11 d9 27 d0 00 00 55"}
+{"time": "2026-11-03T00:31:14.902733+08:00", "elapsed_s": 0.551277, "event": "can", "id": "0x03AA0000", "extended": true, "remote": false, "dlc": 8, "data": "11 ef 11 d9 27 d0 00 00"}
+{"time": "2026-11-03T00:31:14.902783+08:00", "elapsed_s": 0.551323, "event": "read_reply", "cycle": 1, "query": "status03", "status_byte_order": "UNCONFIRMED", "raw": "11 ef 11 d9 27 d0 00 00", "temperature_c": 39, "fault_switch_bytes_raw": "d0 00 00", "big_candidate": {"battery_v": 45.91, "motor_v": 45.69}, "little_candidate": {"battery_v": 612.01, "motor_v": 555.69}}
+{"time": "2026-11-03T00:31:15.124160+08:00", "elapsed_s": 0.772731, "event": "serial_write_intent", "purpose": "status04", "raw": "aa e8 aa 00 00 02 ca 00 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:15.124407+08:00", "elapsed_s": 0.772953, "event": "serial_submitted", "purpose": "status04", "raw": "aa e8 aa 00 00 02 ca 00 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:15.127298+08:00", "elapsed_s": 0.775845, "event": "rx_raw", "raw": "aa"}
+{"time": "2026-11-03T00:31:15.127359+08:00", "elapsed_s": 0.775897, "event": "rx_raw", "raw": "e8 00 00 aa 04 00 00 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:15.127387+08:00", "elapsed_s": 0.775923, "event": "can", "id": "0x04AA0000", "extended": true, "remote": false, "dlc": 8, "data": "00 00 00 00 00 00 00 00"}
+{"time": "2026-11-03T00:31:15.127417+08:00", "elapsed_s": 0.775956, "event": "read_reply", "cycle": 1, "query": "status04", "status_byte_order": "UNCONFIRMED", "raw": "00 00 00 00 00 00 00 00", "big_candidate_A_AL_AR_LL_LR": [0.0, 0.0, 0.0, 0.0], "little_candidate_A_AL_AR_LL_LR": [0.0, 0.0, 0.0, 0.0]}
+{"time": "2026-11-03T00:31:15.349077+08:00", "elapsed_s": 0.997646, "event": "serial_write_intent", "purpose": "Can_baud", "raw": "aa e8 aa 00 00 07 01 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:15.349329+08:00", "elapsed_s": 0.997871, "event": "serial_submitted", "purpose": "Can_baud", "raw": "aa e8 aa 00 00 07 01 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:15.352206+08:00", "elapsed_s": 1.000763, "event": "rx_raw", "raw": "aa"}
+{"time": "2026-11-03T00:31:15.352317+08:00", "elapsed_s": 1.000856, "event": "rx_raw", "raw": "e8 00 00 aa 07 01 60 00 00 02 01 00 03 55"}
+{"time": "2026-11-03T00:31:15.352354+08:00", "elapsed_s": 1.000893, "event": "can", "id": "0x07AA0000", "extended": true, "remote": false, "dlc": 8, "data": "01 60 00 00 02 01 00 03"}
+{"time": "2026-11-03T00:31:15.352392+08:00", "elapsed_s": 1.000928, "event": "read_reply", "cycle": 1, "query": "Can_baud", "index": "0x6001", "name": "Can_baud", "raw_value": "02 01 00 03", "value_u32_le": 50331906, "value_u8": 2, "upper_bytes_nonzero": true}
+{"time": "2026-11-03T00:31:15.573825+08:00", "elapsed_s": 1.222396, "event": "serial_write_intent", "purpose": "Com_baud", "raw": "aa e8 aa 00 00 07 02 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:15.574134+08:00", "elapsed_s": 1.222682, "event": "serial_submitted", "purpose": "Com_baud", "raw": "aa e8 aa 00 00 07 02 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:15.577000+08:00", "elapsed_s": 1.225566, "event": "rx_raw", "raw": "aa"}
+{"time": "2026-11-03T00:31:15.577154+08:00", "elapsed_s": 1.225712, "event": "rx_raw", "raw": "e8 00 00 aa 07 02 60 00 00 01 00 03 01 55"}
+{"time": "2026-11-03T00:31:15.577224+08:00", "elapsed_s": 1.225766, "event": "can", "id": "0x07AA0000", "extended": true, "remote": false, "dlc": 8, "data": "02 60 00 00 01 00 03 01"}
+{"time": "2026-11-03T00:31:15.577286+08:00", "elapsed_s": 1.225834, "event": "read_reply", "cycle": 1, "query": "Com_baud", "index": "0x6002", "name": "Com_baud", "raw_value": "01 00 03 01", "value_u32_le": 16973825, "value_u8": 1, "upper_bytes_nonzero": true}
+{"time": "2026-11-03T00:31:15.800221+08:00", "elapsed_s": 1.448806, "event": "serial_write_intent", "purpose": "remoteCtrl", "raw": "aa e8 aa 00 00 07 04 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:15.800573+08:00", "elapsed_s": 1.449125, "event": "serial_submitted", "purpose": "remoteCtrl", "raw": "aa e8 aa 00 00 07 04 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:15.803297+08:00", "elapsed_s": 1.451872, "event": "rx_raw", "raw": "aa"}
+{"time": "2026-11-03T00:31:15.803475+08:00", "elapsed_s": 1.452026, "event": "rx_raw", "raw": "e8 00 00 aa 07 04 60 00 00 00 03 01 00 55"}
+{"time": "2026-11-03T00:31:15.803549+08:00", "elapsed_s": 1.452093, "event": "can", "id": "0x07AA0000", "extended": true, "remote": false, "dlc": 8, "data": "04 60 00 00 00 03 01 00"}
+{"time": "2026-11-03T00:31:15.803627+08:00", "elapsed_s": 1.452173, "event": "read_reply", "cycle": 1, "query": "remoteCtrl", "index": "0x6004", "name": "remoteCtrl", "raw_value": "00 03 01 00", "value_u32_le": 66304, "value_u8": 0, "upper_bytes_nonzero": true}
+{"time": "2026-11-03T00:31:16.025499+08:00", "elapsed_s": 1.674058, "event": "serial_write_intent", "purpose": "fanspeedCtrl", "raw": "aa e8 aa 00 00 07 05 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:16.025674+08:00", "elapsed_s": 1.674214, "event": "serial_submitted", "purpose": "fanspeedCtrl", "raw": "aa e8 aa 00 00 07 05 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:16.028559+08:00", "elapsed_s": 1.677113, "event": "rx_raw", "raw": "aa"}
+{"time": "2026-11-03T00:31:16.028656+08:00", "elapsed_s": 1.677198, "event": "rx_raw", "raw": "e8 00 00 aa 07 05 60 00 00 03 01 00 00 55"}
+{"time": "2026-11-03T00:31:16.028699+08:00", "elapsed_s": 1.677239, "event": "can", "id": "0x07AA0000", "extended": true, "remote": false, "dlc": 8, "data": "05 60 00 00 03 01 00 00"}
+{"time": "2026-11-03T00:31:16.028742+08:00", "elapsed_s": 1.677281, "event": "read_reply", "cycle": 1, "query": "fanspeedCtrl", "index": "0x6005", "name": "fanspeedCtrl", "raw_value": "03 01 00 00", "value_u32_le": 259, "value_u8": 3, "upper_bytes_nonzero": true}
+{"time": "2026-11-03T00:31:16.250349+08:00", "elapsed_s": 1.898932, "event": "serial_write_intent", "purpose": "POWER_ID", "raw": "aa e8 aa 00 00 07 06 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:16.250675+08:00", "elapsed_s": 1.899232, "event": "serial_submitted", "purpose": "POWER_ID", "raw": "aa e8 aa 00 00 07 06 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:16.253574+08:00", "elapsed_s": 1.90214, "event": "rx_raw", "raw": "aa"}
+{"time": "2026-11-03T00:31:16.253767+08:00", "elapsed_s": 1.902327, "event": "rx_raw", "raw": "e8 00 00 aa 07 06 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:16.253876+08:00", "elapsed_s": 1.902427, "event": "can", "id": "0x07AA0000", "extended": true, "remote": false, "dlc": 8, "data": "06 60 00 00 00 00 00 00"}
+{"time": "2026-11-03T00:31:16.253954+08:00", "elapsed_s": 1.902503, "event": "read_reply", "cycle": 1, "query": "POWER_ID", "index": "0x6006", "name": "POWER_ID", "raw_value": "00 00 00 00", "value_u32_le": 0, "value_u8": 0, "upper_bytes_nonzero": false}
+{"time": "2026-11-03T00:31:16.475691+08:00", "elapsed_s": 2.124273, "event": "serial_write_intent", "purpose": "soundEffect", "raw": "aa e8 aa 00 00 07 07 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:16.476034+08:00", "elapsed_s": 2.124586, "event": "serial_submitted", "purpose": "soundEffect", "raw": "aa e8 aa 00 00 07 07 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:16.478933+08:00", "elapsed_s": 2.127509, "event": "rx_raw", "raw": "aa"}
+{"time": "2026-11-03T00:31:16.479124+08:00", "elapsed_s": 2.127678, "event": "rx_raw", "raw": "e8 00 00 aa 07 07 60 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:16.479227+08:00", "elapsed_s": 2.127776, "event": "can", "id": "0x07AA0000", "extended": true, "remote": false, "dlc": 8, "data": "07 60 00 00 00 00 00 00"}
+{"time": "2026-11-03T00:31:16.479320+08:00", "elapsed_s": 2.127871, "event": "read_reply", "cycle": 1, "query": "soundEffect", "index": "0x6007", "name": "soundEffect", "raw_value": "00 00 00 00", "value_u32_le": 0, "value_u8": 0, "upper_bytes_nonzero": false}
+{"time": "2026-11-03T00:31:16.701003+08:00", "elapsed_s": 2.349577, "event": "serial_write_intent", "purpose": "currocpt", "raw": "aa e8 aa 00 00 07 01 80 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:16.701264+08:00", "elapsed_s": 2.349815, "event": "serial_submitted", "purpose": "currocpt", "raw": "aa e8 aa 00 00 07 01 80 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:16.704111+08:00", "elapsed_s": 2.352663, "event": "rx_raw", "raw": "aa"}
+{"time": "2026-11-03T00:31:16.704195+08:00", "elapsed_s": 2.352735, "event": "rx_raw", "raw": "e8 00 00 aa 07 01 80 00 00 00 00 a0 42 55"}
+{"time": "2026-11-03T00:31:16.704235+08:00", "elapsed_s": 2.352774, "event": "can", "id": "0x07AA0000", "extended": true, "remote": false, "dlc": 8, "data": "01 80 00 00 00 00 a0 42"}
+{"time": "2026-11-03T00:31:16.704277+08:00", "elapsed_s": 2.352816, "event": "read_reply", "cycle": 1, "query": "currocpt", "index": "0x8001", "name": "currocpt", "raw_value": "00 00 a0 42", "value_u32_le": 1117782016, "value_float32_le_candidate": 80.0}
+{"time": "2026-11-03T00:31:16.926286+08:00", "elapsed_s": 2.574876, "event": "serial_write_intent", "purpose": "sdT", "raw": "aa e8 aa 00 00 07 03 80 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:16.926626+08:00", "elapsed_s": 2.575191, "event": "serial_submitted", "purpose": "sdT", "raw": "aa e8 aa 00 00 07 03 80 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:16.929563+08:00", "elapsed_s": 2.578132, "event": "rx_raw", "raw": "aa"}
+{"time": "2026-11-03T00:31:16.929774+08:00", "elapsed_s": 2.578337, "event": "rx_raw", "raw": "e8 00 00 aa 07 03 80 00 00 00 00 5c 42 55"}
+{"time": "2026-11-03T00:31:16.929888+08:00", "elapsed_s": 2.578445, "event": "can", "id": "0x07AA0000", "extended": true, "remote": false, "dlc": 8, "data": "03 80 00 00 00 00 5c 42"}
+{"time": "2026-11-03T00:31:16.929993+08:00", "elapsed_s": 2.578542, "event": "read_reply", "cycle": 1, "query": "sdT", "index": "0x8003", "name": "sdT", "raw_value": "00 00 5c 42", "value_u32_le": 1113325568, "value_float32_le_candidate": 55.0}
+{"time": "2026-11-03T00:31:17.151919+08:00", "elapsed_s": 2.800495, "event": "serial_write_intent", "purpose": "arTime", "raw": "aa e8 aa 00 00 07 04 80 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:17.152199+08:00", "elapsed_s": 2.800748, "event": "serial_submitted", "purpose": "arTime", "raw": "aa e8 aa 00 00 07 04 80 00 00 00 00 00 00 55"}
+{"time": "2026-11-03T00:31:17.154977+08:00", "elapsed_s": 2.803543, "event": "rx_raw", "raw": "aa"}
+{"time": "2026-11-03T00:31:17.155080+08:00", "elapsed_s": 2.803625, "event": "rx_raw", "raw": "e8 00 00 aa 07 04 80 00 00 00 00 a0 40 55"}
+{"time": "2026-11-03T00:31:17.155131+08:00", "elapsed_s": 2.803674, "event": "can", "id": "0x07AA0000", "extended": true, "remote": false, "dlc": 8, "data": "04 80 00 00 00 00 a0 40"}
+{"time": "2026-11-03T00:31:17.155189+08:00", "elapsed_s": 2.803729, "event": "read_reply", "cycle": 1, "query": "arTime", "index": "0x8004", "name": "arTime", "raw_value": "00 00 a0 40", "value_u32_le": 1084227584, "value_float32_le_candidate": 5.0}
+{"time": "2026-11-03T00:31:17.356664+08:00", "elapsed_s": 3.005232, "event": "read_window", "submitted": 12, "matched": 12, "reply_span_s": 2.47712, "can_baud_codes": [2], "note": "No controller error counters available through this serial protocol"}
+{"time": "2026-11-03T00:31:17.356814+08:00", "elapsed_s": 3.005359, "event": "summary", "result": "READ_WINDOW_OK", "submitted": 12, "matched": 12, "can_baud": 500000, "reply_span_s": 2.47712}

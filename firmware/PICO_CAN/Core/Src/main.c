@@ -24,7 +24,13 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#if defined(PICO_PIN_LOOP_TEST)
+#include "pin_loop_test.h"
+#elif defined(PICO_DEVICE_READ)
+#include "device_read_app.h"
+#else
 #include "can_bringup.h"
+#endif
 
 /* USER CODE END Includes */
 
@@ -92,7 +98,13 @@ int main(void)
   MX_LPUART1_UART_Init();
   MX_FDCAN1_Init();
   /* USER CODE BEGIN 2 */
+#if defined(PICO_PIN_LOOP_TEST)
+  PinLoopTest_Init(&hlpuart1);
+#elif defined(PICO_DEVICE_READ)
+  DeviceRead_Init(&hfdcan1, &hlpuart1);
+#else
   CanTest_Init(&hfdcan1, &hlpuart1);
+#endif
 
   /* USER CODE END 2 */
 
@@ -103,7 +115,13 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+#if defined(PICO_PIN_LOOP_TEST)
+    PinLoopTest_Step();
+#elif defined(PICO_DEVICE_READ)
+    DeviceRead_Step();
+#else
     CanTest_Step();
+#endif
   }
   /* USER CODE END 3 */
 }
