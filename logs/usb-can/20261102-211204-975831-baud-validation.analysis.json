@@ -1,0 +1,201 @@
+{
+  "source_log": "/home/zjy/PICO/pico-firmware/logs/usb-can/20261102-211204-975831-baud-validation.jsonl",
+  "baseline_log": "/home/zjy/PICO/pico-firmware/logs/usb-can/20261102-201551-909828-baud-validation.jsonl",
+  "result": "PASS_500K_60S_READ_WINDOW",
+  "first_reply_time": "2026-11-02T21:12:05.303322+08:00",
+  "last_reply_time": "2026-11-02T21:13:15.216921+08:00",
+  "reply_span_s": 69.913603,
+  "requests": 312,
+  "matched": 312,
+  "raw_rx_independently_reparsed_frames": 312,
+  "matched_reply_evidence_checked": 312,
+  "read_replies_by_query": {
+    "version": 26,
+    "status03": 26,
+    "status04": 26,
+    "Can_baud": 26,
+    "Com_baud": 26,
+    "remoteCtrl": 26,
+    "fanspeedCtrl": 26,
+    "POWER_ID": 26,
+    "soundEffect": 26,
+    "currocpt": 26,
+    "sdT": 26,
+    "arTime": 26
+  },
+  "tx_can_types": {
+    "0x05": 26,
+    "0x02": 52,
+    "0x07": 234
+  },
+  "board_parameter_writes": 0,
+  "control_frames": 0,
+  "event_counts": {
+    "start": 1,
+    "serial_write_intent": 313,
+    "serial_submitted": 313,
+    "rx_raw": 618,
+    "can": 312,
+    "read_reply": 312,
+    "read_window": 1,
+    "summary": 1
+  },
+  "can_baud_codes": [
+    2
+  ],
+  "can_baud_read_count": 26,
+  "read_timeouts": [],
+  "completed_cycles": 26,
+  "host_observed_reply_latency_ms": {
+    "min": 0.14,
+    "mean": 2.960087,
+    "max": 7.205
+  },
+  "parameter_comparison": {
+    "version": {
+      "baseline_1m": [
+        "V1.08"
+      ],
+      "target_500k": [
+        "V1.08"
+      ],
+      "same_as_1m_baseline": true
+    },
+    "Can_baud": {
+      "baseline_1m": [
+        1
+      ],
+      "target_500k": [
+        2
+      ],
+      "same_as_1m_baseline": false
+    },
+    "Com_baud": {
+      "baseline_1m": [
+        1
+      ],
+      "target_500k": [
+        1
+      ],
+      "same_as_1m_baseline": true
+    },
+    "remoteCtrl": {
+      "baseline_1m": [
+        0
+      ],
+      "target_500k": [
+        0
+      ],
+      "same_as_1m_baseline": true
+    },
+    "fanspeedCtrl": {
+      "baseline_1m": [
+        3
+      ],
+      "target_500k": [
+        3
+      ],
+      "same_as_1m_baseline": true
+    },
+    "POWER_ID": {
+      "baseline_1m": [
+        0
+      ],
+      "target_500k": [
+        0
+      ],
+      "same_as_1m_baseline": true
+    },
+    "soundEffect": {
+      "baseline_1m": [
+        0
+      ],
+      "target_500k": [
+        0
+      ],
+      "same_as_1m_baseline": true
+    },
+    "currocpt": {
+      "baseline_1m": [
+        80.0
+      ],
+      "target_500k": [
+        80.0
+      ],
+      "same_as_1m_baseline": true
+    },
+    "sdT": {
+      "baseline_1m": [
+        55.0
+      ],
+      "target_500k": [
+        55.0
+      ],
+      "same_as_1m_baseline": true
+    },
+    "arTime": {
+      "baseline_1m": [
+        5.0
+      ],
+      "target_500k": [
+        5.0
+      ],
+      "same_as_1m_baseline": true
+    }
+  },
+  "temperature_c": {
+    "min": 44,
+    "max": 44
+  },
+  "status_big_endian_candidates": {
+    "battery_v": {
+      "min": 45.93,
+      "max": 45.97
+    },
+    "motor_v": {
+      "min": 45.71,
+      "max": 45.73
+    },
+    "currents_A_AL_AR_LL_LR": [
+      {
+        "min": 0.0,
+        "max": 0.0
+      },
+      {
+        "min": 0.0,
+        "max": 0.0
+      },
+      {
+        "min": 0.0,
+        "max": 0.0
+      },
+      {
+        "min": 0.0,
+        "max": 0.01
+      }
+    ]
+  },
+  "status03_fault_switch_bytes_raw": [
+    "d0 00 00"
+  ],
+  "limitations": [
+    "USB-CAN only; G474 not validated",
+    "No controller TEC/REC or TX_DONE telemetry",
+    "Status byte order candidates retained; not independently proven by this test",
+    "POWER_ID low byte is 0 while response source AA; known anomaly retained",
+    "uint8 parameters interpreted using low byte; nonzero upper bytes retained in raw log",
+    "Not a long-term aging test or second independent power-cycle retention test"
+  ],
+  "script_summary": {
+    "time": "2026-11-02T21:13:15.418249+08:00",
+    "elapsed_s": 70.442391,
+    "event": "summary",
+    "result": "READ_WINDOW_OK",
+    "submitted": 312,
+    "matched": 312,
+    "can_baud": 500000,
+    "reply_span_s": 69.913599
+  },
+  "source_sha256": "cea78ec64e33229a82487e2d28e41cd43d9287655715dca30a5ab48eefe7c40c",
+  "max_adjacent_reply_gap_s": 0.228859
+}

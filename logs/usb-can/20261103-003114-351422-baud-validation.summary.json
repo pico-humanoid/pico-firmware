@@ -1,0 +1,16 @@
+{
+  "source": "/home/zjy/PICO/pico-firmware/logs/usb-can/20261103-003114-351422-baud-validation.jsonl",
+  "source_sha256": "f271ed1ebdab5cb8b672e324b5b9a8f0b68e75e2fc93e26a93e72c0ec6e6d1df",
+  "result": "READ_WINDOW_OK_1_CYCLE",
+  "can_baud": 500000,
+  "cycles": 1,
+  "submitted": 12,
+  "matched": 12,
+  "can_baud_codes": [
+    2
+  ],
+  "version": "V1.08",
+  "common_ground": "none",
+  "write_500k": false,
+  "note": "USB-CAN read with no common ground; proves power board is 500K and bus/H-L are fine. One cycle only, not a 60s stability window."
+}

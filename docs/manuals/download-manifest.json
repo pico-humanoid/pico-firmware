@@ -1,0 +1,31 @@
+{
+  "downloaded_at": "2026-11-01T02:57:04.839585+00:00",
+  "files": [
+    {
+      "file": "电源板使用说明V1.5_20260507.pdf",
+      "source_url": "https://api.github.com/repos/pico-humanoid/pico-electronics/contents/datasheet/%E7%94%B5%E6%BA%90%E6%9D%BF%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8EV1.5_20260507.pdf?ref=main",
+      "sha256": "181f8fc5c1e8ea53923fe887f5f4f9a57a984d82376ee32dd0024fe7cc96ac7d",
+      "bytes": 999350,
+      "matches_previous_protocol": true
+    },
+    {
+      "file": "嘉佰达CAN通讯协议定义.docx",
+      "source_url": "https://api.github.com/repos/pico-humanoid/pico-electronics/contents/datasheet/%E5%98%89%E4%BD%B0%E8%BE%BECAN%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE%E5%AE%9A%E4%B9%89.docx?ref=main",
+      "sha256": "d49b1f708cb55812b13b781d0abd77f44c5afa96d0bd45376287c947b4983034",
+      "bytes": 35280,
+      "matches_previous_protocol": true
+    },
+    {
+      "file": "USB-CAN-A二次开发协议.html",
+      "source_url": "https://www.waveshare.net/wiki/%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91%E2%80%94%E4%B8%B2%E8%A1%8C%E8%BD%AC%E6%8D%A2CAN%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%AE%9A%E4%B9%89",
+      "sha256": "96a6cb507d84884bf3499fea76fec78e2b7940889147fdf36eebe7232e1ed3d3",
+      "bytes": 35851
+    },
+    {
+      "file": "USB-CAN-A官方使用说明.html",
+      "source_url": "https://www.waveshare.net/wiki/USB-CAN-A",
+      "sha256": "72fb2d80b8059e873d132eea165bdecd8ca460a26d370adbeae37b832815c0d4",
+      "bytes": 84273
+    }
+  ]
+}

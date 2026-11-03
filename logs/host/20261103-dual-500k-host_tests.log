@@ -1,0 +1,47 @@
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Host-Tests
+[1/12] Building C object CMakeFiles/test_app_power_big.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/device_read_app.c.o
+[2/12] Building C object CMakeFiles/test_app_bms.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/device_read_app.c.o
+[3/12] Building C object CMakeFiles/test_app_baud.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/device_read_app.c.o
+[4/12] Building C object CMakeFiles/test_app.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/device_read_app.c.o
+[5/12] Linking C executable test_app_bms
+[6/12] Linking C executable test_app_power_big
+[7/12] Linking C executable test_app_baud
+[8/12] Linking C executable test_app
+[9/12] Building C object CMakeFiles/test_app_dual.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/device_read_app.c.o
+[10/12] Building C object CMakeFiles/test_dual_reader.dir/test_dual_reader.c.o
+[11/12] Linking C executable test_dual_reader
+[12/12] Linking C executable test_app_dual
+Internal ctest changing into directory: /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Host-Tests
+Test project /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Host-Tests
+      Start  1: device_protocols_and_scheduler
+ 1/13 Test  #1: device_protocols_and_scheduler .......   Passed    0.00 sec
+      Start  2: can_transport_fake_hal
+ 2/13 Test  #2: can_transport_fake_hal ...............   Passed    0.00 sec
+      Start  3: device_application_fake_io
+ 3/13 Test  #3: device_application_fake_io ...........   Passed    0.00 sec
+      Start  4: bms_application_fake_io
+ 4/13 Test  #4: bms_application_fake_io ..............   Passed    0.00 sec
+      Start  5: board_log_capture_pty
+ 5/13 Test  #5: board_log_capture_pty ................   Passed    0.78 sec
+      Start  6: power_big_application_fake_io
+ 6/13 Test  #6: power_big_application_fake_io ........   Passed    0.00 sec
+      Start  7: power_baud_gate_forward
+ 7/13 Test  #7: power_baud_gate_forward ..............   Passed    0.00 sec
+      Start  8: power_baud_gate_reverse
+ 8/13 Test  #8: power_baud_gate_reverse ..............   Passed    0.00 sec
+      Start  9: power_baud_force_operator_one_shot
+ 9/13 Test  #9: power_baud_force_operator_one_shot ...   Passed    0.00 sec
+      Start 10: power_baud_application_fake_io
+10/13 Test #10: power_baud_application_fake_io .......   Passed    0.00 sec
+      Start 11: power_capture_analysis_synthetic
+11/13 Test #11: power_capture_analysis_synthetic .....   Passed    0.09 sec
+      Start 12: dual_reader_shared_bus_scheduler
+12/13 Test #12: dual_reader_shared_bus_scheduler .....   Passed    0.00 sec
+      Start 13: dual_application_fake_io
+13/13 Test #13: dual_application_fake_io .............   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 13
+
+Total Test time (real) =   0.89 sec

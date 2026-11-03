@@ -54,6 +54,12 @@ PA15 用于 FDCAN3 后，调试采用 SWD，保留 PA13、PA14。PA11、PA12 同
 
 收发器的 CANH、CANL 分别连接 USB-CAN 对应端子，信号地连接按适配器说明处理。总线主干两端各设置一个 **120 Ω** 终端电阻，模块已有的终端电阻也计入；接入设备时核对是否重复端接。
 
+![G474 ↔ SN65HVD230 ↔ BMS CAN 接线图](NUCLEO-G474RE_CAN_wiring.png)
+
+[PNG 原图](NUCLEO-G474RE_CAN_wiring.png) · [PDF](NUCLEO-G474RE_CAN_wiring.pdf) · [UM2505 板卡手册（本地）](../manuals/UM2505_RS.pdf) · [ST 官方 NUCLEO-G474RE 文档页](https://www.st.com/en/evaluation-tools/nucleo-g474re.html#documentation) · [MB1367-G474RE-C05 板级原理图入口（stmcu.jp）](https://www.stmcu.jp/design/hwdevelop/other/97314/)
+
+按 UM2505 Table 16，CN10-12=PA12、CN10-14=PA11；CN1 是 ST-LINK 的 USB，不是目标 PA11/PA12。若使用自制板或不同批次，仍以官方 MB1367 原理图核对板上器件与焊桥。
+
 以上为当前验证接线。后续增加独立通道或采用主板时，需重新核对引脚复用、收发器供电与主板连接，不能直接套用这组排针位置。
 
 串口参数、测试报文和采集步骤见[CAN 验证操作](../can-bringup.md)，设备协议与分路见[通信方案](../communication/README.md)。主板设计按本页已有引脚继续核对实际接线，相关变更在[协作清单](../collaboration/README.md)记录。

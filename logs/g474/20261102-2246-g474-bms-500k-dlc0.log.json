@@ -1,0 +1,11 @@
+{
+  "port": "/dev/ttyACM0",
+  "baud": 115200,
+  "format": "8N1",
+  "label": "G474-BMS-500K-DLC0-RTR0-BIG",
+  "started_utc": "2026-11-02T14:46:38.598283+00:00",
+  "capture_only_not_device_pass": true,
+  "bytes": 5648,
+  "reason": "duration_complete",
+  "ended_utc": "2026-11-02T14:47:48.615386+00:00"
+}

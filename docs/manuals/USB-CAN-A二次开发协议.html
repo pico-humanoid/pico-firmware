@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html class="client-nojs" lang="zh-Hans-CN" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>二次开发—串行转换CAN协议的定义 - Waveshare Wiki</title>
+<script>document.documentElement.className="client-js";RLCONF={"wgBreakFrames":!1,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"zh","wgMonthNames":["","1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],"wgRequestId":"d4bb939ccf89ac86c889c315","wgCSPNonce":!1,"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":!1,"wgNamespaceNumber":0,"wgPageName":"二次开发—串行转换CAN协议的定义","wgTitle":"二次开发—串行转换CAN协议的定义","wgCurRevisionId":132847,"wgRevisionId":132847,"wgArticleId":27283,"wgIsArticle":!0,"wgIsRedirect":!1,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgPageContentLanguage":"zh-cn","wgPageContentModel":"wikitext","wgRelevantPageName":"二次开发—串行转换CAN协议的定义","wgRelevantArticleId":27283,"wgIsProbablyEditable":!1,"wgRelevantPageIsProbablyEditable":!1,"wgRestrictionEdit":[],"wgRestrictionMove":[]}
+;RLSTATE={"ext.gadget.tabber":"ready","site.styles":"ready","noscript":"ready","user.styles":"ready","user":"ready","user.options":"loading","mediawiki.toc.styles":"ready","skins.tweeki.styles":"ready","skins.tweeki.bootstraptheme.styles":"ready","skins.tweeki.externallinks.styles":"ready","skins.tweeki.awesome.styles":"ready"};RLPAGEMODULES=["site","mediawiki.page.startup","mediawiki.page.ready","mediawiki.toc","ext.FancyBoxThumbs","ext.gadget.subnavber","ext.gadget.slidenav","ext.HighlightjsIntegration","skins.tweeki.messages","skins.tweeki.scripts"];</script>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.loader.implement("user.options@1hzgi",function($,jQuery,require,module){/*@nomin*/mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});mw.user.options.set({"variant":"zh-cn"});
+});});</script>
+<link rel="stylesheet" href="/w/load.php?lang=zh-cn&amp;modules=mediawiki.toc.styles%7Cskins.tweeki.awesome.styles%7Cskins.tweeki.bootstraptheme.styles%7Cskins.tweeki.externallinks.styles%7Cskins.tweeki.styles&amp;only=styles&amp;skin=tweeki"/>
+<script async="" src="/w/load.php?lang=zh-cn&amp;modules=startup&amp;only=scripts&amp;raw=1&amp;skin=tweeki"></script>
+<meta name="ResourceLoaderDynamicStyles" content=""/>
+<link rel="stylesheet" href="/w/load.php?lang=zh-cn&amp;modules=ext.gadget.tabber&amp;only=styles&amp;skin=tweeki"/>
+<link rel="stylesheet" href="/w/load.php?lang=zh-cn&amp;modules=site.styles&amp;only=styles&amp;skin=tweeki"/>
+<meta name="generator" content="MediaWiki 1.35.5"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="Waveshare Wiki (zh-cn)"/>
+<link rel="EditURI" type="application/rsd+xml" href="https://www.waveshare.net/w/api.php?action=rsd"/>
+<link rel="alternate" type="application/atom+xml" title="Waveshare Wiki的Atom feed" href="/w/index.php?title=%E7%89%B9%E6%AE%8A:%E6%9C%80%E8%BF%91%E6%9B%B4%E6%94%B9&amp;feed=atom"/>
+<!--[if lt IE 9]><script src="/w/resources/lib/html5shiv/html5shiv.js"></script><![endif]-->
+</head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-二次开发—串行转换CAN协议的定义 rootpage-二次开发—串行转换CAN协议的定义 skin-tweeki action-view tweeki-animateLayout tweeki-non-advanced tweeki-user-anon">			<!-- navbar -->
+			<div id="mw-navigation" class="navbar navbar-default navbar-fixed-top navbar-expand-lg fixed-top navbar-light bg-light" role="navigation">
+				<h2>导航菜单</h2>
+				<div id="mw-head" class="navbar-inner">
+					<div class="container">
+
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+
+							<a href="/wiki/Main_Page" class="navbar-brand"><img src="https://www.waveshare.net/w/upload/b/b6/Waveshare-logo.png" alt="Waveshare Wiki" /></a>
+						</div>
+
+						<div id="navbar" class="navbar-collapse collapse">
+													<ul class="nav navbar-nav">
+							<li class="nav"><a href="https://www.waveshare.net" id="n-https.253A.252F.252Fwww.waveshare.net" rel="nofollow" target="_blank">微雪商城</a></li><li class="nav"><a href="#" id="n-raspberry-pi" class="dropdown-toggle" data-toggle="dropdown">Raspberry Pi <b class="caret"></b></a><ul class="dropdown-menu " role="menu"><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-boards-.25E4.25B8.25BB.25E6.259D.25BF.252F.25E5.25A5.2597.25E4.25BB.25B6.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Boards 主板/套件]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Boards">主板/套件</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-displays-.25E6.2598.25BE.25E7.25A4.25BA.25E5.25B1.258F.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Displays 显示屏]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Displays">显示屏</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-cameras-.25E6.2591.2584.25E5.2583.258F.25E5.25A4.25B4.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Cameras 摄像头]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Cameras">摄像头</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-expansions-.25E6.2589.25A9.25E5.25B1.2595.25E6.259D.25BF.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Expansions 扩展板]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Expansions">扩展板</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-laptops-.25E7.25AC.2594.25E8.25AE.25B0.25E6.259C.25AC.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Laptops 笔记本]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Laptops">笔记本</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-robots-.25E6.259C.25BA.25E5.2599.25A8.25E4.25BA.25BA.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Robots 机器人]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Robots">机器人</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523rpi-games-.25E6.25B8.25B8.25E6.2588.258F.25E6.259C.25BA.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#RPi-Games 游戏机]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#RPi-Games">游戏机</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523android-linux-boards-android.252Flinux.25E4.25B8.25BB.25E6.259D.25BF.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Android-Linux-Boards Android/Linux主板]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Android-Linux-Boards">Android/Linux主板</a></a></li></ul></li><li class="nav"><a href="#" id="n-.25E4.25BA.25BA.25E5.25B7.25A5.25E6.2599.25BA.25E8.2583.25BD" class="dropdown-toggle" data-toggle="dropdown">人工智能 <b class="caret"></b></a><ul class="dropdown-menu " role="menu"><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523jetson-ai-boards-.25E4.25B8.25BB.25E6.259D.25BF.252F.25E5.25A5.2597.25E4.25BB.25B6.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Boards 主板/套件]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Boards">主板/套件</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523jetson-ai-displays-.25E6.2598.25BE.25E7.25A4.25BA.25E5.25B1.258F.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Displays 显示屏]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Displays">显示屏</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523jetson-ai-cameras-.25E6.2591.2584.25E5.2583.258F.25E5.25A4.25B4.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Cameras 摄像头]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Cameras">摄像头</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523jetson-ai-hat-.25E6.2589.25A9.25E5.25B1.2595.25E6.259D.25BF.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Jetson-AI-HAT 扩展板]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Jetson-AI-HAT">扩展板</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523jetson-ai-robots-.25E6.259C.25BA.25E5.2599.25A8.25E4.25BA.25BA.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Robots 机器人]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Jetson-AI-Robots">机器人</a></a></li></ul></li><li class="nav"><a href="#" id="n-.25E6.2598.25BE.25E7.25A4.25BA.25E5.25B1.258F" class="dropdown-toggle" data-toggle="dropdown">显示屏 <b class="caret"></b></a><ul class="dropdown-menu " role="menu"><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523display-lcd-oleds-lcd.252Foled.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Display-LCD-OLEDs LCD/OLED]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Display-LCD-OLEDs">LCD/OLED</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523display-e-paper-e-paper.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Display-e-Paper e-Paper]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Display-e-Paper">e-Paper</a></a></li></ul></li><li class="nav"><a href="#" id="n-.25E6.25A8.25A1.25E5.259D.2597" class="dropdown-toggle" data-toggle="dropdown">模块 <b class="caret"></b></a><ul class="dropdown-menu " role="menu"><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523long-range-wireless-comm-.25E8.25BF.259C.25E8.25B7.259D.25E7.25A6.25BB.25E6.2597.25A0.25E7.25BA.25BF.25E9.2580.259A.25E4.25BF.25A1.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Long-range-wireless-comm 远距离无线通信]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Long-range-wireless-comm">远距离无线通信</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523short-range-wireless-comm-.25E8.25BF.2591.25E8.25B7.259D.25E7.25A6.25BB.25E6.2597.25A0.25E7.25BA.25BF.25E9.2580.259A.25E4.25BF.25A1.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Short-range-wireless-comm 近距离无线通信]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Short-range-wireless-comm">近距离无线通信</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523wired-communication-.25E6.259C.2589.25E7.25BA.25BF.25E9.2580.259A.25E4.25BF.25A1.252F.25E6.258E.25A5.25E5.258F.25A3.25E8.25BD.25AC.25E6.258D.25A2.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Wired-communication 有线通信/接口转换]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Wired-communication">有线通信/接口转换</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523misc-cameras-av-.25E6.2591.2584.25E5.2583.258F.25E5.25A4.25B4.252F.25E9.259F.25B3.25E8.25A7.2586.25E9.25A2.2591.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Misc-cameras-av 摄像头/音视频]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Misc-cameras-av">摄像头/音视频</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523misc-sensor-modules-.25E4.25BC.25A0.25E6.2584.259F.25E5.2599.25A8.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Misc-sensor-modules 传感器]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Misc-sensor-modules">传感器</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523misc-servos-motors-.25E7.2594.25B5.25E6.259C.25BA.252F.25E8.2588.25B5.25E6.259C.25BA.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Misc-servos-motors 电机/舵机]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Misc-servos-motors">电机/舵机</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523misc-other-modules-.25E5.25A4.25A7.25E6.259D.2582.25E7.2583.25A9.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Misc-other-modules 大杂烩]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Misc-other-modules">大杂烩</a></a></li></ul></li><li class="nav"><a href="#" id="n-.25E6.259C.25BA.25E5.2599.25A8.25E4.25BA.25BA" class="dropdown-toggle" data-toggle="dropdown">机器人 <b class="caret"></b></a><ul class="dropdown-menu " role="menu"><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523robotics-cars-.25E6.2599.25BA.25E8.2583.25BD.25E8.25BD.25A6.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Robotics-cars 智能车]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Robotics-cars">智能车</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523robotics-drivers-sensors-.25E9.25A9.25B1.25E5.258A.25A8.25E5.2599.25A8.252F.25E4.25BC.25A0.25E6.2584.259F.25E5.2599.25A8.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Robotics-drivers-sensors 驱动器/传感器]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Robotics-drivers-sensors">驱动器/传感器</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523robotics-robot-arms-.25E6.259C.25BA.25E6.25A2.25B0.25E6.2589.258B.252F.25E4.25BA.2591.25E5.258F.25B0.25E6.258E.25A7.25E5.2588.25B6.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Robotics-robot-arms 机械手/云台控制]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Robotics-robot-arms">机械手/云台控制</a></a></li></ul></li><li class="nav"><a href="#" id="n-mcu.252Ffpga" class="dropdown-toggle" data-toggle="dropdown">MCU/FPGA <b class="caret"></b></a><ul class="dropdown-menu " role="menu"><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523arduino-main-boards-arduino.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#Arduino-main-boards Arduino]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#Arduino-main-boards">Arduino</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523micro.253Abit-micro.253Abit.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#micro:bit micro:bit]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#micro:bit">micro:bit</a></a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523mcu.2farm-stm32" class="PIC"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#MCU.2FARM STM32" tabindex="-1">LPC</a></li><li id="n-.255Bhttps.253A.252F.252F.257B.257Bservername.257D.257D.252Fwiki.252Fmain_page.2523fpga-fpga.255D"><a href="INVALID-TITLE:[https://www.waveshare.net/wiki/Main_Page#FPGA FPGA]" tabindex="-1"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net/wiki/Main_Page#FPGA">FPGA</a></a></li></ul></li>							</ul>
+						
+													<ul class="nav navbar-nav navbar-right">
+							</ul>
+				<form class="navbar-form navbar-right" action="/w/index.php" id="searchform">
+					<div class="form-group"><input type="search" name="search" placeholder="搜索" title="搜索Waveshare Wiki[f]" accesskey="f" id="searchInput" class="search-query form-control"/><input type="submit" name="go" value="前往" title="若相同标题存在，则直接前往该页面" id="mw-searchButton" class="searchButton btn hidden"/>
+					</div>
+				</form><ul class="nav navbar-nav navbar-right"><li class="nav"><a href="https://docs.waveshare.net" id="n-https.253A.252F.252Fdocs.waveshare.net" rel="nofollow" target="_blank">微雪文档</a></li>							</ul>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<!-- /navbar -->
+					<div id="mw-page-base"></div>
+			<div id="mw-head-base"></div>
+			<a id="top"></a>
+
+			<!-- content -->
+			<div id="contentwrapper" class="user-loggedout not-editable container with-navbar with-navbar-fixed">
+
+				
+				<div class="row">
+					<div class="col-md-offset-2 col-md-10" role="main">
+								<div class="mw-body" id="content">
+			<div id="mw-js-message" style="display:none;"></div>
+									<h1 id="firstHeading" class="firstHeading page-header" lang="zh-Hans-CN"><span dir="auto">二次开发—串行转换CAN协议的定义</span></h1>
+									<!-- bodyContent -->
+			<div id="bodyContent">
+								<div id="siteSub">来自Waveshare Wiki</div>
+								<div id="contentSub"></div>
+												<div id="jump-to-nav" class="mw-jump">
+					跳转至：					<a href="#mw-navigation">导航</a>、					<a href="#p-search">搜索</a>
+				</div>
+				<div id="mw-content-text" lang="zh-Hans-CN" dir="ltr" class="mw-content-ltr"><div class="mw-parser-output"><div class="wiki-pages blue-color">
+<div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none" /><div class="toctitle" lang="zh-Hans-CN" dir="ltr"><h2 id="mw-toc-heading">目录</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#.E4.B8.B2.E8.A1.8C_.28USB.29_.E8.BD.AC.E6.8D.A2CAN.E5.8D.8F.E8.AE.AE.E7.9A.84.E5.AE.9A.E4.B9.89"><span class="tocnumber">1</span> <span class="toctext">串行 (USB) 转换CAN协议的定义</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#.E5.8F.AF.E5.8F.98.E9.95.BF.E5.BA.A6.E9.80.9A.E4.BF.A1.E6.A0.BC.E5.BC.8F"><span class="tocnumber">1.1</span> <span class="toctext">可变长度通信格式</span></a>
+<ul>
+<li class="toclevel-3 tocsection-3"><a href="#.E7.A4.BA.E4.BE.8B.E8.AF.B4.E6.98.8E.EF.BC.88.E6.A0.87.E5.87.86.E6.A1.86.E6.9E.B6.EF.BC.89"><span class="tocnumber">1.1.1</span> <span class="toctext">示例说明（标准框架）</span></a></li>
+<li class="toclevel-3 tocsection-4"><a href="#.E7.A4.BA.E4.BE.8B.E8.AF.B4.E6.98.8E.EF.BC.88.E6.89.A9.E5.B1.95.E6.A1.86.E6.9E.B6.EF.BC.89"><span class="tocnumber">1.1.2</span> <span class="toctext">示例说明（扩展框架）</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-5"><a href="#.E5.9B.BA.E5.AE.9A.E7.9A.8420.E5.AD.97.E8.8A.82.E6.94.B6.E5.8F.91.E5.99.A8.E5.8D.8F.E8.AE.AE"><span class="tocnumber">1.2</span> <span class="toctext">固定的20字节收发器协议</span></a>
+<ul>
+<li class="toclevel-3 tocsection-6"><a href="#.E7.A4.BA.E4.BE.8B"><span class="tocnumber">1.2.1</span> <span class="toctext">示例</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-7"><a href="#CAN.E9.85.8D.E7.BD.AE.E5.91.BD.E4.BB.A4"><span class="tocnumber">2</span> <span class="toctext">CAN配置命令</span></a></li>
+</ul>
+</div>
+
+<h1><span id="串行_(USB)_转换CAN协议的定义"></span><span class="mw-headline" id=".E4.B8.B2.E8.A1.8C_.28USB.29_.E8.BD.AC.E6.8D.A2CAN.E5.8D.8F.E8.AE.AE.E7.9A.84.E5.AE.9A.E4.B9.89">串行 (USB) 转换CAN协议的定义</span></h1>
+<p>串行端口波特率默认为2Mbps，8位数据位，1位停止位，不检查。转换器内支持两种通信协议，一种是固定的20字节通信协议，另一种是可变长度通信协议。
+</p>
+<h2><span id="可变长度通信格式"></span><span class="mw-headline" id=".E5.8F.AF.E5.8F.98.E9.95.BF.E5.BA.A6.E9.80.9A.E4.BF.A1.E6.A0.BC.E5.BC.8F">可变长度通信格式</span></h2>
+<p>请Protocol框中选Variable length，单击 "设置并开始" 按钮，
+<a href="/wiki/%E6%96%87%E4%BB%B6:CAN-Variable-length.png" class="image"><img alt="CAN-Variable-length.png" src="/w/upload/d/d4/CAN-Variable-length.png" decoding="async" loading="lazy" width="1545" height="924" /></a><br />
+转换器的内部通信是可变长度的通信协议，具体协议如下：
+</p>
+<table class="wikitable">
+<caption>可变长度通信协议格式
+</caption>
+<tbody><tr>
+<th>字段</th>
+<th>定义</th>
+<th>说明
+</th></tr>
+<tr>
+<td>数据包报头</td>
+<td>0xAA</td>
+<td>数据包的起始标志
+</td></tr>
+<tr>
+<td>Type</td>
+<td>0xC0类型</td>
+<td>
+<ul><li>bit5（帧类型0-标准帧（帧ID 2字节），1-扩展帧（帧ID 4字节））</li>
+<li>bit4（帧格式0-数据帧，1-远程帧）</li>
+<li>Bit0~3（帧数据长度0~8）</li></ul>
+</td></tr>
+<tr>
+<td rowspan="2">帧ID</td>
+<td>扩展框架</td>
+<td>1~8位（字节1）<br />9~16位（字节2）<br />17~24位（字节3）<br />25~29位（字节4）
+</td></tr>
+<tr>
+<td>标准框架</td>
+<td>1~8位（字节1）<br />9~11位（字节2）
+</td></tr>
+<tr>
+<td>帧数据</td>
+<td>可变长度</td>
+<td>可以发送或接收数据1~8（0~8个数据）
+</td></tr>
+<tr>
+<td>结束代码</td>
+<td>0x55</td>
+<td>数据包的结束标志
+</td></tr></tbody></table>
+<h3><span id="示例说明（标准框架）"></span><span class="mw-headline" id=".E7.A4.BA.E4.BE.8B.E8.AF.B4.E6.98.8E.EF.BC.88.E6.A0.87.E5.87.86.E6.A1.86.E6.9E.B6.EF.BC.89">示例说明（标准框架）</span></h3>
+<p>例如，将CAN标准帧ID发送到0x123，数据为0x11 0x22 0x33 0x44 0x55 0x66 0x77 0x88，串口发送的数据格式为：<br />
+<code>AA C8 23 01 11 22 33 44 55 66 77 88 55</code>
+</p>
+<pre>  * <code>AA</code>：报文头
+  * <code>C8</code>：bit5为0（标准帧），bit4为0（数据帧），bit0~3为8（数据长度为8）
+  * <code>23 01</code>：帧ID 0x123
+  * <code>11 22 33 44 55 66 77 88</code>：CAN发送帧数据
+  * <code>55</code>：结束代码
+</pre>
+<p>例如，将CAN标准帧ID发送到0x103，数据为0x11 0x22，串口发送的数据格式为：<br />
+<code>AA C2 03 01 11 22 55</code>
+</p>
+<pre>  * <code>AA</code>：报文头
+  * <code>C2</code>：bit5为0（标准帧），bit4为0（数据帧），bit0~3为2（数据长度为2）
+  * <code>03 01</code>：帧ID 0x103
+  * <code>11 22</code>：CAN发送帧数据
+  * <code>55</code>：结束代码
+</pre>
+<h3><span id="示例说明（扩展框架）"></span><span class="mw-headline" id=".E7.A4.BA.E4.BE.8B.E8.AF.B4.E6.98.8E.EF.BC.88.E6.89.A9.E5.B1.95.E6.A1.86.E6.9E.B6.EF.BC.89">示例说明（扩展框架）</span></h3>
+<p>例如，将CAN扩展帧ID发送到0x1234567，数据为0x11 0x22 0x33 0x44 0x55 0x66 0x77 0x88，串口发送的数据格式为：<br />
+<code>AA E8 67 45 23 01 11 22 33 44 55 66 77 88 55</code>
+</p>
+<pre>  * <code>AA</code>：报文头
+  * <code>E8</code>：bit5为1（扩展帧），bit4为0（数据帧），bit0~3为8（数据长度为8）
+  * <code>67 45 23 01</code>：帧ID 0x1234567
+  * <code>11 22 33 44 55 66 77 88</code>：CAN发送帧数据
+  * <code>55</code>：结束代码
+</pre>
+<p>例如，将CAN扩展帧ID发送到0x1033021，数据为0x11 0x22，串口发送的数据格式为：<br />
+<code>AA E2 21 30 03 01 11 22 55</code>
+</p>
+<pre>  * <code>AA</code>：报文头
+  * <code>E2</code>：bit5为1（扩展帧），bit4为0（数据帧），bit0~3为2（数据长度为2）
+  * <code>21 30 03 01</code>：帧ID 0x1033021
+  * <code>11 22</code>：CAN发送帧数据
+  * <code>55</code>：结束代码
+</pre>
+<h2><span id="固定的20字节收发器协议"></span><span class="mw-headline" id=".E5.9B.BA.E5.AE.9A.E7.9A.8420.E5.AD.97.E8.8A.82.E6.94.B6.E5.8F.91.E5.99.A8.E5.8D.8F.E8.AE.AE">固定的20字节收发器协议</span></h2>
+<p>请Protocol框中选Fixed 20 bytes，单击 "设置并开始" 按钮，
+<a href="/wiki/%E6%96%87%E4%BB%B6:CAN-Fixed-20-bytes.png" class="image"><img alt="CAN-Fixed-20-bytes.png" src="/w/upload/8/88/CAN-Fixed-20-bytes.png" decoding="async" loading="lazy" width="1545" height="924" /></a><br />
+转换器的内部通信是固定20字节的通信协议，具体协议如下：
+</p>
+<table class="wikitable">
+<caption>固定20字节协议格式
+</caption>
+<tbody><tr>
+<th>字节位置</th>
+<th>字段</th>
+<th>说明
+</th></tr>
+<tr>
+<td>0</td>
+<td>数据包报头</td>
+<td>0xAA
+</td></tr>
+<tr>
+<td>1</td>
+<td>数据包报头</td>
+<td>0x55
+</td></tr>
+<tr>
+<td>2</td>
+<td>类型</td>
+<td>0x01
+</td></tr>
+<tr>
+<td>3</td>
+<td>框架类型</td>
+<td>0x01
+</td></tr>
+<tr>
+<td>4</td>
+<td>框架格式</td>
+<td>0x01
+</td></tr>
+<tr>
+<td>5</td>
+<td>帧ID数据1</td>
+<td>0x23
+</td></tr>
+<tr>
+<td>6</td>
+<td>帧ID数据2</td>
+<td>0x01
+</td></tr>
+<tr>
+<td>7</td>
+<td>帧ID数据3</td>
+<td>0x00
+</td></tr>
+<tr>
+<td>8</td>
+<td>帧ID数据4</td>
+<td>0x00
+</td></tr>
+<tr>
+<td>9</td>
+<td>帧数据长度</td>
+<td>0x08
+</td></tr>
+<tr>
+<td>10</td>
+<td>帧数据1</td>
+<td>0x11
+</td></tr>
+<tr>
+<td>11</td>
+<td>帧数据2</td>
+<td>0x22
+</td></tr>
+<tr>
+<td>12</td>
+<td>帧数据3</td>
+<td>0x33
+</td></tr>
+<tr>
+<td>13</td>
+<td>帧数据4</td>
+<td>0x44
+</td></tr>
+<tr>
+<td>14</td>
+<td>帧数据5</td>
+<td>0x55
+</td></tr>
+<tr>
+<td>15</td>
+<td>帧数据6</td>
+<td>0x66
+</td></tr>
+<tr>
+<td>16</td>
+<td>帧数据7</td>
+<td>0x77
+</td></tr>
+<tr>
+<td>17</td>
+<td>帧数据8</td>
+<td>0x88
+</td></tr>
+<tr>
+<td>18</td>
+<td>储备</td>
+<td>0x00
+</td></tr>
+<tr>
+<td>19</td>
+<td>检查代码</td>
+<td>从帧类型到错误代码的累加和低8位（例如0x93）
+</td></tr></tbody></table>
+<h3><span id="示例"></span><span class="mw-headline" id=".E7.A4.BA.E4.BE.8B">示例</span></h3>
+<p>例如，发送标准帧ID 0x123，数据为11 22 33 44 55 66 77 88，检查代码计算如下：<br />
+<code>0x01 + 0x01 + 0x01 + 0x23 + 0x01 + 0x00 + 0x00 + 0x08 + 0x11 + 0x22 + 0x33 + 0x44 + 0x55 + 0x66 + 0x77 + 0x88 + 0x00 = 0x293</code><br />
+低8位为<code>0x93</code>。
+</p><p><br />
+</p>
+<h1><span id="CAN配置命令"></span><span class="mw-headline" id="CAN.E9.85.8D.E7.BD.AE.E5.91.BD.E4.BB.A4">CAN配置命令</span></h1>
+<style data-mw-deduplicate="TemplateStyles:r75601">.mw-parser-output .note{background-position:left 7px top 50%;padding:0.5em 0.5em 0.5em 40px;margin:0.5em 0;overflow:hidden;background-color:#f8f9fa;background-repeat:no-repeat;border:1px solid #ddd}.mw-parser-output .note-inline{display:inline-block;vertical-align:middle}.mw-parser-output .note-info{background-color:#f6efe5;background-size:25px;border-color:#ac6600;padding-left:40px;min-height:28px}.mw-parser-output .note-reminder{background-color:#fff9ea;background-size:25px;border-color:#fc3;min-height:28px}.mw-parser-output .note-warn{background-color:#fff9ea;background-size:25px;border-color:#fc3;min-height:28px}.mw-parser-output .note-error{background-color:#fee7e6;background-size:25px;border-color:#c33;min-height:28px}</style><div role="note" class="note note-info">CAN类型命令有两种ox02 和 ox12，一种内部收发数据是固定20字节来收发数据，一种是可变长度来收发数据，两种方式不可互相通信，请区分并根据需要选择其中1种方式</div>
+<table class="wikitable">
+<tbody><tr>
+<th>序号</th>
+<th>定义</th>
+<th>说明
+</th></tr>
+<tr>
+<td>0</td>
+<td>报文头</td>
+<td>0xaa
+</td></tr>
+<tr>
+<td>1</td>
+<td>报文头</td>
+<td>0x55
+</td></tr>
+<tr>
+<td>2</td>
+<td>类型</td>
+<td>0x02-设置（用固定20字节协议收发数据）;0x12-设置（用可变协议收发数据）<br />两种方式不可互相通信，请区分并根据需要选择其中1种方式
+</td></tr>
+<tr>
+<td>3</td>
+<td>CAN波特率</td>
+<td>0x01(1Mbps) 0x02 (800kbps) 0x03 (500kbps), 0x04 (400kbps), 0x05 (250kbps), 0x06 (200kbps), 0x07 (125kbps), 0x08 (100kbps), 0x09 (50kbps) 0x0a (20kbps) 0x0b (10kbps) 0x0c (5kbps)
+</td></tr>
+<tr>
+<td>4</td>
+<td>帧类型</td>
+<td>0x01-标准帧, 0x02 扩展帧
+</td></tr>
+<tr>
+<td>5</td>
+<td>滤波ID1</td>
+<td>1~8位，高字节在前，低字节在后
+</td></tr>
+<tr>
+<td>6</td>
+<td>滤波ID2</td>
+<td>9~16位，高字节在前，低字节在后
+</td></tr>
+<tr>
+<td>7</td>
+<td>滤波ID3</td>
+<td>17~24位，高字节在前，低字节在后
+</td></tr>
+<tr>
+<td>8</td>
+<td>滤波ID4</td>
+<td>25~32位，高字节在前，低字节在后
+</td></tr>
+<tr>
+<td>9</td>
+<td>屏蔽ID1</td>
+<td>1~8位，高字节在前，低字节在后
+</td></tr>
+<tr>
+<td>10</td>
+<td>屏蔽ID2</td>
+<td>9~16位，高字节在前，低字节在后
+</td></tr>
+<tr>
+<td>11</td>
+<td>屏蔽ID3</td>
+<td>17~24位，高字节在前，低字节在后
+</td></tr>
+<tr>
+<td>12</td>
+<td>屏蔽ID4</td>
+<td>25~32位，高字节在前，低字节在后
+</td></tr>
+<tr>
+<td>13</td>
+<td>CAN模式</td>
+<td>0x00-正常模式, 0x01-静默模式, 0x02-环回模式, 0x03-环回静默模式
+</td></tr>
+<tr>
+<td>14</td>
+<td>自动重发</td>
+<td>0x00——自动重发 0x01——禁止自动重发
+</td></tr>
+<tr>
+<td>15</td>
+<td>备用</td>
+<td>0x00
+</td></tr>
+<tr>
+<td>16</td>
+<td>备用</td>
+<td>0x00
+</td></tr>
+<tr>
+<td>17</td>
+<td>备用</td>
+<td>0x00
+</td></tr>
+<tr>
+<td>18</td>
+<td>备用</td>
+<td>0x00
+</td></tr>
+<tr>
+<td>19</td>
+<td>校验码</td>
+<td>从帧类型起到错误码止，累加和低8位(红色部分)
+</td></tr></tbody></table>
+<p><br />
+</p></div>
+<!-- 
+NewPP limit report
+Cached time: 20261101004004
+Cache expiry: 86400
+Dynamic content: false
+Complications: []
+CPU time usage: 0.029 seconds
+Real time usage: 0.034 seconds
+Preprocessor visited node count: 46/1000000
+Post‐expand include size: 833/2097152 bytes
+Template argument size: 651/2097152 bytes
+Highest expansion depth: 5/40
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 835/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%   10.955      1 模板:Note
+100.00%   10.955      1 -total
+-->
+
+<!-- Saved in parser cache with key ws_wiki_135_cn:pcache:idhash:27283-0!canonical!groups=* and timestamp 20261101004004 and revision id 132847
+ -->
+</div></div>								<div class="printfooter">
+				取自“<a dir="ltr" href="https://www.waveshare.net/w/index.php?title=二次开发—串行转换CAN协议的定义&amp;oldid=132847">https://www.waveshare.net/w/index.php?title=二次开发—串行转换CAN协议的定义&amp;oldid=132847</a>”				</div>
+												<div id="catlinks" class="catlinks catlinks-allhidden" data-mw="interface"></div>												<div class="visualClear"></div>
+							</div>
+			<!-- /bodyContent -->
+		</div>
+						</div>
+				</div>
+			</div>
+			<!-- /content -->
+
+			<!-- sidebar-left -->
+			<div class="sidebar-wrapper sidebar-left-wrapper">
+				<div class="sidebar-container container">
+					<div class="row">
+						<div id="sidebar-left" class="col-md-2 col-md-offset-0">
+							<div id="tweekiTOC"></div>						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /sidebar-left -->
+					<!-- footer -->
+			<div id="footer" role="contentinfo" class="footer container footer-sticky bg-light">
+			<ul id="footer-custom"><li class="dropup"><a href="/w/index.php?title=%E7%89%B9%E6%AE%8A:%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95&amp;returnto=%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91%E2%80%94%E4%B8%B2%E8%A1%8C%E8%BD%AC%E6%8D%A2CAN%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%AE%9A%E4%B9%89" title="我们鼓励您登录；然而，这不是强制性的[o]" accesskey="o">Login / Create Account</a></li><li class="dropup"><a href="INVALID-TITLE:[https://www.waveshare.net Copyright © 2022 深圳市微雪电子有限公司 版权所有]" id="n-.255Bhttps.253A.252F.252Fwww.waveshare.net-copyright-.25C2.25A9-2022-.25E6.25B7.25B1.25E5.259C.25B3.25E5.25B8.2582.25E5.25BE.25AE.25E9.259B.25AA.25E7.2594.25B5.25E5.25AD.2590.25E6.259C.2589.25E9.2599.2590.25E5.2585.25AC.25E5.258F.25B8-.25E7.2589.2588.25E6.259D.2583.25E6.2589.2580.25E6.259C.2589.255D"><a target="_blank" rel="nofollow noreferrer noopener" class="external text" href="https://www.waveshare.net">Copyright © 2022 深圳市微雪电子有限公司 版权所有</a></a></li></ul><div style="clear:both"></div>			</div>
+			<!-- /footer -->
+		
+<script>
+var fbtFancyBoxOptions = {"openEffect":"elastic","closeEffect":"elastic","helpers":{"title":{"type":"inside"}}};
+</script>
+
+<script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgPageParseReport":{"limitreport":{"cputime":"0.029","walltime":"0.034","ppvisitednodes":{"value":46,"limit":1000000},"postexpandincludesize":{"value":833,"limit":2097152},"templateargumentsize":{"value":651,"limit":2097152},"expansiondepth":{"value":5,"limit":40},"expensivefunctioncount":{"value":0,"limit":100},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":835,"limit":5000000},"timingprofile":["100.00%   10.955      1 模板:Note","100.00%   10.955      1 -total"]},"cachereport":{"timestamp":"20261101004004","ttl":86400,"transientcontent":false}}});mw.config.set({"wgBackendResponseTime":115});});</script>	</body>
+</html>

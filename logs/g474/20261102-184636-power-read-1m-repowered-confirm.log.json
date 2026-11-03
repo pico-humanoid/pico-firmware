@@ -1,0 +1,11 @@
+{
+  "port": "/dev/serial/by-id/usb-STMicroelectronics_STLINK-V3_002000303335511635383531-if02",
+  "baud": 115200,
+  "format": "8N1",
+  "label": "Power-Read-1M-repowered-confirm-NO-WRITES",
+  "started_utc": "2026-11-02T10:46:37.552347+00:00",
+  "capture_only_not_device_pass": true,
+  "bytes": 3748,
+  "reason": "interrupted",
+  "ended_utc": "2026-11-02T10:46:58.506015+00:00"
+}

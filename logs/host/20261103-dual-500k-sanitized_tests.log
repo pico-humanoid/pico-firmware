@@ -1,0 +1,79 @@
+-- The C compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Found Python3: /usr/bin/python3.10 (found version "3.10.12") found components: Interpreter 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Host-Tests-Sanitized
+[1/37] Building C object CMakeFiles/device_protocols.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/dual_device_reader.c.o
+[2/37] Building C object CMakeFiles/device_protocols.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/protocol/bms_protocol.c.o
+[3/37] Building C object CMakeFiles/device_protocols.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/device_reader.c.o
+[4/37] Building C object CMakeFiles/device_protocols.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/protocol/power_protocol.c.o
+[5/37] Building C object CMakeFiles/test_transport.dir/test_transport.c.o
+[6/37] Building C object CMakeFiles/test_transport.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/transport/can_transport.c.o
+[7/37] Linking C static library libdevice_protocols.a
+[8/37] Building C object CMakeFiles/test_app.dir/test_app.c.o
+[9/37] Building C object CMakeFiles/test_protocols.dir/test_protocols.c.o
+[10/37] Linking C executable test_transport
+[11/37] Building C object CMakeFiles/test_app_bms.dir/test_app.c.o
+[12/37] Linking C executable test_protocols
+[13/37] Building C object CMakeFiles/test_app.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/device_read_app.c.o
+[14/37] Building C object CMakeFiles/test_app_bms.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/device_read_app.c.o
+[15/37] Building C object CMakeFiles/test_app_power_big.dir/test_app.c.o
+[16/37] Linking C executable test_app
+[17/37] Linking C executable test_app_bms
+[18/37] Building C object CMakeFiles/test_app_power_big.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/device_read_app.c.o
+[19/37] Building C object CMakeFiles/test_baud_forward.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/power_baud_test.c.o
+[20/37] Building C object CMakeFiles/test_baud_forward.dir/test_power_baud.c.o
+[21/37] Linking C executable test_app_power_big
+[22/37] Building C object CMakeFiles/test_baud_reverse.dir/test_power_baud.c.o
+[23/37] Building C object CMakeFiles/test_baud_reverse.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/power_baud_test.c.o
+[24/37] Building C object CMakeFiles/test_baud_force.dir/test_power_baud_force.c.o
+[25/37] Linking C executable test_baud_forward
+[26/37] Building C object CMakeFiles/test_baud_force.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/power_baud_test.c.o
+[27/37] Linking C executable test_baud_reverse
+[28/37] Building C object CMakeFiles/test_app_baud.dir/test_app.c.o
+[29/37] Building C object CMakeFiles/test_app_baud.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/device_read_app.c.o
+[30/37] Linking C executable test_baud_force
+[31/37] Building C object CMakeFiles/test_app_baud.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/power_baud_test.c.o
+[32/37] Building C object CMakeFiles/test_dual_reader.dir/test_dual_reader.c.o
+[33/37] Linking C executable test_app_baud
+[34/37] Building C object CMakeFiles/test_app_dual.dir/test_app_dual.c.o
+[35/37] Building C object CMakeFiles/test_app_dual.dir/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/device_read_app.c.o
+[36/37] Linking C executable test_dual_reader
+[37/37] Linking C executable test_app_dual
+Internal ctest changing into directory: /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Host-Tests-Sanitized
+Test project /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Host-Tests-Sanitized
+      Start  1: device_protocols_and_scheduler
+ 1/13 Test  #1: device_protocols_and_scheduler .......   Passed    0.00 sec
+      Start  2: can_transport_fake_hal
+ 2/13 Test  #2: can_transport_fake_hal ...............   Passed    0.00 sec
+      Start  3: device_application_fake_io
+ 3/13 Test  #3: device_application_fake_io ...........   Passed    0.00 sec
+      Start  4: bms_application_fake_io
+ 4/13 Test  #4: bms_application_fake_io ..............   Passed    0.00 sec
+      Start  5: board_log_capture_pty
+ 5/13 Test  #5: board_log_capture_pty ................   Passed    0.79 sec
+      Start  6: power_big_application_fake_io
+ 6/13 Test  #6: power_big_application_fake_io ........   Passed    0.00 sec
+      Start  7: power_baud_gate_forward
+ 7/13 Test  #7: power_baud_gate_forward ..............   Passed    0.00 sec
+      Start  8: power_baud_gate_reverse
+ 8/13 Test  #8: power_baud_gate_reverse ..............   Passed    0.00 sec
+      Start  9: power_baud_force_operator_one_shot
+ 9/13 Test  #9: power_baud_force_operator_one_shot ...   Passed    0.00 sec
+      Start 10: power_baud_application_fake_io
+10/13 Test #10: power_baud_application_fake_io .......   Passed    0.01 sec
+      Start 11: power_capture_analysis_synthetic
+11/13 Test #11: power_capture_analysis_synthetic .....   Passed    0.09 sec
+      Start 12: dual_reader_shared_bus_scheduler
+12/13 Test #12: dual_reader_shared_bus_scheduler .....   Passed    0.01 sec
+      Start 13: dual_application_fake_io
+13/13 Test #13: dual_application_fake_io .............   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 13
+
+Total Test time (real) =   0.93 sec

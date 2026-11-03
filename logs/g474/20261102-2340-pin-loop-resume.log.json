@@ -1,0 +1,11 @@
+{
+  "port": "/dev/ttyACM0",
+  "baud": 115200,
+  "format": "8N1",
+  "label": "PIN-LOOP-RESUME",
+  "started_utc": "2026-11-02T15:40:02.890265+00:00",
+  "capture_only_not_device_pass": true,
+  "bytes": 332,
+  "reason": "idle_timeout",
+  "ended_utc": "2026-11-02T15:40:10.912106+00:00"
+}

@@ -1,0 +1,143 @@
+Build type: DebugPreset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/cmake/gcc-arm-none-eabi.cmake"
+  PICO_APP="Bringup"
+  PICO_EXTERNAL_CAN="OFF"
+
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Loopback
+[1/2] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/main.c.obj
+[2/2] Linking C executable PICO_CAN.elf
+Memory region         Used Size  Region Size  %age Used
+             RAM:        8760 B       128 KB      6.68%
+           FLASH:       24704 B       512 KB      4.71%
+Build type: DebugPreset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/cmake/gcc-arm-none-eabi.cmake"
+  PICO_APP="Bringup"
+  PICO_EXTERNAL_CAN="ON"
+
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-External
+[1/2] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/main.c.obj
+[2/2] Linking C executable PICO_CAN.elf
+Memory region         Used Size  Region Size  %age Used
+             RAM:        8760 B       128 KB      6.68%
+           FLASH:       24672 B       512 KB      4.71%
+Build type: DebugPreset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/cmake/gcc-arm-none-eabi.cmake"
+  PICO_APP="BMS"
+  PICO_DEVICE_BITRATE="500000"
+
+
+-- Device reader: BMS 500000 bit/s; read-only
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-BMS-Read-500K
+[1/4] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/main.c.obj
+[2/4] Building C object CMakeFiles/PICO_CAN.dir/App/device_read_app.c.obj
+[3/4] Building C object CMakeFiles/PICO_CAN.dir/App/transport/can_transport.c.obj
+[4/4] Linking C executable PICO_CAN.elf
+Memory region         Used Size  Region Size  %age Used
+             RAM:        6240 B       128 KB      4.76%
+           FLASH:       32428 B       512 KB      6.19%
+Build type: DebugPreset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/cmake/gcc-arm-none-eabi.cmake"
+  PICO_APP="Power"
+  PICO_DEVICE_BITRATE="1000000"
+  PICO_POWER_STATUS_ENDIAN="BIG"
+
+
+-- Device reader: Power 1000000 bit/s; read-only
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Power-Read-1M
+[1/4] Building C object CMakeFiles/PICO_CAN.dir/App/transport/can_transport.c.obj
+[2/4] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/main.c.obj
+[3/4] Building C object CMakeFiles/PICO_CAN.dir/App/device_read_app.c.obj
+[4/4] Linking C executable PICO_CAN.elf
+Memory region         Used Size  Region Size  %age Used
+             RAM:        6240 B       128 KB      4.76%
+           FLASH:       32428 B       512 KB      6.19%
+Build type: DebugPreset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/cmake/gcc-arm-none-eabi.cmake"
+  PICO_APP="Power"
+  PICO_DEVICE_BITRATE="500000"
+  PICO_POWER_STATUS_ENDIAN="BIG"
+
+
+-- Device reader: Power 500000 bit/s; read-only
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Power-Read-500K
+[1/4] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/main.c.obj
+[2/4] Building C object CMakeFiles/PICO_CAN.dir/App/transport/can_transport.c.obj
+[3/4] Building C object CMakeFiles/PICO_CAN.dir/App/device_read_app.c.obj
+[4/4] Linking C executable PICO_CAN.elf
+Memory region         Used Size  Region Size  %age Used
+             RAM:        6240 B       128 KB      4.76%
+           FLASH:       32428 B       512 KB      6.19%
+Build type: DebugPreset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/cmake/gcc-arm-none-eabi.cmake"
+  PICO_APP="Dual"
+  PICO_BMS_CRC_ENDIAN="BIG"
+  PICO_BMS_RTR_DLC="0"
+  PICO_DEVICE_BITRATE="500000"
+  PICO_POWER_ID="0xAA"
+  PICO_POWER_STATUS_ENDIAN="BIG"
+
+
+-- Device reader: Dual 500000 bit/s; read-only
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Dual-Read-500K
+[1/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/main.c.obj
+[2/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/fdcan.c.obj
+[3/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/gpio.c.obj
+[4/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/usart.c.obj
+[5/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/sysmem.c.obj
+[6/33] Building ASM object CMakeFiles/PICO_CAN.dir/startup_stm32g474xx.s.obj
+[7/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/syscalls.c.obj
+[8/33] Building C object CMakeFiles/PICO_CAN.dir/App/protocol/bms_protocol.c.obj
+[9/33] Building C object CMakeFiles/PICO_CAN.dir/App/protocol/power_protocol.c.obj
+[10/33] Building C object CMakeFiles/PICO_CAN.dir/App/device_reader.c.obj
+[11/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/stm32g4xx_it.c.obj
+[12/33] Building C object CMakeFiles/PICO_CAN.dir/App/dual_device_reader.c.obj
+[13/33] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/stm32g4xx_hal_msp.c.obj
+[14/33] Building C object CMakeFiles/PICO_CAN.dir/App/device_read_app.c.obj
+[15/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g4xx.c.obj
+[16/33] Building C object CMakeFiles/PICO_CAN.dir/App/transport/can_transport.c.obj
+[17/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_fdcan.c.obj
+[18/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c.obj
+[19/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc_ex.c.obj
+[20/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc.c.obj
+[21/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash.c.obj
+[22/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ex.c.obj
+[23/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ramfunc.c.obj
+[24/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.c.obj
+[25/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_exti.c.obj
+[26/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma.c.obj
+[27/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma_ex.c.obj
+[28/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr.c.obj
+[29/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr_ex.c.obj
+[30/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_cortex.c.obj
+[31/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.c.obj
+[32/33] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.c.obj
+[33/33] Linking C executable PICO_CAN.elf
+Memory region         Used Size  Region Size  %age Used
+             RAM:        6632 B       128 KB      5.06%
+           FLASH:       33424 B       512 KB      6.38%

@@ -1,0 +1,15 @@
+test_adapter_500k_is_code3_not_board_code2 (test_usb_can_power_baud.BaudTests) ... ok
+test_exact_board_write (test_usb_can_power_baud.BaudTests) ... ok
+test_match_rejects_echo_other_source_and_index (test_usb_can_power_baud.BaudTests) ... ok
+test_config (test_usb_can_power_probe.CodecTests) ... ok
+test_fragment_noise_and_reply (test_usb_can_power_probe.CodecTests) ... ok
+test_official_examples (test_usb_can_power_probe.CodecTests) ... ok
+test_query (test_usb_can_power_probe.CodecTests) ... ok
+test_allowlist (test_usb_can_power_read.ReadTests) ... ok
+test_parameter_decode (test_usb_can_power_read.ReadTests) ... ok
+test_status_uncertainty (test_usb_can_power_read.ReadTests) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.001s
+
+OK

@@ -2,6 +2,9 @@
 
 已有资料由固件侧先查阅并记录版本。协议阅读、外设配置和实验操作对应[开发计划](firmware-development.md)，项目专有约束按[协作清单](collaboration/README.md)沟通。
 
+
+手册本地副本与文本提取版见 [本地手册目录](manuals/README.md)，固定保存在工程内，不使用 `/tmp`。
+
 ## 项目内资料
 
 - [PICO-Humanoid 项目主页](https://pico-humanoid.github.io/)

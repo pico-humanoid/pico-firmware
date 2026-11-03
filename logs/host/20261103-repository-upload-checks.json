@@ -1,0 +1,236 @@
+{
+  "date": "2026-11-03",
+  "result": "PUBLICATION_SNAPSHOT_BUILD_AND_OFFLINE_TESTS_PASS",
+  "remote_checked_commit": "69b0dc3e6d2fc8b7fde77e7837b17861bf3dc476",
+  "local_head": "69b0dc3e6d2fc8b7fde77e7837b17861bf3dc476",
+  "hardware_operations": "NONE; no flash, reset, serial or CAN access",
+  "inventory_before": {
+    "files": 2201,
+    "bytes": 629314100
+  },
+  "archive": {
+    "moved_files": 40,
+    "original_content_deleted": false,
+    "local_archives_excluded_from_git": true
+  },
+  "original_firmware_tools_and_remaining_logs": "byte-identical to pre-cleanup inventory; generated build caches excluded",
+  "documentation_and_config_updated": [
+    ".gitignore",
+    "README.md",
+    ".vscode/settings.json",
+    "docs/device-read-validation.md",
+    "docs/linux-toolchain.md",
+    "docs/validation/README.md",
+    "docs/communication/README.md",
+    "docs/manuals/README.md"
+  ],
+  "checks": {
+    "working_host_ctest": "13/13 PASS",
+    "snapshot_host_ctest": "13/13 PASS",
+    "working_tools_unittest": "19/19 PASS",
+    "snapshot_tools_unittest": "19/19 PASS",
+    "snapshot_cross_builds": "8/8 PASS; each generated ELF/HEX/BIN",
+    "chunks_gzip_roundtrip": "PASS",
+    "new_hardware_pass_claims": false,
+    "common_credential_pattern_scan": "no matches; heuristic only, not a security guarantee"
+  },
+  "snapshot_artifacts": [
+    {
+      "preset": "Linux-Loopback",
+      "file": "PICO_CAN.elf",
+      "bytes": 1508132,
+      "sha256": "7b2d26b1bc5ceb508b127ba20ccb7ea1fd63ac2bf423a50203f7a74b2a4d1fb6"
+    },
+    {
+      "preset": "Linux-Loopback",
+      "file": "PICO_CAN.hex",
+      "bytes": 69464,
+      "sha256": "557d6400662216c98599cea1450aa9da8a2bd63dc7dcbeb8a528cf8f36de14aa"
+    },
+    {
+      "preset": "Linux-Loopback",
+      "file": "PICO_CAN.bin",
+      "bytes": 24704,
+      "sha256": "f7dd4b9df1a8a9c97084565b65a22c744bcb36186037ec1abff0fb1789f454ab"
+    },
+    {
+      "preset": "Linux-External",
+      "file": "PICO_CAN.elf",
+      "bytes": 1508096,
+      "sha256": "46f1e77e8bc2106002080a440a011a1979bcfb713074b0e2f07737e57e253474"
+    },
+    {
+      "preset": "Linux-External",
+      "file": "PICO_CAN.hex",
+      "bytes": 69374,
+      "sha256": "80b4897a2a7c60ca92f3dd0d1f0d0f09ac1c32982997736ab70ebbcea9929452"
+    },
+    {
+      "preset": "Linux-External",
+      "file": "PICO_CAN.bin",
+      "bytes": 24672,
+      "sha256": "329cc08d39ab437f6c44854b2bce85838e2a68484faffd5ed0ed0c4854c48c7a"
+    },
+    {
+      "preset": "Linux-BMS-Read-500K",
+      "file": "PICO_CAN.elf",
+      "bytes": 1536192,
+      "sha256": "48c82a3382b852e467d1921d7cfec43b20de6fb17ef6456853f482022766a11b"
+    },
+    {
+      "preset": "Linux-BMS-Read-500K",
+      "file": "PICO_CAN.hex",
+      "bytes": 91178,
+      "sha256": "b92a09f2e4f3494cde53870bf41553942c2010ed6e81b76ce030c33ad25f3f9f"
+    },
+    {
+      "preset": "Linux-BMS-Read-500K",
+      "file": "PICO_CAN.bin",
+      "bytes": 32428,
+      "sha256": "3b3fab161bb4999ea0aea92d1d0866650ba673b94d3b35239e44c04c3ec543e1"
+    },
+    {
+      "preset": "Linux-Power-Read-1M",
+      "file": "PICO_CAN.elf",
+      "bytes": 1536192,
+      "sha256": "af24610c196df2890c64b6b9574f8ab0ef159478d912fd93d53d66a1cd075d45"
+    },
+    {
+      "preset": "Linux-Power-Read-1M",
+      "file": "PICO_CAN.hex",
+      "bytes": 91178,
+      "sha256": "c613d9a41d55810d604f62647322a08c43256337ddc23409e77c5ce6bf23fdc8"
+    },
+    {
+      "preset": "Linux-Power-Read-1M",
+      "file": "PICO_CAN.bin",
+      "bytes": 32428,
+      "sha256": "aae559bdfdc3378592919190acfa34c59355437185696de97be2bf39f7e1e88c"
+    },
+    {
+      "preset": "Linux-Power-Read-500K",
+      "file": "PICO_CAN.elf",
+      "bytes": 1536192,
+      "sha256": "1b3174c9bbcab04f2ff693c1af3d355fac00b00507b33dbabd6f123c5a764ab5"
+    },
+    {
+      "preset": "Linux-Power-Read-500K",
+      "file": "PICO_CAN.hex",
+      "bytes": 91178,
+      "sha256": "63666b20baba39eacdfe004e0f92bc00203c423fd2e11f45a9ccef08b7d9aca2"
+    },
+    {
+      "preset": "Linux-Power-Read-500K",
+      "file": "PICO_CAN.bin",
+      "bytes": 32428,
+      "sha256": "e2f288aa855f56f23940499e9ba9f696d46664c5d88640e44f655ae6b4bee4a9"
+    },
+    {
+      "preset": "Linux-Dual-Read-500K",
+      "file": "PICO_CAN.elf",
+      "bytes": 1540624,
+      "sha256": "ac4aad68dd5d4e25f9b067ef01306b097cc094f5e2eedfcd2720b9b1f7152905"
+    },
+    {
+      "preset": "Linux-Dual-Read-500K",
+      "file": "PICO_CAN.hex",
+      "bytes": 93989,
+      "sha256": "ecba79425a4b847b4e3b3c08129ab4738066406dc6f7881640d9e5e039de2352"
+    },
+    {
+      "preset": "Linux-Dual-Read-500K",
+      "file": "PICO_CAN.bin",
+      "bytes": 33424,
+      "sha256": "b33f32bb6ebf826676f8d187482813700bbe7b8be0f5a7c48e1e39bf5538f235"
+    },
+    {
+      "preset": "Linux-Power-Baud-1M-to-500K",
+      "file": "PICO_CAN.elf",
+      "bytes": 1549184,
+      "sha256": "908ceaf70bcac7bb770d720831a9723f36ecb6dc98e0a65c4567d1a16de81350"
+    },
+    {
+      "preset": "Linux-Power-Baud-1M-to-500K",
+      "file": "PICO_CAN.hex",
+      "bytes": 106912,
+      "sha256": "ae68db53b1dca6d6729ff81d85f4779343a9c366106a18953d70fc4c218c7da2"
+    },
+    {
+      "preset": "Linux-Power-Baud-1M-to-500K",
+      "file": "PICO_CAN.bin",
+      "bytes": 38020,
+      "sha256": "2d38b35d081511fb2176bac0a965a836b4411eff45440897c64f780312b9ea4a"
+    },
+    {
+      "preset": "Linux-Power-Baud-500K-to-1M",
+      "file": "PICO_CAN.elf",
+      "bytes": 1549184,
+      "sha256": "35d57bc306df2f74188443e8e9832b412b67bc21affa16deb8ca3205b8cd8a21"
+    },
+    {
+      "preset": "Linux-Power-Baud-500K-to-1M",
+      "file": "PICO_CAN.hex",
+      "bytes": 106912,
+      "sha256": "f63cf15da834e6f03f18a5d758da726d45a9802a50166f6f954c1e1eed53aeb7"
+    },
+    {
+      "preset": "Linux-Power-Baud-500K-to-1M",
+      "file": "PICO_CAN.bin",
+      "bytes": 38020,
+      "sha256": "2e258bb350cb7753803bf706935797f83eb31f57add7b811e3b3eb6c41827be2"
+    }
+  ],
+  "local_validation_outputs": {
+    "working_host": {
+      "sha256": "9c511a4adb158e3b84040510311540cb4aea04c01baf6eac6b4963449efbd514",
+      "bytes": 1983,
+      "storage": "local-only archive; verbose output not published"
+    },
+    "working_tools": {
+      "sha256": "0b68510907f9ad579d241f21dd3bc6f4d64fe03da5eff6763e99122667bbc30a",
+      "bytes": 118,
+      "storage": "local-only archive; verbose output not published"
+    },
+    "snapshot_host": {
+      "sha256": "b4629e8fabe5fa7c74b2a16e03149aacc51c2efad18af17cf247a961ab8694e6",
+      "bytes": 5580,
+      "storage": "local-only archive; verbose output not published"
+    },
+    "snapshot_tools": {
+      "sha256": "25c57990a4f7f44d3d8361c8b8cecd4dd375bbc1abc3435c2803b1893626852e",
+      "bytes": 118,
+      "storage": "local-only archive; verbose output not published"
+    },
+    "snapshot_dual": {
+      "sha256": "0ce684f52d7c26023f5cbb2902d37c7c72c776f46331c8da12cbd8a98241e21e",
+      "bytes": 4842,
+      "storage": "local-only archive; verbose output not published"
+    },
+    "snapshot_all": {
+      "sha256": "d6038baf50c841c628680c7a1ab3cca636a4b995cda7f79514824027934adadc",
+      "bytes": 26801,
+      "storage": "local-only archive; verbose output not published"
+    },
+    "snapshot_baud_forward": {
+      "sha256": "9cb8c9f16c00378176729a031a015da407c50f9547796f99b9fd900ba5508e12",
+      "bytes": 4912,
+      "storage": "local-only archive; verbose output not published"
+    },
+    "snapshot_baud_reverse": {
+      "sha256": "57310b30c97eef369a26f83646d6838cc5e5c0edae0fbdc7bf6ef425dbeb854b",
+      "bytes": 4912,
+      "storage": "local-only archive; verbose output not published"
+    }
+  },
+  "note": "Snapshot ELF may differ from historical ELF because debug paths differ; no byte-identical ELF claim. Final candidate inventory/link checks recorded in publication_tree_checks.",
+  "publication_tree_checks": {
+    "candidate_files": 296,
+    "tracked_files": 179,
+    "new_files": 117,
+    "missing_markdown_local_links": [],
+    "tracked_file_deletions": 0,
+    "files_at_or_over_100mb": 0,
+    "ignored_local_archives_not_in_candidates": true,
+    "tested_source_tree_matches_final_source_tree": true
+  }
+}

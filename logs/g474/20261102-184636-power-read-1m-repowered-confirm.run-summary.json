@@ -1,0 +1,72 @@
+{
+  "elf_sha256": "967c21ec52d87fa1f74de6269f1b8c767cb3c8b15fd428901f8707d455db258f",
+  "boot_header": "# PICO device-read v1; READ ONLY; device=POWER bitrate=1000000 power_id=0xAA rtr_dlc=8 crc_order=1 status_order=1",
+  "counts": {
+    "TX_SUBMIT": 16,
+    "TX_DONE": 0,
+    "TX_TIMEOUT": 16,
+    "RX": 0
+  },
+  "baud_write_submissions": 0,
+  "last_health": "# HEALTH,t_ms=20024,seen=0x00,valid=0x00,replies=0,invalid=0,ignored=0,query_timeouts=16,query_failures=18,tx_submit=16,tx_done=0,tx_rejected=40,tx_timeout=16,rx_fifo_lost=0,rx_queue_drop=0,rx_read_fail=0,rx_unsupported=0,tx_event_lost=0,tx_event_unknown=0,bus_off=1,tec=248,rec=0,counters_ok=1",
+  "stop_reason": "no_rx_after_20s",
+  "final_registers": {
+    "PSR": 2021,
+    "ECR": 248,
+    "CCCR": 4161,
+    "NBTP": 33557505,
+    "TXBRP": 0,
+    "TXBTO": 0,
+    "TXBCF": 7,
+    "TXEFS": 0,
+    "IR": 2490880,
+    "RCC_CR": 1280,
+    "RCC_CFGR": 5,
+    "RCC_CCIPR": 33554432
+  },
+  "final_state": "reset halt",
+  "power_board_reset_by_agent": false,
+  "operator_reported_power_cycle_before_test": true,
+  "final_registers_hex": {
+    "PSR": "0x000007E5",
+    "ECR": "0x000000F8",
+    "CCCR": "0x00001041",
+    "NBTP": "0x02000C01",
+    "TXBRP": "0x00000000",
+    "TXBTO": "0x00000000",
+    "TXBCF": "0x00000007",
+    "TXEFS": "0x00000000",
+    "IR": "0x00260200",
+    "RCC_CR": "0x00000500",
+    "RCC_CFGR": "0x00000005",
+    "RCC_CCIPR": "0x02000000"
+  },
+  "decoded_final_state": {
+    "LEC": 5,
+    "LEC_meaning": "BIT0 (dominant) error; last observed, not per-frame history",
+    "EP": 1,
+    "EW": 1,
+    "BO": 1,
+    "TEC": 248,
+    "REC": 0
+  },
+  "capture_metadata": {
+    "port": "/dev/serial/by-id/usb-STMicroelectronics_STLINK-V3_002000303335511635383531-if02",
+    "baud": 115200,
+    "format": "8N1",
+    "label": "Power-Read-1M-repowered-confirm-NO-WRITES",
+    "started_utc": "2026-11-02T10:46:37.552347+00:00",
+    "capture_only_not_device_pass": true,
+    "bytes": 3748,
+    "reason": "interrupted",
+    "ended_utc": "2026-11-02T10:46:58.506015+00:00"
+  },
+  "result": "NOT_PASS",
+  "firmware_reflashed_this_run": false,
+  "control_log": "/home/zjy/PICO/pico-firmware/logs/flash/20261102-184636-power-read-1m-repowered-confirm.log",
+  "submitted_request_types": [
+    2,
+    5,
+    7
+  ]
+}

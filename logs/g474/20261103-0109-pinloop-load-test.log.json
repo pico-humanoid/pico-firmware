@@ -1,0 +1,11 @@
+{
+  "port": "/dev/ttyACM0",
+  "baud": 115200,
+  "format": "8N1",
+  "label": "PINLOOP-LOAD-TEST",
+  "started_utc": "2026-11-02T17:09:06.050664+00:00",
+  "capture_only_not_device_pass": true,
+  "bytes": 4583,
+  "reason": "duration_complete",
+  "ended_utc": "2026-11-02T17:09:20.146634+00:00"
+}

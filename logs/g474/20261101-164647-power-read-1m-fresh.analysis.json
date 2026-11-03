@@ -1,0 +1,291 @@
+{
+  "source": "/home/zjy/PICO/pico-firmware/logs/g474/20261101-164647-power-read-1m-fresh.log",
+  "verified_source": "/home/zjy/PICO/pico-firmware/logs/g474/20261101-164647-power-read-1m-fresh.verified.log",
+  "raw_prefix_excluded_lines": 137,
+  "raw_suffix_excluded_lines": 52,
+  "metadata": {
+    "port": "/dev/serial/by-id/usb-STMicroelectronics_STLINK-V3_002000303335511635383531-if02",
+    "baud": 115200,
+    "format": "8N1",
+    "duration_requested_s": 65,
+    "host_input_buffer_discarded": true,
+    "mcu_reset": false,
+    "serial_bytes_written": 0,
+    "capture_only_not_device_pass": true,
+    "bytes": 111010,
+    "started_utc": "2026-11-01T08:46:47.617344+00:00",
+    "duration_actual_s": 65.03877212699808,
+    "reason": "duration_complete",
+    "ended_utc": "2026-11-01T08:47:52.658405+00:00"
+  },
+  "events": {
+    "TX_SUBMIT": 300,
+    "TX_DONE": 300,
+    "RX": 300
+  },
+  "counts_by_query": {
+    "TX_SUBMIT": {
+      "Com_baud": 25,
+      "remoteCtrl": 25,
+      "fanspeedCtrl": 25,
+      "POWER_ID": 25,
+      "soundEffect": 25,
+      "currocpt": 25,
+      "sdT": 25,
+      "arTime": 25,
+      "version": 25,
+      "status03": 25,
+      "status04": 25,
+      "Can_baud": 25
+    },
+    "TX_DONE": {
+      "Com_baud": 25,
+      "remoteCtrl": 25,
+      "fanspeedCtrl": 25,
+      "POWER_ID": 25,
+      "soundEffect": 25,
+      "currocpt": 25,
+      "sdT": 25,
+      "arTime": 25,
+      "version": 25,
+      "status03": 25,
+      "status04": 25,
+      "Can_baud": 25
+    },
+    "RX": {
+      "Com_baud": 25,
+      "remoteCtrl": 25,
+      "fanspeedCtrl": 25,
+      "POWER_ID": 25,
+      "soundEffect": 25,
+      "currocpt": 25,
+      "sdT": 25,
+      "arTime": 25,
+      "version": 25,
+      "status03": 25,
+      "status04": 25,
+      "Can_baud": 25
+    }
+  },
+  "health_count": 13,
+  "first_health": {
+    "t_ms": 3340056,
+    "seen": 4095,
+    "valid": 4095,
+    "replies": 7558,
+    "invalid": 0,
+    "ignored": 7,
+    "query_timeouts": 2615,
+    "query_failures": 849,
+    "tx_submit": 10158,
+    "tx_done": 7580,
+    "tx_rejected": 0,
+    "tx_timeout": 2578,
+    "rx_fifo_lost": 0,
+    "rx_queue_drop": 0,
+    "rx_read_fail": 0,
+    "rx_unsupported": 0,
+    "tx_event_lost": 0,
+    "tx_event_unknown": 0,
+    "bus_off": 0,
+    "tec": 0,
+    "rec": 0,
+    "counters_ok": 1
+  },
+  "last_health": {
+    "t_ms": 3400056,
+    "seen": 4095,
+    "valid": 4095,
+    "replies": 7858,
+    "invalid": 0,
+    "ignored": 7,
+    "query_timeouts": 2615,
+    "query_failures": 849,
+    "tx_submit": 10458,
+    "tx_done": 7880,
+    "tx_rejected": 0,
+    "tx_timeout": 2578,
+    "rx_fifo_lost": 0,
+    "rx_queue_drop": 0,
+    "rx_read_fail": 0,
+    "rx_unsupported": 0,
+    "tx_event_lost": 0,
+    "tx_event_unknown": 0,
+    "bus_off": 0,
+    "tec": 0,
+    "rec": 0,
+    "counters_ok": 1
+  },
+  "health_window_s": 60.0,
+  "counter_deltas": {
+    "replies": 300,
+    "invalid": 0,
+    "ignored": 0,
+    "query_timeouts": 0,
+    "query_failures": 0,
+    "tx_submit": 300,
+    "tx_done": 300,
+    "tx_rejected": 0,
+    "tx_timeout": 0,
+    "rx_fifo_lost": 0,
+    "rx_queue_drop": 0,
+    "rx_read_fail": 0,
+    "rx_unsupported": 0,
+    "tx_event_lost": 0,
+    "tx_event_unknown": 0,
+    "bus_off": 0
+  },
+  "all_health_fresh": true,
+  "tec_range": [
+    0,
+    0
+  ],
+  "rec_range": [
+    0,
+    0
+  ],
+  "versions": [
+    "V1.08"
+  ],
+  "status_ranges": {
+    "battery_mv": {
+      "min": 46940,
+      "max": 46960
+    },
+    "motor_mv": {
+      "min": 46700,
+      "max": 46720
+    },
+    "temp_c": {
+      "min": 45,
+      "max": 45
+    }
+  },
+  "branch_current_ma_values": [
+    "0/0/0/0",
+    "0/0/0/10",
+    "0/0/10/0"
+  ],
+  "fault_switch_bits_values": [
+    "0xD00000"
+  ],
+  "parameters": {
+    "Can_baud": {
+      "index": "0x6001",
+      "raw_values": [
+        "01 01 00 03"
+      ],
+      "decoded_values": [
+        1
+      ]
+    },
+    "Com_baud": {
+      "index": "0x6002",
+      "raw_values": [
+        "01 00 03 01"
+      ],
+      "decoded_values": [
+        1
+      ]
+    },
+    "remoteCtrl": {
+      "index": "0x6004",
+      "raw_values": [
+        "00 03 01 00"
+      ],
+      "decoded_values": [
+        0
+      ]
+    },
+    "fanspeedCtrl": {
+      "index": "0x6005",
+      "raw_values": [
+        "03 01 00 00"
+      ],
+      "decoded_values": [
+        3
+      ]
+    },
+    "POWER_ID": {
+      "index": "0x6006",
+      "raw_values": [
+        "00 00 00 00"
+      ],
+      "decoded_values": [
+        0
+      ]
+    },
+    "soundEffect": {
+      "index": "0x6007",
+      "raw_values": [
+        "00 00 00 00"
+      ],
+      "decoded_values": [
+        0
+      ]
+    },
+    "currocpt": {
+      "index": "0x8001",
+      "raw_values": [
+        "00 00 A0 42"
+      ],
+      "decoded_values": [
+        80.0
+      ]
+    },
+    "sdT": {
+      "index": "0x8003",
+      "raw_values": [
+        "00 00 5C 42"
+      ],
+      "decoded_values": [
+        55.0
+      ]
+    },
+    "arTime": {
+      "index": "0x8004",
+      "raw_values": [
+        "00 00 A0 40"
+      ],
+      "decoded_values": [
+        5.0
+      ]
+    }
+  },
+  "parameters_match_historical_usb_can": {
+    "Can_baud": true,
+    "Com_baud": true,
+    "remoteCtrl": true,
+    "fanspeedCtrl": true,
+    "POWER_ID": true,
+    "soundEffect": true,
+    "currocpt": true,
+    "sdT": true,
+    "arTime": true
+  },
+  "malformed_lines": [],
+  "trailing_partial_line": false,
+  "unsafe_requests": [],
+  "unexpected_rx_lines": [],
+  "matched_requests": 300,
+  "unanswered_before_next_submit": [],
+  "orphan_rx": [],
+  "trailing_pending_request": null,
+  "id_mismatch_samples": 25,
+  "notes": [
+    "Raw capture includes a stale/truncated VCP prefix despite reset_input_buffer; analysis uses only complete HEALTH-bounded live interval.",
+    "No MCU reset or boot header captured; bitrate corroborated by live Can_baud=1, not independently measured on wire.",
+    "Counters cover first to last HEALTH only. Frame counts cover the full capture and can differ at boundaries.",
+    "No transaction sequence IDs; delayed/retried matching-category responses cannot be uniquely attributed."
+  ],
+  "communication_result": "PASS",
+  "verified_health_host_elapsed_s": [
+    2.7135178039970924,
+    62.45384584400017
+  ],
+  "sha256": {
+    "20261101-164647-power-read-1m-fresh.log": "378f7410ac72c41632c1ea3aad348d09f1caab584eb7fc927e333a4c4d2de416",
+    "20261101-164647-power-read-1m-fresh.verified.log": "db242f84db847e3e93893b3b004c539a8d4b0530840f002b14b875d75eef7d6c",
+    "20261101-164647-power-read-1m-fresh.chunks.jsonl": "992f95d7277f372cb720fd6149aa05c827909f7f1dbd8b54b0545a19ec2b8700"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "port": "/dev/ttyACM0",
+  "baud": 115200,
+  "format": "8N1",
+  "label": "G474-POWER-500K-TERM-ON",
+  "started_utc": "2026-11-02T16:36:47.037414+00:00",
+  "capture_only_not_device_pass": true,
+  "bytes": 6177,
+  "reason": "duration_complete",
+  "ended_utc": "2026-11-02T16:38:07.140988+00:00"
+}

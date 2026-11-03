@@ -1,0 +1,76 @@
+{
+  "recorded_at": "2026-11-03T18:40:37.767470+08:00",
+  "result": "SOFTWARE_BUILD_AND_HOST_TESTS_PASS",
+  "hardware_validation": "NOT_RUN; no flash/reset/serial/CAN operation in this task",
+  "preset": "Linux-Dual-Read-500K",
+  "topology": "BMS + power board on ONE shared FDCAN1 bus, not FDCAN1/FDCAN2",
+  "config": {
+    "can_bitrate": 500000,
+    "power_id": "0xAA",
+    "bms_rtr_dlc": 0,
+    "bms_crc_endian": "BIG",
+    "power_status_endian": "BIG",
+    "interval_ms": 200,
+    "timeout_ms": 700,
+    "max_attempts": 1,
+    "stale_ms": 10000
+  },
+  "tests": {
+    "ctest": "13/13 PASS",
+    "asan_ubsan": "13/13 PASS; ASAN_OPTIONS=detect_leaks=0",
+    "dual_at_1m_config": "correctly rejected",
+    "hex_to_bin": "byte-for-byte match",
+    "power_baud_symbols": "absent"
+  },
+  "regression_builds": [
+    "Loopback",
+    "External",
+    "BMS-Read-500K",
+    "Power-Read-1M",
+    "Power-Read-500K",
+    "Dual-Read-500K",
+    "Power-Baud-1M-to-500K",
+    "Power-Baud-500K-to-1M"
+  ],
+  "memory": {
+    "flash_bytes": 33424,
+    "linker_ram_bytes": 6632
+  },
+  "compiler": "arm-none-eabi-gcc (15:10.3-2021.07-4) 10.3.1 20210621 (release)",
+  "artifacts": [
+    {
+      "path": "/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Dual-Read-500K/PICO_CAN.elf",
+      "bytes": 1539456,
+      "sha256": "30e027d0e173c10ab312d0c9fb673fd6548e3479f78c8d10bb6719d74766ca95"
+    },
+    {
+      "path": "/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Dual-Read-500K/PICO_CAN.hex",
+      "bytes": 93989,
+      "sha256": "ecba79425a4b847b4e3b3c08129ab4738066406dc6f7881640d9e5e039de2352"
+    },
+    {
+      "path": "/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Dual-Read-500K/PICO_CAN.bin",
+      "bytes": 33424,
+      "sha256": "b33f32bb6ebf826676f8d187482813700bbe7b8be0f5a7c48e1e39bf5538f235"
+    }
+  ],
+  "source_sha256": {
+    "/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/Core/Src/main.c": "e42486f9fad229313ba3e9641a151653e394d591e0afc87fdb56f329d28a15a1",
+    "/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/Core/Src/fdcan.c": "98d7d32ee860a302ad8efb458053dc9b72e76e7711e8aac286f3623e6317d30b",
+    "/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/Core/Src/usart.c": "602b2c422f8a1c5beb2a7469a71be4afcf97c495daa31019a84b8d6735b02598",
+    "/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/protocol/bms_protocol.c": "f47d1116c19299d0b4942d1025730c5f0553b84b1f7589c41a251c62bd2a0d56",
+    "/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/protocol/power_protocol.c": "ae1a95160c954a67ea59263cdf3386155fe3de3c78a2df284d98e5a5bab04618",
+    "/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/device_reader.c": "8d7d76b9380ad9838b9576a05bda267a7bd47cd1afe730182e05602ed1fd5d18",
+    "/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/device_read_app.c": "0dfa1da83f487f9caec59491d495d191ee6fedb58b26c77355e9282ed3fc744e",
+    "/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/transport/can_transport.c": "ecbfb30b618edca2d943e5200743a61f2cabab9531ff933925ba3237ea0222e2",
+    "/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/App/dual_device_reader.c": "1865e0a1713457a83daca657b15ca9b284a2afc070473b1bcecab8af65c7ecde"
+  },
+  "logs": {
+    "host_tests": "/home/zjy/PICO/pico-firmware/logs/host/20261103-dual-500k-host_tests.log",
+    "sanitized_tests": "/home/zjy/PICO/pico-firmware/logs/host/20261103-dual-500k-sanitized_tests.log",
+    "firmware_build": "/home/zjy/PICO/pico-firmware/logs/host/20261103-dual-500k-firmware_build.log",
+    "six_mode_regression": "/home/zjy/PICO/pico-firmware/logs/host/20261103-dual-500k-six_mode_regression.log",
+    "baud_regression": "/home/zjy/PICO/pico-firmware/logs/host/20261103-dual-500k-baud_regression.log",
+    "reject_dual_1m": "/home/zjy/PICO/pico-firmware/logs/host/20261103-dual-500k-reject_dual_1m.log"
+  }
+}
