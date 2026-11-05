@@ -37,6 +37,8 @@
 
 ## 工程与日志下载
 
+- **[桌面开发控制台与日志查看器](docs/desktop-workbench.md)**：Windows / Ubuntu 原生程序、迁移步骤、USB 权限及运行环境说明；[下载便携程序](https://github.com/pico-humanoid/pico-firmware/releases/tag/desktop-v2026.11.05)。
+
 - [完整原始工程 ZIP](archives/PICO_CAN_20261027.zip) · [已展开源码](firmware/PICO_CAN/) · [六个烧录文件](firmware/PICO_CAN/IMPORT.md#六个原始固件文件)
 - [本轮原始日志](logs/2026-10-27/) · [全部历史日志索引](docs/validation/log-archive.md)
 

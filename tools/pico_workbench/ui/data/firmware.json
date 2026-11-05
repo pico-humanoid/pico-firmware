@@ -1,0 +1,60 @@
+{
+  "repository": "https://github.com/pico-humanoid/pico-firmware",
+  "commit": "b5f244c49f75de2f528c1afe5af4cf0a06f1d3e9",
+  "updated": "2026-11-03",
+  "features": [
+    {
+      "id": "BMS-Read-500K",
+      "name": "BMS 只读 · 500K",
+      "description": "标准 RTR 查询 0x100/101/102/103/105；CRC16 检查；电压、电流、容量、SOC 与温度解析。单设备默认 RTR DLC=8，可复制配置后改为已核对的实物参数。",
+      "status": "软件与构建已就绪；G474 当前链路待复测"
+    },
+    {
+      "id": "Power-Read-1M",
+      "name": "电源板只读 · 1M",
+      "description": "读取版本、两种状态与九个参数。扩展帧，设备 ID 默认 0xAA，状态默认大端；不发送支路控制或参数写入。",
+      "status": "仓库有历史 1M 窗口通过；不代表当前新底板已通过"
+    },
+    {
+      "id": "Power-Read-500K",
+      "name": "电源板只读 · 500K",
+      "description": "使用 500K 访问已独立确认工作在 500K 的电源板。此镜像只改变 MCU 通信速率，不会修改设备速率。",
+      "status": "USB-CAN 设备侧窗口已通过；G474 仍待复测"
+    },
+    {
+      "id": "Dual-Read-500K",
+      "name": "BMS + 电源板 · 同总线 500K",
+      "description": "两设备共享 FDCAN1、500K，独立状态和交替调度；BMS RTR DLC=0，CRC 大端；共享间隔至少 200ms、超时 700ms。",
+      "status": "主机测试 13/13 通过；尚未实机验收"
+    }
+  ],
+  "boundaries": [
+    "当前双设备读取是同一 FDCAN1 总线，不是 CAN1/CAN2 双总线。三路底板接口不代表固件已全部启用。",
+    "普通 BMS / Power / Dual 镜像只读。受控改速 PowerBaud、引脚环回 PinLoop 源码保留在导入项目中，参数修改仍使用其原有明确授权和调试流程，不在页面自动执行。",
+    "新日志为 8 列报文及 BMS / POWER / HEALTH / DEVICE_HEALTH；页面显示原始解析和计数，采集完成后人工验收，不伪造设备 PASS。",
+    "仓库当前 G474 外部链路有 0 TX_DONE/0 RX、bus-off 失败记录；USB-CAN→设备通过不等于 G474→设备通过。",
+    "主机测试、构建回归、设备侧实测、G474 链路及新底板验收分别记录；本页不会把历史或软件结果当成本次实物结果。"
+  ],
+  "documents": [
+    {
+      "title": "BMS / 电源板读取与验收",
+      "local": "device-read-validation.md",
+      "url": "https://github.com/pico-humanoid/pico-firmware/blob/main/docs/device-read-validation.md"
+    },
+    {
+      "title": "11 月 3 日固件周报与验证边界",
+      "local": "firmware-weekly.md",
+      "url": "https://github.com/pico-humanoid/pico-firmware/blob/main/docs/weekly/2026-11-03.md"
+    },
+    {
+      "title": "底板电路与接口依据",
+      "local": "board-design.md",
+      "url": "https://github.com/pico-humanoid/pico-electronics/blob/main/board/主板方案.md"
+    },
+    {
+      "title": "设计文件归档边界",
+      "local": "design-record.md",
+      "url": "https://github.com/pico-humanoid/pico-electronics/blob/main/docs/设计与验证记录.md"
+    }
+  ]
+}

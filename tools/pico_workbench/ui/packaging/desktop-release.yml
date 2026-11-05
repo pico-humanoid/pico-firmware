@@ -1,0 +1,81 @@
+name: PICO desktop portable release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/pico_workbench/**'
+      - '.github/workflows/desktop-release.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: Windows-x64
+          - os: ubuntu-24.04
+            platform: Ubuntu-24.04-x86_64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Linux GUI build prerequisites
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -qq && sudo apt-get install -y python3-tk xvfb xauth
+      - run: python -m pip install pyinstaller==6.22.3
+      - name: Build portable distribution
+        run: python tools/pico_workbench/ui/packaging/build_distribution.py --repo . --output dist
+      - name: Windows tests and frozen GUI smoke check
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          python -m unittest discover -s dist/PICO-Workbench-Windows-x64/project/ui/tests
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & dist/PICO-Workbench-Windows-x64/PICOCLI.exe self-test
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Ubuntu tests and frozen GUI smoke check
+        if: runner.os == 'Linux'
+        run: |
+          xvfb-run -a python -m unittest discover -s dist/PICO-Workbench-Ubuntu-24.04-x86_64/project/ui/tests
+          xvfb-run -a dist/PICO-Workbench-Ubuntu-24.04-x86_64/PICOCLI self-test
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PICO-${{ matrix.platform }}
+          path: |
+            dist/*.zip
+            dist/*.tar.gz
+            dist/*.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: PICO-*
+          merge-multiple: true
+          path: release-assets
+      - name: Publish verified Windows and Ubuntu packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          COMMIT: ${{ github.sha }}
+        run: |
+          tag=desktop-v2026.11.05
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" release-assets/* --clobber
+            gh release edit "$tag" --notes-file docs/desktop-workbench.md
+          else
+            gh release create "$tag" release-assets/* --target "$COMMIT" --title 'PICO 桌面工具 2026.11.05 · Windows / Ubuntu' --notes-file docs/desktop-workbench.md
+          fi

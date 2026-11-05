@@ -1,0 +1,129 @@
+{
+  "repository": "https://github.com/pico-humanoid/pico-electronics",
+  "updated": "2026-10-31",
+  "source": "https://github.com/pico-humanoid/pico-electronics/blob/main/board/主板方案.md",
+  "blob": "f96c8d21664a8a6e77e24097b93ddb1770ddd3b9",
+  "note": "根据仓库主板方案与保存的焊盘网络记录整理。最终下单原理图/制造文件尚未完整归档；接线前核对实板修订、跳线及订单。新底板三路实测尚待完成。",
+  "channels": [
+    {
+      "name": "CAN1",
+      "ic": "U1 · TJA1051T/3",
+      "tx": "PA12 / CN10-12 · AF9",
+      "rx": "PA11 / CN10-14 · AF9",
+      "ports": "CN1 / CN2",
+      "termination": "R1 / SW1 · 120 Ω",
+      "tvs": "D1 · NUP2105LT1G",
+      "purpose": "规划：关节与电源板起步 1M。最新只读配置也可在本路使用 500K；同总线设备须匹配速率。"
+    },
+    {
+      "name": "CAN2",
+      "ic": "U2 · TJA1051T/3",
+      "tx": "PB13 / CN10-30 · AF9",
+      "rx": "PB12 / CN10-16 · AF9",
+      "ports": "CN3 / CN4",
+      "termination": "R2 / SW2 · 120 Ω",
+      "tvs": "D2 · NUP2105LT1G",
+      "purpose": "规划接 BMS，默认 500K 待实机核对。当前新增设备固件仅实现 FDCAN1，并未启用此路。"
+    },
+    {
+      "name": "CAN3",
+      "ic": "U3 · TJA1051T/3",
+      "tx": "PA15 / CN7-17 · AF11",
+      "rx": "PA8 / CN10-23 · AF11",
+      "ports": "CN5 / CN6",
+      "termination": "R3 / SW3 · 120 Ω",
+      "tvs": "D3 · NUP2105LT1G",
+      "purpose": "扩展预留；固件配置与实测待完成。使用 PA15 后保留 PA13/PA14 的 SWD。"
+    }
+  ],
+  "details": [
+    {
+      "title": "底板电源",
+      "rows": [
+        [
+          "J1-1 / J1-2",
+          "5V / GND；来自电源板 5V/2A"
+        ],
+        [
+          "CN7-6",
+          "设计记录接 5V；外部供电跳线须按实板修订与手册核对"
+        ],
+        [
+          "CN7-16",
+          "3V3，由开发板给底板逻辑侧供电"
+        ],
+        [
+          "LED1/R4 · LED2/R5",
+          "5V / 3.3V 电源提示"
+        ],
+        [
+          "输入边界",
+          "J1 只接 5V 与 GND，不能接 48V"
+        ]
+      ]
+    },
+    {
+      "title": "TJA1051T/3 逻辑与供电",
+      "rows": [
+        [
+          "1 TXD / 4 RXD",
+          "对应 MCU CAN_TX / CAN_RX"
+        ],
+        [
+          "3 VCC / 5 VIO",
+          "5V / 3.3V；两路供电分别去耦"
+        ],
+        [
+          "2 GND / 8 S",
+          "信号地 / 接地正常模式"
+        ],
+        [
+          "7 CANH / 6 CANL",
+          "对应通道的 H / L"
+        ]
+      ]
+    },
+    {
+      "title": "GH 接口与端接",
+      "rows": [
+        [
+          "CN1…CN6",
+          "1 脚 CANH，2 脚 CANL；3/4 为机械固定焊盘"
+        ],
+        [
+          "同路两个插座",
+          "并联；六个插座仍然只有三条独立总线"
+        ],
+        [
+          "SW1…SW3",
+          "仅当本板位于该总线末端时投入本路 120 Ω"
+        ],
+        [
+          "线束",
+          "核对插头视角、方向、壳体和端子；参考地按实际线束方案处理"
+        ]
+      ]
+    },
+    {
+      "title": "LED 与蜂鸣器",
+      "rows": [
+        [
+          "LED3/R8 · LED_G",
+          "PB1 / CN10-24"
+        ],
+        [
+          "LED4/R9 · LED_R",
+          "PB2 / CN10-22"
+        ],
+        [
+          "BZ1 / Q1 / R6/R7",
+          "PB0 / CN7-34，经三极管驱动"
+        ],
+        [
+          "当前固件边界",
+          "上述外接提示尚待适配与实测；原验证程序仍使用 PA5 / LD2"
+        ]
+      ]
+    }
+  ]
+}

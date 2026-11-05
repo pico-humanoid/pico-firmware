@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PICO · 开发控制台</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<aside class="sidebar">
+ <a class="brand" href="/"><span class="brand-icon">P</span><span>PICO<span class="brand-sub">DEVELOPMENT DESK</span></span></a>
+ <div class="side-label">开发空间</div>
+ <nav aria-label="主导航">
+  <button class="nav active" data-view="desk"><span>▦</span> 开发工作台</button>
+  <button class="nav" data-view="code"><span>⌘</span> 代码工作区</button>
+  <button class="nav" data-view="profiles"><span>⊕</span> 实验配置</button>
+  <button class="nav" data-view="history"><span>◷</span> 实验记录</button>
+  <button class="nav" data-view="firmware"><span>⇄</span> 固件新功能</button>
+  <button class="nav" data-view="wiring"><span>⌁</span> 接线与流程</button>
+  <button class="nav" data-view="environment"><span>⚙</span> 环境检查</button>
+ </nav>
+ <div class="side-device"><span class="tiny-dot"></span> NUCLEO-G474RE<p>STM32G474 · Cortex-M4</p><div class="chip">FDCAN1</div><div class="chip">1 Mbps</div></div>
+ <div class="side-foot"><span id="connection-dot" class="tiny-dot"></span><span id="connection-text">正在连接本机服务</span><small>本地运行 · 数据保存在你的电脑</small></div>
+</aside>
+<main>
+ <header><div class="breadcrumb">PICO / <span id="page-name">开发工作台</span></div><div class="header-right"><button class="tool-button" data-open="cubemx">打开 CubeMX</button><button class="tool-button" data-open="vscode">打开 VS Code 项目</button><span class="os-badge" id="os-name">本机</span><button class="plain" id="refresh">↻ 刷新设备</button></div></header>
+ <section id="desk" class="view active">
+  <div class="page-title"><div><div class="eyebrow">YOUR NEXT EXPERIMENT</div><h1>让开发流程，在一个界面里完成。</h1><p>从编译到验证，每一步都有状态，每一次实验都有记录。</p></div><span class="outline-badge">经典 CAN · 标准帧</span></div>
+  <div class="configuration"><div><label for="mode">实验配置</label><select id="mode"><option value="Loopback">内部回环</option></select></div><div class="mode-note" id="mode-note"></div><button class="plain" id="manage-profiles">＋ 自定义实验</button></div>
+  <div class="workflow">
+   <article class="step-card"><span class="step-num">01</span><h2>编译固件</h2><p>把当前代码生成所选配置的固件。</p><div class="step-state" id="build-state">等待开始</div><button class="action secondary" id="build-btn">编译当前配置 <span>↗</span></button></article>
+   <article class="step-card"><span class="step-num">02</span><h2>烧录开发板</h2><p>通过 ST-LINK 写入、校验并复位。</p><div class="step-state" id="flash-state">等待开始</div><button class="action secondary" id="flash-btn">烧录当前配置 <span>↗</span></button></article>
+   <article class="step-card emphasized"><span class="step-num">03</span><h2>采集与验证</h2><p>打开日志后，按开发板 RESET。</p><div class="step-state" id="board-state">等待开始</div><button class="action primary" id="board-btn">打开开发板日志 <span>→</span></button></article>
+  </div>
+  <div class="devices">
+   <div class="device"><div class="device-icon">↔</div><div class="device-field"><label for="board-port">开发板日志串口 <span>115200 8N1</span></label><select id="board-port"><option value="">正在查找 ST-LINK</option></select></div><span class="device-tag" id="board-tag">未连接</span></div>
+   <div class="device"><div class="device-icon">⌁</div><div class="device-field"><label for="can-port">USB-CAN-A 适配器 <span>串口 2M / CAN 1M</span></label><select id="can-port"><option value="">正在查找适配器</option></select></div><span class="device-tag" id="can-tag">未连接</span></div>
+  </div>
+  <div id="external-panel" class="external-panel hidden"><div><strong>外部双向收发</strong><p>确认接线 → 打开板端日志 → 按 RESET → 点击发送。自动发送 100 帧并检查返回。</p></div><button class="action primary" id="can-btn">发送 100 帧并检查返回 →</button></div>
+  <div class="hint" id="guidance">从「编译当前配置」开始。已编译且代码未修改时，可以直接烧录。</div>
+  <div class="metrics">
+   <div><span>板端提交发送</span><strong id="metric-tx">0<small> / 100</small></strong></div>
+   <div><span>板端发送完成</span><strong id="metric-done">0<small> / 100</small></strong></div>
+   <div><span>板端收到帧数</span><strong id="metric-rx">0<small> / 100</small></strong></div>
+   <div><span>本次验收</span><strong id="verdict" class="verdict">尚未测试</strong></div>
+  </div>
+  <section class="panel hidden telemetry-panel" id="telemetry-panel"><div class="panel-head"><strong>设备只读数据与健康状态</strong><span>采集完成 ≠ 设备验收通过</span></div><div id="telemetry"></div></section>
+  <div class="monitor-grid">
+   <section class="panel terminal-panel"><div class="panel-head"><div><span class="live-indicator"></span><strong>运行控制台</strong></div><div class="console-actions"><select aria-label="选择任务" id="job-select"><option value="">暂无任务</option></select><button class="plain" id="stop-btn" disabled>停止任务</button></div></div><pre id="console" aria-live="polite">PICO 开发控制台已就绪。
+选择实验配置，开始你的下一次验证。</pre><div class="console-foot"><span id="console-status">所有输出来自实际工具和设备</span><span id="console-count">0 lines</span></div></section>
+   <section class="panel frames-panel"><div class="panel-head"><strong>实时 CAN 帧</strong><select id="frame-filter" aria-label="报文方向"><option value="all">全部方向</option><option value="RX">接收 RX</option><option value="TX">发送 TX</option></select></div><div class="table-scroll"><table><thead><tr><th>时间 ms</th><th>方向</th><th>ID</th><th>原始数据 HEX</th></tr></thead><tbody id="frames"><tr><td colspan="4" class="empty">测试开始后，报文会出现在这里。</td></tr></tbody></table></div><div class="panel-foot">0x321 电脑 → 开发板　 /　 0x123 开发板 → 电脑</div></section>
+  </div>
+ </section>
+ <section id="profiles" class="view">
+  <div class="page-title"><div class="eyebrow">EXPERIMENT CONFIGURATIONS</div><h1>实验由你定义。</h1><p>新增、复制或修改自定义配置。选择工程、固件和构建参数；配置名称本身不会改变硬件、协议或引脚。</p></div>
+  <div class="toolbar"><button class="small-primary" id="new-profile">＋ 新增实验配置</button></div><div id="profile-list"></div>
+  <form class="panel form-panel hidden" id="profile-form">
+   <div class="panel-head"><strong id="profile-form-title">新增实验配置</strong><button type="button" class="plain" id="close-profile">收起</button></div>
+   <input type="hidden" id="profile-id">
+   <div class="form-grid">
+    <label>实验名称<input id="profile-name" required maxlength="80" placeholder="例如：底板 CAN1 电源板只读"></label>
+    <label>验收方式<select id="profile-base"><option value="Custom">自由日志采集，不自动套用验收</option><option value="Device">设备只读日志（8 列 + HEALTH）</option><option value="Loopback">原内部回环 100 帧判据</option><option value="External">原外部双向各 100 帧判据</option></select></label>
+    <label class="wide">CMake 项目目录<input id="profile-project" required placeholder="本机包含 CMakeLists.txt 的目录"></label>
+    <label>构建类型<select id="profile-build"><option>Debug</option><option>Release</option><option>RelWithDebInfo</option><option>MinSizeRel</option></select></label>
+    <label>固件文件名<input id="profile-elf" value="PICO_CAN.elf" required></label>
+    <label class="wide">工具链文件（相对项目目录；普通主机工程可留空）<input id="profile-toolchain" value="cmake/gcc-arm-none-eabi.cmake"></label>
+    <label>日志波特率<select id="profile-baud"><option>9600</option><option>19200</option><option>38400</option><option>57600</option><option selected>115200</option><option>230400</option><option>460800</option><option>921600</option><option>2000000</option></select></label>
+    <label>采集秒数（设备／自由日志）<input id="profile-seconds" type="number" min="10" max="3600" value="80"></label>
+    <label class="wide">实验说明<textarea id="profile-description" rows="2"></textarea></label>
+    <label class="wide">CMake 参数（JSON 对象）<textarea id="profile-options" rows="5" spellcheck="false">{}</textarea><small>例如 {"PICO_APP":"BMS","PICO_DEVICE_BITRATE":500000}。CAN2/3 需要固件实际配置，不会因改名称自动启用。</small></label>
+   </div><div class="form-actions"><button type="submit" class="small-primary">保存配置</button></div>
+  </form>
+ </section>
+ <section id="code" class="view">
+  <div class="page-title"><div class="eyebrow">CODE WORKSPACE</div><h1>从读懂代码，到改变行为。</h1><p>编辑 App 应用代码后保存，再回到工作台编译。每次保存自动保留原文件备份。</p></div>
+  <div class="code-layout"><div class="file-list"><strong>工程文件</strong><button data-file="App/can_bringup.c">App / can_bringup.c</button><button data-file="App/can_bringup.h">App / can_bringup.h</button><button data-file="Core/Src/main.c">Core / main.c</button><button data-file="Core/Src/fdcan.c">Core / fdcan.c</button><button data-file="Core/Src/usart.c">Core / usart.c</button><button data-file="Core/Src/stm32g4xx_it.c">Core / 中断入口</button><button data-file="CMakeLists.txt">CMakeLists.txt</button><p>硬件配置生成的文件供阅读；引脚、时钟等通过 CubeMX 修改。</p></div><div class="editor"><div class="panel-head"><strong id="file-name">App/can_bringup.c</strong><div><span id="file-state">正在载入</span><button id="reload-source" class="plain">重新载入</button><button id="save-source" class="small-primary">保存代码</button></div></div><textarea id="source" spellcheck="false" aria-label="源代码编辑器"></textarea></div></div>
+ </section>
+ <section id="history" class="view"><div class="page-title"><div class="eyebrow">EXPERIMENT LOGBOOK</div><h1>每一次验证，都有迹可循。</h1><p>可修改标题、目的、硬件版本、人员、备注和人工结论；自动测量与原始日志保留，归档可恢复。</p></div>
+  <div class="toolbar"><button class="small-primary" id="new-record">＋ 新建实验记录</button><label><input type="checkbox" id="show-archived"> 包含已归档</label></div>
+  <form class="panel form-panel hidden" id="record-form"><div class="panel-head"><strong>编辑实验记录</strong><button type="button" class="plain" id="close-record">收起</button></div><input type="hidden" id="record-id"><div class="form-grid">
+   <label class="wide">记录标题<input id="record-title" maxlength="160" required></label><label>实验配置<select id="record-mode"></select></label><label>人工结论<select id="record-conclusion"><option value="pending">待评估</option><option value="pass">通过（人工结论）</option><option value="fail">未通过（人工结论）</option><option value="incomplete">条件不足／未完成</option></select></label>
+   <label class="wide">实验目的<textarea id="record-purpose" rows="2"></textarea></label><label>参与人员<input id="record-participants"></label><label>实板／固件／接线版本<input id="record-hardware"></label><label class="wide">备注、异常与后续动作<textarea id="record-notes" rows="5"></textarea></label>
+  </div><div class="form-actions"><button type="submit" class="small-primary">保存记录</button></div></form>
+  <div id="history-list"></div><div class="panel file-panel"><div class="panel-head"><strong>本地日志文件</strong></div><div id="file-downloads"></div></div></section>
+ <section id="firmware" class="view"><div class="page-title"><div class="eyebrow">FIRMWARE UPDATES</div><h1>仓库的新功能，在这里使用。</h1><p id="firmware-revision">正在读取本地源码快照信息…</p></div><div id="firmware-features"></div><div class="panel guide-card" id="firmware-boundaries"></div><div class="panel guide-card" id="firmware-documents"></div></section>
+ <section id="wiring" class="view"><div class="page-title"><div class="eyebrow">PROJECT BOARD CONNECTIONS</div><h1>按你们的底板方案接线。</h1><p>NUCLEO-G474RE + 三路 TJA1051T/3；以 GitHub 电气仓库的器件、接口与网络为依据。</p></div><div id="wiring-source" class="info-note"></div><div id="wiring-channels" class="guide-grid"></div><div id="wiring-details" class="guide-grid"></div></section>
+ <section id="environment" class="view"><div class="page-title"><div class="eyebrow">LOCAL ENVIRONMENT</div><h1>工具就绪，流程才顺畅。</h1><p>界面自动查找 Windows 与 Ubuntu 的本机工具，两个系统使用独立构建目录。</p></div><div class="panel environment-panel" id="environment-list"></div><div class="info-note">Ubuntu 串口通常为 /dev/ttyACM* 和 /dev/ttyUSB*。若提示权限不足，使用原 Ubuntu 开发环境的 USB 权限安装入口，再重新连接设备。适配器协议仅支持原 USBCAN V2.12 / Waveshare USB-CAN-A；CH340 芯片名称本身不能证明协议兼容。</div><button class="plain shutdown" id="shutdown">关闭本地服务</button></section>
+ <footer>PICO CAN LAB <span>本机浏览器界面 · Windows / Ubuntu</span></footer>
+</main>
+<div id="toast" role="status"></div>
+</body></html>
