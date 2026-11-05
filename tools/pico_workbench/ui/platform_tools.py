@@ -48,7 +48,14 @@ def environment():
     env = os.environ.copy()
     if getattr(sys, "frozen", False) and not WINDOWS:
         env["LD_LIBRARY_PATH"] = env.get("LD_LIBRARY_PATH_ORIG", "")
-    bins = [str(Path(p).parent) for key in ("gcc", "ninja", "cmake", "programmer") if (p := tool(key))]
+    portable = Path(env.get("PICO_TOOLS_ROOT", str(ROOT.parent / "tools")))
+    bins = [str(portable / "bin")] if (portable / "bin").is_dir() else []
+    bins += [str(Path(p).parent) for key in ("gcc", "ninja", "cmake", "programmer") if (p := tool(key))]
+    roots = bundle_roots()
+    if roots:
+        env.setdefault("CUBE_BUNDLE_PATH", str(roots[0]))
+    if (portable / "stm32cube/packs").is_dir():
+        env.setdefault("CMSIS_PACK_ROOT", str(portable / "stm32cube/packs"))
     env["PATH"] = os.pathsep.join(bins + [env.get("PATH", "")])
     env["PYTHONUNBUFFERED"] = "1"
     env["PYTHONIOENCODING"] = "utf-8"

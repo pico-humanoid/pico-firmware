@@ -10,7 +10,9 @@ from native import error_line
 
 class WorkspaceAndLogTests(unittest.TestCase):
     def test_workspace_points_to_selected_project_and_source(self):
-        path, entry = workspace.prepare("BMS-Read-500K")
+        # The public app build must also be testable on a clean CI machine.
+        with patch.object(tools, "tool", side_effect=lambda name: str(Path(tempfile.gettempdir()) / "pico-test-tools" / name)):
+            path, entry = workspace.prepare("BMS-Read-500K")
         data = json.loads(path.read_text(encoding="utf-8"))
         self.assertEqual(Path(data["folders"][0]["path"]), tools.project_dir("BMS-Read-500K"))
         self.assertEqual(entry.name, "device_read_app.c")
@@ -25,6 +27,13 @@ class WorkspaceAndLogTests(unittest.TestCase):
         dual, entry = workspace.prepare("Dual-Read-500K")
         self.assertNotEqual(bms, dual)
         self.assertEqual(entry.name, "dual_device_reader.c")
+
+    def test_missing_debug_tools_omits_unusable_launch(self):
+        with patch.object(tools, "tool", return_value=None):
+            path, _ = workspace.prepare("BMS-Read-500K")
+        value = json.loads(path.read_text(encoding="utf-8"))
+        self.assertNotIn("launch", value)
+        self.assertIn("tasks", value)
 
     def test_launcher_opens_workspace_and_entry_not_just_welcome(self):
         with patch.object(tools, "desktop_tools", return_value={"vscode": "/tools/code"}), patch.object(tools.subprocess, "Popen") as proc:

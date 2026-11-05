@@ -66,7 +66,8 @@ def prepare(mode):
             gdb, stlink, programmer = tools.tool("gdb"), tools.tool("stlink-server"), tools.tool("programmer")
             if gdb and stlink and programmer:
                 debug.update(gdb=gdb, serverExe=stlink, serverCubeProgPath=str(Path(programmer).parent))
-                pack_root = Path(os.environ.get("CMSIS_PACK_ROOT") or
+                portable_packs = tools.ROOT.parent / "tools/stm32cube/packs"
+                pack_root = Path(os.environ.get("CMSIS_PACK_ROOT") or (str(portable_packs) if portable_packs.is_dir() else "") or
                     (str(Path(os.environ.get("LOCALAPPDATA", "")) / "stm32cube/packs") if tools.WINDOWS
                      else str(Path.home() / ".local/share/stm32cube/packs")))
                 svds = list(pack_root.glob("STMicroelectronics/stm32g4xx_dfp/*/SVD/STM32G474.svd"))
