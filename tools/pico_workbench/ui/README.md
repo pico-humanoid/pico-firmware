@@ -2,6 +2,10 @@
 
 当前默认入口是原生桌面窗口，与之前 Ubuntu 的简单操作窗口类似。运行不需要浏览器或网页服务。
 
+## 便携包与迁移
+
+Windows 与 Ubuntu 24.04 x86_64 的公开便携程序已发布，包含 Python/Tk 和源码工作区。见[下载与使用说明](https://github.com/pico-humanoid/pico-firmware/releases/tag/desktop-v2026.11.05)。完整离线迁移包另外附带原用户的开发工具，不作为第三方软件的公开镜像。
+
 ## Windows 打开方式
 
 桌面有两个独立入口：
@@ -73,4 +77,4 @@
 
 历史网页源码保留在 ui/server.py 与 ui/static 作为备份，默认启动入口已经不使用它。
 
-验证：python -m unittest discover -s ui/tests -v。日志改版加入了单位换算、报文计数、零计数误报、ID 筛选、报告发现、分页和实时阅读位置检查。Windows 已实际读取回环、设备 CSV/LOG、USB-CAN JSONL；Ubuntu 共用这套 Tk 源码，但尚未在 Ubuntu 实机复验。
+验证：python -m unittest discover -s ui/tests -v。日志改版加入了单位换算、报文计数、零计数误报、ID 筛选、报告发现、分页和实时阅读位置检查。Windows 已实际读取回环、设备 CSV/LOG、USB-CAN JSONL；Windows 与 Ubuntu 24.04 WSL2 中各 53 项检查通过；两套便携程序均通过换目录自检，完整包的六种实验均已软件编译。此次打包未进行实物 USB/CAN 验收。

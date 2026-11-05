@@ -46,6 +46,7 @@ def main():
     parser.add_argument("--downloads", required=True, type=Path)
     parser.add_argument("--windows-home", type=Path)
     parser.add_argument("--serial-driver", type=Path)
+    parser.add_argument("--prepared-linux-tools", type=Path)
     parser.add_argument("--no-archive", action="store_true")
     args = parser.parse_args()
     windows = os.name == "nt"
@@ -57,18 +58,23 @@ def main():
     copy_tree(args.app, root)
     tools = root / "tools"
     tools.mkdir(parents=True, exist_ok=True)
-    print("Attaching STM32 tool bundles...", flush=True)
-    bundles = windows_home / "AppData/Local/stm32cube/bundles" if windows else source_tools / "stm32cube/bundles"
-    copy_tree(bundles, tools / "stm32cube/bundles")
-    packs = windows_home / "AppData/Local/stm32cube/packs/STMicroelectronics" if windows else source_tools / "stm32cube/packs/STMicroelectronics"
-    copy_tree(packs, tools / "stm32cube/packs/STMicroelectronics")
-    cube = d / "STM32Tools/STM32CubeMX-6.18.1/MX" if windows else source_tools / "STM32CubeMX-6.18.1/MX"
-    print("Attaching CubeMX and firmware repository...", flush=True)
-    copy_tree(cube, tools / "STM32CubeMX/MX")
-    firmware = "STM32Cube_FW_G4_V1.6.3"
-    copy_tree(d / "STM32Cube/Respsitory" / firmware, tools / "firmware" / firmware)
-    (tools / "bin").mkdir(exist_ok=True)
-    shutil.copy2(d / "STM32Tools/bin/cube.exe" if windows else source_tools / "bin/cube", tools / "bin" / ("cube.exe" if windows else "cube"))
+    if not windows and args.prepared_linux_tools:
+        print("Extracting prepared Linux tool archive...", flush=True)
+        with tarfile.open(args.prepared_linux_tools) as tar:
+            tar.extractall(root, filter="data")
+    else:
+        print("Attaching STM32 tool bundles...", flush=True)
+        bundles = windows_home / "AppData/Local/stm32cube/bundles" if windows else source_tools / "stm32cube/bundles"
+        copy_tree(bundles, tools / "stm32cube/bundles")
+        packs = windows_home / "AppData/Local/stm32cube/packs/STMicroelectronics" if windows else source_tools / "stm32cube/packs/STMicroelectronics"
+        copy_tree(packs, tools / "stm32cube/packs/STMicroelectronics")
+        cube = d / "STM32Tools/STM32CubeMX-6.18.1/MX" if windows else source_tools / "STM32CubeMX-6.18.1/MX"
+        print("Attaching CubeMX and firmware repository...", flush=True)
+        copy_tree(cube, tools / "STM32CubeMX/MX")
+        firmware = "STM32Cube_FW_G4_V1.6.3"
+        copy_tree(d / "STM32Cube/Respsitory" / firmware, tools / "firmware" / firmware)
+        (tools / "bin").mkdir(exist_ok=True)
+        shutil.copy2(d / "STM32Tools/bin/cube.exe" if windows else source_tools / "bin/cube", tools / "bin" / ("cube.exe" if windows else "cube"))
     print("Attaching editor and offline extensions...", flush=True)
     editor = tools / "vscode"
     editor.mkdir(exist_ok=True)
@@ -108,7 +114,7 @@ def main():
         copy_tree(windows_home / "AppData/Local/stm32cube/bundles/stlink-usb-driver", tools / "drivers/ST-LINK")
         if args.serial_driver:
             shutil.copy2(args.serial_driver, tools / "drivers/CH341SER.EXE")
-        write_text(root / "首次准备.cmd", '@echo off\r\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0首次准备.ps1"\r\npause\r\n')
+        write_text(root / "首次准备.cmd", '@echo off\r\nfor %%F in ("%~dp0*.ps1") do powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%%~fF"\r\npause\r\n')
         ps = r'''$ErrorActionPreference = 'Stop'
 $bundleRoot = $PSScriptRoot
 $repository = Join-Path $env:USERPROFILE 'STM32Cube\Repository'

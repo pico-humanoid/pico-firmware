@@ -71,3 +71,9 @@ GitHub 公开包中的日志查看器可直接使用。开发控制台界面和�
 ## 本版软件验证
 
 Windows 原生便携程序与 Ubuntu 24.04 WSL2 隔离环境中的原生 Linux 便携程序均已通过双窗口、日志解析、单位、零计数和工作区自检；两系统各 53 项源码检查通过。尚未在此次打包测试中连接实物开发板，WSL2 测试不替代目标电脑的 USB 和电气链路验证。
+
+## 完整离线工具包的软件检查
+
+Windows 和 Ubuntu 24.04 WSL2 的完整迁移副本均已从包内工具路径编译六种配置：Loopback、External、BMS-Read-500K、Power-Read-1M、Power-Read-500K、Dual-Read-500K。包内 VS Code 扩展和 Cube/Clangd 检查通过；Ubuntu CubeMX 的 JRE 可运行。迁移后仍先重新编译所选实验，再烧录，避免复用其他目录的缓存和调试路径。
+
+GitHub Release 的 Windows / Ubuntu 公开应用包已重新下载并核对 SHA-256，在包含空格的新目录、移除 Python 环境变量后通过自检。公开包不包含第三方编辑器和开发工具安装；完整工具副本供原用户本地迁移。
