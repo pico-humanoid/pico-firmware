@@ -5,24 +5,30 @@
 
 static unsigned checks;
 #define CHECK(x) do { ++checks; if (!(x)) { fprintf(stderr,"%s:%d: %s\n",__FILE__,__LINE__,#x); exit(1); } } while(0)
-FDCAN_GlobalTypeDef fake_fdcan1;
-static FDCAN_HandleTypeDef handle = {.Instance=FDCAN1}, other;
+#if defined(PICO_CAN_BOUNDED_TX_RETRY) && PICO_CAN_BOUNDED_TX_RETRY
+#define EXPECTED_AUTO_RETRY ENABLE
+#else
+#define EXPECTED_AUTO_RETRY DISABLE
+#endif
+FDCAN_GlobalTypeDef fake_fdcan1, fake_fdcan3;
+static FDCAN_HandleTypeDef handle = {.Instance=FDCAN3}, other = {.Instance=FDCAN1};
 static uint32_t clock_hz=16000000U, tick, pending_mask, latest_mask, aborts;
 static uint32_t free_level=3;
 static HAL_StatusTypeDef status=HAL_OK, rx_status=HAL_OK, submit_status=HAL_OK;
-static FDCAN_FilterTypeDef configured_filter, standard_filter, extended_filter;
+static FDCAN_FilterTypeDef configured_filter, standard_filter, extended_filter, extended_filters[2];
 static FDCAN_TxHeaderTypeDef submitted;
 static uint8_t submitted_data[8];
 static FDCAN_RxHeaderTypeDef rx_header;
 static uint8_t rx_data[64]; static uint32_t rx_count;
-static FDCAN_TxEventFifoTypeDef events[8]; static uint8_t events_in, events_out;
+static FDCAN_TxEventFifoTypeDef events[8]; static uint32_t events_in, events_out;
 static unsigned logged_submit, logged_done, logged_timeout;
+static unsigned timeout_pending,timeout_not_pending;
 static CanFrame last_log;
 uint32_t HAL_GetTick(void) { return tick; }
 uint32_t HAL_RCC_GetPCLK1Freq(void) { return clock_hz; }
 HAL_StatusTypeDef HAL_FDCAN_DeInit(FDCAN_HandleTypeDef *h) { (void)h; return status; }
 HAL_StatusTypeDef HAL_FDCAN_Init(FDCAN_HandleTypeDef *h) { (void)h; return status; }
-HAL_StatusTypeDef HAL_FDCAN_ConfigFilter(FDCAN_HandleTypeDef *h,FDCAN_FilterTypeDef *f) { (void)h; configured_filter=*f; if(f->IdType==FDCAN_STANDARD_ID)standard_filter=*f; else extended_filter=*f; return status; }
+HAL_StatusTypeDef HAL_FDCAN_ConfigFilter(FDCAN_HandleTypeDef *h,FDCAN_FilterTypeDef *f) { (void)h; configured_filter=*f; if(f->IdType==FDCAN_STANDARD_ID)standard_filter=*f; else{extended_filter=*f;CHECK(f->FilterIndex<2);extended_filters[f->FilterIndex]=*f;} return status; }
 HAL_StatusTypeDef HAL_FDCAN_ConfigGlobalFilter(FDCAN_HandleTypeDef *h,uint32_t a,uint32_t b,uint32_t c,uint32_t d) {
     (void)h; CHECK(a==FDCAN_REJECT && b==FDCAN_REJECT && c==FDCAN_REJECT_REMOTE && d==FDCAN_REJECT_REMOTE); return status;
 }
@@ -40,7 +46,7 @@ HAL_StatusTypeDef HAL_FDCAN_AddMessageToTxFifoQ(FDCAN_HandleTypeDef *h,const FDC
 uint32_t HAL_FDCAN_GetLatestTxFifoQRequestBuffer(const FDCAN_HandleTypeDef *h) { (void)h; return latest_mask; }
 HAL_StatusTypeDef HAL_FDCAN_GetTxEvent(FDCAN_HandleTypeDef *h,FDCAN_TxEventFifoTypeDef *event) {
     (void)h; if(events_out==events_in)return HAL_ERROR;
-    *event=events[events_out++]; fake_fdcan1.TXEFS=events_in-events_out; return HAL_OK;
+    *event=events[events_out++%8U]; fake_fdcan3.TXEFS=events_in-events_out; return HAL_OK;
 }
 uint32_t HAL_FDCAN_IsTxBufferMessagePending(const FDCAN_HandleTypeDef *h,uint32_t mask) { (void)h; return (pending_mask & mask)!=0; }
 HAL_StatusTypeDef HAL_FDCAN_AbortTxRequest(FDCAN_HandleTypeDef *h,uint32_t mask) { (void)h; ++aborts; pending_mask &= ~mask; return HAL_OK; }
@@ -54,13 +60,15 @@ static void log_fake(const char *event,const CanFrame *frame) {
     if(!strcmp(event,"TX_SUBMIT"))++logged_submit;
     if(!strcmp(event,"TX_DONE"))++logged_done;
     if(!strcmp(event,"TX_TIMEOUT"))++logged_timeout;
+    if(!strcmp(event,"TX_TIMEOUT_PENDING"))++timeout_pending;
+    if(!strcmp(event,"TX_TIMEOUT_NOT_PENDING"))++timeout_not_pending;
 }
 /* These are HAL input checks, not a measurement of the physical CAN clock. */
 static void check_profile(uint32_t bitrate) {
     CHECK(handle.Init.ClockDivider==FDCAN_CLOCK_DIV1);
     CHECK(handle.Init.FrameFormat==FDCAN_FRAME_CLASSIC);
     CHECK(handle.Init.Mode==FDCAN_MODE_NORMAL);
-    CHECK(handle.Init.AutoRetransmission==DISABLE);
+    CHECK(handle.Init.AutoRetransmission==EXPECTED_AUTO_RETRY);
     CHECK(handle.Init.NominalPrescaler==(bitrate==500000U ? 2U : 1U));
     CHECK(handle.Init.NominalSyncJumpWidth==2U);
     CHECK(handle.Init.NominalTimeSeg1==13U && handle.Init.NominalTimeSeg2==2U);
@@ -72,15 +80,21 @@ static void check_profile(uint32_t bitrate) {
 }
 static void reset(void) {
     status=rx_status=submit_status=HAL_OK; clock_hz=16000000;
-    fake_fdcan1.TXEFS=0; pending_mask=0; latest_mask=0; aborts=0; free_level=3;
+    memset(&fake_fdcan3,0,sizeof(fake_fdcan3)); pending_mask=0; latest_mask=0; aborts=0; free_level=3;
     events_in=events_out=0; rx_count=0; logged_submit=logged_done=logged_timeout=0;
+    timeout_pending=timeout_not_pending=0;
     memset(&handle.Init,0xFF,sizeof(handle.Init)); /* Do not inherit zero-valued defaults. */
     CHECK(CanTransport_Init(&handle,500000,CAN_FILTER_BMS,0xAA,log_fake));
     check_profile(500000U);
 }
 static void complete(uint32_t marker,uint32_t id,uint32_t mask) {
-    events[events_in++]=(FDCAN_TxEventFifoTypeDef){.MessageMarker=marker,.Identifier=id};
-    fake_fdcan1.TXEFS=events_in-events_out; pending_mask &= ~mask;
+    events[events_in++%8U]=(FDCAN_TxEventFifoTypeDef){.MessageMarker=marker,.Identifier=id};
+    fake_fdcan3.TXEFS=events_in-events_out; pending_mask &= ~mask;
+}
+static void arbitration_loss(uint32_t mask) {
+    /* RM0440 DAR behavior: no successful event; a single-attempt request is
+       cancelled, whereas an automatic-retry request remains pending. */
+    if(handle.Init.AutoRetransmission==DISABLE){pending_mask&=~mask;fake_fdcan3.TXBCF|=mask;}
 }
 int main(void) {
     CHECK(!CanTransport_Init(NULL,500000,CAN_FILTER_BMS,0xAA,log_fake));
@@ -88,9 +102,20 @@ int main(void) {
     CHECK(!CanTransport_Init(&handle,250000,CAN_FILTER_BMS,0xAA,log_fake));
     clock_hz=8000000; CHECK(!CanTransport_Init(&handle,500000,CAN_FILTER_BMS,0xAA,log_fake));
     clock_hz=16000000; status=HAL_ERROR; CHECK(!CanTransport_Init(&handle,500000,CAN_FILTER_BMS,0xAA,log_fake));
+    CHECK(!CanTransport_Init(&other,1000000,CAN_FILTER_MOTOR,0xFD,log_fake));
+    CHECK(!CanTransport_Init(&handle,500000,CAN_FILTER_MOTOR,0xFD,log_fake));
+    status=HAL_OK;
+    CHECK(CanTransport_Init(&handle,1000000,CAN_FILTER_MOTOR,0xFD,log_fake));
+    CHECK(handle.Init.StdFiltersNbr==0 && handle.Init.ExtFiltersNbr==1);
+    CHECK(extended_filter.FilterID1==0xFD && extended_filter.FilterID2==0xFF);
+    CHECK(!CanTransport_Init(&handle,500000,CAN_FILTER_MOTOR_DIAG,0xFD,log_fake));
+    CHECK(CanTransport_Init(&handle,1000000,CAN_FILTER_MOTOR_DIAG,0xFD,log_fake));
+    CHECK(handle.Init.StdFiltersNbr==0 && handle.Init.ExtFiltersNbr==2);
+    CHECK(extended_filters[0].FilterID1==0xFD && extended_filters[0].FilterID2==0xFF);
+    CHECK(extended_filters[1].FilterID1==0xFE && extended_filters[1].FilterID2==0xFF);
     reset();
     CHECK(handle.Init.NominalPrescaler==2 && handle.Init.NominalTimeSeg1==13 && handle.Init.NominalTimeSeg2==2);
-    CHECK(handle.Init.Mode==FDCAN_MODE_NORMAL && handle.Init.AutoRetransmission==DISABLE);
+    CHECK(handle.Init.Mode==FDCAN_MODE_NORMAL && handle.Init.AutoRetransmission==EXPECTED_AUTO_RETRY);
     CHECK(configured_filter.IdType==FDCAN_STANDARD_ID && configured_filter.FilterID1==0x100 && configured_filter.FilterID2==0x105);
     memset(&handle.Init,0xFF,sizeof(handle.Init));
     CHECK(CanTransport_Init(&handle,1000000,CAN_FILTER_POWER,0x12,log_fake));
@@ -118,7 +143,7 @@ int main(void) {
     CHECK(submitted.FDFormat==FDCAN_CLASSIC_CAN && submitted.BitRateSwitch==FDCAN_BRS_OFF);
     CHECK(submitted.TxEventFifoControl==FDCAN_STORE_TX_EVENTS);
     CHECK(submitted.TxFrameType==FDCAN_DATA_FRAME && submitted.IdType==FDCAN_EXTENDED_ID && submitted.DataLength==2 && submitted_data[0]==1 && submitted_data[2]==0);
-    CanTransport_Service(1320); CHECK(logged_timeout==1 && aborts==1);
+    CanTransport_Service(1320); CHECK(logged_timeout==1 && aborts==1);CHECK(timeout_pending==1&&timeout_not_pending==0);
     CanTransport_Service(1321); CHECK(logged_timeout==1);
     CHECK(CanTransport_GetStats().tx_timed_out==1);
     CHECK(!CanTransport_Submit(NULL,1400));
@@ -170,9 +195,49 @@ int main(void) {
     CanTransport_Service(300);
     CHECK(aborts==1 && CanTransport_GetStats().tx_timed_out==2);
     reset();
+    CHECK(CanTransport_Submit(&f,0));pending_mask=0;CanTransport_Service(300);
+    CHECK(logged_timeout==1&&timeout_pending==0&&timeout_not_pending==1);
+    reset();
     /* Deadline works across HAL_GetTick wraparound. */
     CHECK(CanTransport_Submit(&f,0xFFFFFFF0U)); CanTransport_Service(0x11BU); CHECK(logged_timeout==0);
     CanTransport_Service(0x11CU); CHECK(logged_timeout==1);
+    reset();
+    f=(CanFrame){.id=0x1100FD02U,.extended=true,.dlc=8,.data={0x1B,0x70}};
+#if defined(PICO_CAN_BOUNDED_TX_RETRY) && PICO_CAN_BOUNDED_TX_RETRY
+    /* Many dual-motor telemetry reads, intermittent arbitration and marker
+       wrap: retries are controller-owned, with no duplicate Submit calls. */
+    for(unsigned i=0;i<1000U;++i){
+        uint32_t now=i*20U;CHECK(CanTransport_Submit(&f,now));
+        uint32_t m=submitted.MessageMarker,b=latest_mask;
+        if(i%7U==0U)arbitration_loss(b);
+        CanTransport_Service(now+2U);CHECK((pending_mask&b)!=0U);
+        complete(m,f.id,b);CanTransport_Service(now+6U);
+        CHECK(CanTransport_GetStats().tx_completed==i+1U);
+    }
+    CHECK(logged_timeout==0&&aborts==0&&CanTransport_GetStats().tx_submitted==1000U);
+    /* Persistent arbitration cannot retry forever: original 300ms deadline. */
+    reset();CHECK(CanTransport_Submit(&f,1000U));arbitration_loss(latest_mask);
+    CanTransport_Service(1299U);CHECK(logged_timeout==0&&aborts==0);
+    CanTransport_Service(1300U);CHECK(logged_timeout==1&&aborts==1&&pending_mask==0U);
+    CanTransport_Service(1301U);CHECK(logged_timeout==1&&CanTransport_GetStats().tx_submitted==1U);
+    puts("bounded retry: 1000 frames with arbitration/marker wrap PASS; persistent failure aborts at 300ms");
+#else
+    CHECK(CanTransport_Submit(&f,1000U));arbitration_loss(latest_mask);
+    CanTransport_Service(1299U);CHECK(logged_timeout==0);
+    CanTransport_Service(1300U);CHECK(logged_timeout==1&&timeout_not_pending==1&&logged_done==0);
+    puts("single attempt: ordinary arbitration cancellation reproduces TX_TIMEOUT_NOT_PENDING");
+#endif
+    /* STOP cancels obsolete commands, releases software slots promptly and
+       tolerates an event racing cancellation. It never retries an old target. */
+    reset();CHECK(CanTransport_Submit(&f,100U));marker=submitted.MessageMarker;
+    mask=latest_mask;CanTransport_CancelPending(101U);
+    CHECK(pending_mask==0U&&CanTransport_GetStats().tx_cancelled==1U);
+    f.id=0x0400FD02U;CHECK(CanTransport_Submit(&f,102U));
+    complete(marker,0x1100FD02U,0);CanTransport_Service(103U);
+    CHECK(CanTransport_GetStats().tx_event_unknown==0U);
+    complete(submitted.MessageMarker,f.id,latest_mask);CanTransport_Service(104U);
+    CanTransport_Service(500U);CHECK(logged_timeout==0U&&CanTransport_GetStats().tx_completed==1U);
+    (void)mask;
     printf("transport: %u checks passed\n",checks);
     return 0;
 }

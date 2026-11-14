@@ -1,0 +1,35 @@
+[
+  {
+    "folder": "motor-tuning-20261114_213749_000525",
+    "reason": "AUTO_STOP",
+    "stop_confirmed": true,
+    "target_cleared": true,
+    "sha256": {
+      "board.log": "976f7011df4d2bb2edc0bed18d046af85ce418c8955aa07e04030f8423e2a4f6",
+      "commands.jsonl": "c39326dad2d2ff6399952510528a210178d87670942eda0b44e9731cfd2bc787",
+      "result.json": "e222ed625bf085d455dccf9edda0fd69a6d43bafa9dd5245992218d366ad80db"
+    }
+  },
+  {
+    "folder": "motor-tuning-20261114_211318_992265",
+    "reason": "STOPPED_POSITION_UNSTABLE",
+    "stop_confirmed": true,
+    "target_cleared": false,
+    "sha256": {
+      "board.log": "b0991593502e90e8be3e7d5957617abd51e7820447361cf930b9dc1b5e5c69fa",
+      "commands.jsonl": "e55d298764ee1897d09359d24759ad579d4ca3561c7a539280ae2bfa6e355ab7",
+      "result.json": "e1a76861bd85d2ac7b7cccbedc95a46274a12b7169387ac49a8f05e707885d45"
+    }
+  },
+  {
+    "folder": "motor-tuning-20261114_212445_036437",
+    "reason": "POSITION_SAMPLE_JUMP",
+    "stop_confirmed": true,
+    "target_cleared": true,
+    "sha256": {
+      "board.log": "2d77cd98705920c3967995169a452aec2068e4cabeb5117bc5e349c401695acc",
+      "commands.jsonl": "5a82785ebb9df9a6508541f672ebf002c6a1c18f96948d50d42f384819511999",
+      "result.json": "b40ae37b3d034bbcbc516b0d8882c6c55d284805058d4411fa8f168d372e207f"
+    }
+  }
+]

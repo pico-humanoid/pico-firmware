@@ -61,6 +61,8 @@ jobs:
           retention-days: 14
 
   publish:
+    # Branch pushes validate only; never replace a historical release.
+    if: github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-24.04
     steps:
@@ -76,10 +78,10 @@ jobs:
           GH_REPO: ${{ github.repository }}
           COMMIT: ${{ github.sha }}
         run: |
-          tag=desktop-v2026.11.05
+          tag=desktop-ci-${COMMIT:0:8}
           if gh release view "$tag" >/dev/null 2>&1; then
             gh release upload "$tag" release-assets/* --clobber
             gh release edit "$tag" --notes-file docs/desktop-workbench.md
           else
-            gh release create "$tag" release-assets/* --target "$COMMIT" --title 'PICO 桌面工具 2026.11.05 · Windows / Ubuntu' --notes-file docs/desktop-workbench.md
+            gh release create "$tag" release-assets/* --target "$COMMIT" --title 'PICO 桌面工具 · CI验证构建' --notes-file docs/desktop-workbench.md
           fi

@@ -1,3 +1,15 @@
+# 2026-11-14最新Windows快照
+
+本次Windows包：[PICO-Windows-x64-20261114_215203.zip](https://github.com/pico-humanoid/pico-firmware/releases/download/desktop-v2026.11.14/PICO-Windows-x64-20261114_215203.zip)。请完整解压后启动，不在ZIP内运行；首次USB驱动可能需要管理员权限。
+
+该包包含Windows运行环境和离线开发工具，不能在Ubuntu上运行。历史Ubuntu版不包含本次全部新功能，新版Ubuntu包尚未重新构建验收。第三方工具按原许可证使用，其附带不表示项目替代了厂商授权。
+
+[当前交互实验说明](Motor_Tuning.md) · [程序索引](program-index.md) · [11月10日历史状态](weekly/2026-11-10.md) · [11月14日实测及异常](validation/2026-11-14-motor.md)
+
+---
+
+以下为11月5日历史便携版本说明，不能视为11月14日新Ubuntu包发布记录。
+
 # PICO 桌面开发控制台与日志查看器
 
 版本：2026.11.05。两个程序均附带 Python/Tk 运行环境，不需要另装 Python，也不使用网页服务。请完整解压，保留程序旁的 `_internal`、`project` 等目录；不能只拿走一个 EXE 或 ELF。

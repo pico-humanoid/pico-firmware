@@ -24,8 +24,18 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#if defined(PICO_PIN_LOOP_TEST)
+#if defined(PICO_MOTOR_ENABLE)
+#include "motor_enable_app.h"
+#elif defined(PICO_CAN_PERIODIC_TX)
+#include "can_periodic_tx.h"
+#elif defined(PICO_CAN_MULTI_TEST)
+#include "can_multi_test.h"
+#elif defined(PICO_PIN_LOOP_TEST)
 #include "pin_loop_test.h"
+#elif defined(PICO_CAN_LISTEN)
+#include "can3_listen.h"
+#elif defined(PICO_MOTOR_READ)
+#include "motor_read_app.h"
 #elif defined(PICO_DEVICE_READ)
 #include "device_read_app.h"
 #else
@@ -96,12 +106,49 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_LPUART1_UART_Init();
+#if defined(PICO_CAN_PERIODIC_TX)
+  /* The periodic app configures only the selected CAN instance. */
+#elif defined(PICO_CAN_MULTI_TEST)
+  /* The diagnostic initializes all three instances before starting any bus. */
+#elif defined(PICO_MOTOR_ENABLE) || (defined(PICO_MOTOR_READ) && PICO_MOTOR_CAN_CHANNEL == 1)
   MX_FDCAN1_Init();
+#elif defined(PICO_DEVICE_READ) || defined(PICO_MOTOR_READ) || defined(PICO_CAN_LISTEN) || defined(PICO_CAN3_PC_TEST)
+  MX_FDCAN3_Init();
+#else
+  MX_FDCAN1_Init();
+#endif
   /* USER CODE BEGIN 2 */
-#if defined(PICO_PIN_LOOP_TEST)
+#if defined(PICO_MOTOR_ENABLE)
+  MotorEnableApp_Init(&hfdcan1,&hlpuart1);
+#elif defined(PICO_CAN_PERIODIC_TX)
+#if PICO_PERIODIC_CHANNEL == 1
+  hfdcan1.Instance=FDCAN1;
+  CanPeriodicTx_Init(&hfdcan1, &hlpuart1);
+#elif PICO_PERIODIC_CHANNEL == 2
+  hfdcan2.Instance=FDCAN2;
+  CanPeriodicTx_Init(&hfdcan2, &hlpuart1);
+#elif PICO_PERIODIC_CHANNEL == 3
+  hfdcan3.Instance=FDCAN3;
+  CanPeriodicTx_Init(&hfdcan3, &hlpuart1);
+#else
+#error Invalid periodic CAN channel
+#endif
+#elif defined(PICO_CAN_MULTI_TEST)
+  CanMultiTest_Init(&hlpuart1);
+#elif defined(PICO_PIN_LOOP_TEST)
   PinLoopTest_Init(&hlpuart1);
+#elif defined(PICO_CAN_LISTEN)
+  Can3Listen_Init(&hfdcan3, &hlpuart1);
+#elif defined(PICO_CAN3_PC_TEST)
+  CanTest_Init(&hfdcan3, &hlpuart1);
+#elif defined(PICO_MOTOR_READ)
+#if PICO_MOTOR_CAN_CHANNEL == 1
+  MotorRead_Init(&hfdcan1, &hlpuart1);
+#else
+  MotorRead_Init(&hfdcan3, &hlpuart1);
+#endif
 #elif defined(PICO_DEVICE_READ)
-  DeviceRead_Init(&hfdcan1, &hlpuart1);
+  DeviceRead_Init(&hfdcan3, &hlpuart1);
 #else
   CanTest_Init(&hfdcan1, &hlpuart1);
 #endif
@@ -115,8 +162,18 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-#if defined(PICO_PIN_LOOP_TEST)
+#if defined(PICO_MOTOR_ENABLE)
+    MotorEnableApp_Step();
+#elif defined(PICO_CAN_PERIODIC_TX)
+    CanPeriodicTx_Step();
+#elif defined(PICO_CAN_MULTI_TEST)
+    CanMultiTest_Step();
+#elif defined(PICO_PIN_LOOP_TEST)
     PinLoopTest_Step();
+#elif defined(PICO_CAN_LISTEN)
+    Can3Listen_Step();
+#elif defined(PICO_MOTOR_READ)
+    MotorRead_Step();
 #elif defined(PICO_DEVICE_READ)
     DeviceRead_Step();
 #else

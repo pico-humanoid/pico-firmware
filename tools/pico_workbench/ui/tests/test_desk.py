@@ -71,6 +71,8 @@ class CaptureTests(unittest.TestCase):
             with patch.object(engine, "LOGS", Path(folder)), patch.object(engine, "RECORDS", Path(folder)):
                 manager = engine.Manager()
                 job = engine.Job("board", mode, "test")
+                # These fixtures exercise the original standard-frame validator.
+                if mode == "External":job.profile["cmake_options"]={}
                 device = FakeSerial(text.encode())
                 with patch.object(manager, "_serial", return_value=device):
                     result = manager._do_board(job)
@@ -125,6 +127,8 @@ class CaptureTests(unittest.TestCase):
             with patch.object(engine, "LOGS", Path(folder)), patch.object(engine, "RECORDS", Path(folder)):
                 manager = engine.Manager()
                 job = engine.Job("usbcan", "External", "test")
+                # Retain coverage of the legacy Waveshare transport separately.
+                job.profile["cmake_options"]={}
                 ticks = iter(i * .01 for i in range(10000))
                 with patch.object(manager, "_serial", return_value=device), patch.object(engine.time, "sleep"), patch.object(engine.time, "monotonic", side_effect=lambda: next(ticks)):
                     result = manager._do_usbcan(job)

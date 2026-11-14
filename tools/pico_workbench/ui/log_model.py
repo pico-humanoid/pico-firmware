@@ -10,11 +10,13 @@ EVENT_NAMES = {
     "TX_SUBMIT": "提交发送", "TX_DONE": "硬件发送完成", "RX": "接收报文",
     "TX_TIMEOUT": "发送完成超时", "RX_REMOTE": "接收远程帧",
     "HEALTH": "总线健康", "DEVICE_HEALTH": "设备健康", "BMS": "BMS 数据",
-    "POWER": "电源板数据", "RESULT": "固件结果", "START": "启动 / 配置",
+    "POWER": "电源板数据", "MOTOR": "电机数据", "RESULT": "固件结果", "START": "启动 / 配置",
     "SERIAL_SUBMITTED": "串口已提交", "SERIAL_WRITE_INTENT": "准备串口写入",
     "RX_RAW": "串口原始片段", "READ_REPLY": "解析后的回复", "INFO": "说明",
 }
 FIELD_NAMES = {
+    "position_millirad": "机械位置", "velocity_millirad_s": "机械速度",
+    "iq_ma": "Iq 电流", "vbus_mv": "电机母线电压", "model": "配置型号", "raw_bits": "浮点原始位",
     "seen": "曾收到的类别掩码", "valid": "新鲜数据掩码", "replies": "有效回复",
     "invalid": "校验失败累计", "ignored": "忽略帧累计", "query_timeouts": "查询超时累计",
     "query_failures": "查询失败累计", "tx_submit": "发送提交累计", "tx_done": "发送完成累计",
@@ -158,7 +160,7 @@ def parse_record(line, index):
         if body.startswith("RESULT="):
             rec.event = "RESULT"
             rec.values = dict(p.split("=", 1) for p in body.replace(",", " ").split() if "=" in p)
-        elif rec.event in ("HEALTH", "DEVICE_HEALTH", "BMS", "POWER"):
+        elif rec.event in ("HEALTH", "DEVICE_HEALTH", "BMS", "POWER", "MOTOR"):
             rec.values = fields_of(body)
         elif "PICO" in body or body.startswith("mode="):
             rec.event = "START"
@@ -212,7 +214,7 @@ def matches(rec, search="", category="全部", ident=""):
     if category in ("异常 / 提示", "错误 / FAIL"):
         return rec.level in ("warning", "error")
     if category == "解析数据":
-        return rec.event in ("BMS", "POWER", "READ_REPLY")
+        return rec.event in ("BMS", "POWER", "MOTOR", "READ_REPLY")
     if category in ("健康状态", "HEALTH"):
         return rec.event in ("HEALTH", "DEVICE_HEALTH")
     return rec.event == category
@@ -228,7 +230,8 @@ def summarize(records):
 
 
 def format_value(key, value):
-    units = {"voltage_mv": ("V", 1000), "current_ma": ("A", 1000), "remaining_mah": ("Ah", 1000),
+    units = {"position_millirad": ("rad", 1000), "velocity_millirad_s": ("rad/s", 1000),
+             "iq_ma": ("A", 1000), "vbus_mv": ("V", 1000), "voltage_mv": ("V", 1000), "current_ma": ("A", 1000), "remaining_mah": ("Ah", 1000),
              "full_mah": ("Ah", 1000), "temperature_decic": ("°C", 10), "battery_mv": ("V", 1000),
              "motor_mv": ("V", 1000), "branch_current_ma": ("A", 1000), "temp_c": ("°C", 1),
              "voltage_v": ("V", 1), "current_a": ("A", 1), "temperature_c": ("°C", 1),
@@ -246,9 +249,9 @@ def format_value(key, value):
 def device_values(records):
     latest = {}
     for rec in records:
-        if rec.event not in ("BMS", "POWER", "READ_REPLY"):
+        if rec.event not in ("BMS", "POWER", "MOTOR", "READ_REPLY"):
             continue
-        device = rec.event if rec.event in ("BMS", "POWER") else "设备回复"
+        device = rec.values.get("device", "MOTOR") if rec.event == "MOTOR" else (rec.event if rec.event in ("BMS", "POWER") else "设备回复")
         values = rec.values
         if "name" in values and ("param" in values or "index" in values):
             key = str(values["name"])

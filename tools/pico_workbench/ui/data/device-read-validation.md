@@ -1,6 +1,17 @@
 # BMS / 电源板只读固件与硬件验收
 
-更新：2026-11-03。平台：Ubuntu 22.04、NUCLEO-G474RE、FDCAN1；设备侧对照使用USB-CAN-A。
+## 当前本地配置：CAN3（2026-11-09）
+
+电池 BMS、电源板和双设备只读镜像现统一使用 **FDCAN3**：**PA15 = TX、PA8 = RX，AF11**；底板为 **U3、CN5/CN6、R3/SW3**。CN5/CN6 并联在同一总线上。BMS 和 Dual 保持 500K；Power 可选 500K / 1M，必须与电源板实际速率一致，固件不会自动修改设备速率。
+
+重新编译并烧录所选设备镜像后，将收发器逻辑侧 TXD 接 PA15（CN7-17）、RXD 接 PA8（CN10-23），或将设备总线线束接底板 CN5/CN6。MCU 引脚不能直接接 CANH/CANL。保留 PA13/PA14 的 SWD。新启动行含 `channel=FDCAN3`，报文 CSV 的 channel 列为 `FDCAN3`。
+
+原 Loopback / External / PinLoop 仍用于 CAN1；普通读取仍保持只读，PowerBaud 的原有授权门控保留。若使用 CubeMX 再生成，核对设备读取入口仍为 `DeviceRead_Init(&hfdcan3, ...)`，并保留原测试分支；当前启动按 `PICO_DEVICE_READ` 仅初始化所需控制器。软件构建与主机模拟通过不能替代 CAN3 实物验收；下列 11 月 1—3 日硬件日志为历史结果。
+
+引脚复用依据：[STM32G474 数据手册 DS12288](https://www.st.com/resource/en/datasheet/stm32g474pc.pdf)。
+
+
+导入历史基线：2026-11-03。历史平台：Ubuntu 22.04、NUCLEO-G474RE、FDCAN1；设备侧对照使用USB-CAN-A。
 
 **当前结论（截至 2026-11-03，含当日双设备软件验证）：**
 
@@ -21,14 +32,14 @@ main.c：按 PICO_APP 选择应用
   → device_read_app.c：启动、串口日志、状态灯
     → device_reader.c：轮询、超时、有限重试、数据新鲜度
       → protocol/{bms,power}_protocol.c：只读请求与回复解析
-    → transport/can_transport.c：FDCAN1 硬件收发、接收队列、发送事件与错误计数
+    → transport/can_transport.c：FDCAN3 硬件收发、接收队列、发送事件与错误计数
 ```
 
 - `App/protocol/can_frame.h`：不依赖 HAL 的经典 CAN 帧，区分 STD/EXT、DATA/RTR、DLC 0～8。
 - `App/protocol/bms_protocol.*`：构造 BMS 远程查询，检查 CRC，解析电压、电流、容量、SOC、温度等。
 - `App/protocol/power_protocol.*`：查询版本、两种状态和九项可读参数；保留完整 ID、状态和参数原始数据。
 - `App/device_reader.*`：顺序轮询，一次一个待回复查询，统计失败与超时；独立记录各类数据的更新时间。
-- `App/transport/can_transport.*`：正常模式 FDCAN1，支持 500 kbit/s、1 Mbit/s，按设备过滤，ISR 仅收帧入队、不打印串口。
+- `App/transport/can_transport.*`：正常模式 FDCAN3，支持 500 kbit/s、1 Mbit/s，按设备过滤，ISR 仅收帧入队、不打印串口。
 - `App/device_read_app.*`：将上述模块接入固件，输出原始收发记录、解析值和健康信息。
 - `scripts/capture_device.py`：采集 **G474 的 ST-LINK 虚拟串口**日志；不是 USB-CAN-A 协议程序。
 - `tests/` 与 `scripts/test-host.sh`：协议、调度、模拟 HAL、实际应用层和伪终端采集测试。
@@ -42,7 +53,7 @@ main.c：按 PICO_APP 选择应用
 - BMS 只查询 `0x100/0x101/0x102/0x103/0x105`，不写 EEPROM/保护参数。
 - 电源板仅发送类型 `0x05` 版本、`0x02` 状态、`0x07` 参数读取；不发送 `0x01` 控制、`0x08` 参数写入或恢复默认。
 - 没有自动改设备位速率、自动控制支路、自动重启设备。
-- `BMS`/`Power`镜像各服务一类设备；`Dual`镜像服务**同一FDCAN1总线上的BMS和电源板**。尚未实现FDCAN1/FDCAN2双总线同时读取。
+- `BMS`/`Power`镜像各服务一类设备；`Dual`镜像服务**同一FDCAN3总线上的BMS和电源板**。尚未实现FDCAN1/FDCAN2双总线同时读取。
 - USB-CAN-A 电脑端只读工具已位于仓库根目录 `tools/usb_can_power_probe.py` 与 `tools/usb_can_power_read.py`；与 G474 串口采集脚本不同。
 
 ## 2. 协议依据与尚待确认项
@@ -139,7 +150,7 @@ cmake --build --preset Linux-BMS-Read-500K --parallel 4
 
 ### 4.1 接线和前提
 
-沿用 [硬件接线说明](hardware/README.md)：FDCAN1 为 PA12/TX、PA11/RX，经正确供电的 CAN 收发器连接设备 CANH/CANL；**MCU 引脚不能直接接 CANH/CANL**。核对电平、公共参考地、两端终端电阻及设备供电，不在不明确的电池动力接线处试接。
+当前本地设备镜像：FDCAN3 为 PA15/TX、PA8/RX（AF11，底板 CN5/CN6），经正确供电的 CAN 收发器连接设备 CANH/CANL；**MCU 引脚不能直接接 CANH/CANL**。核对电平、公共参考地、两端终端电阻及设备供电，不在不明确的电池动力接线处试接。
 
 日志为 LPUART1 PA2/TX、PA3/RX，115200、8N1，通过原 ST-LINK VCP 通道采集。只查询 CAN 不代表可以省略安全供电和接线检查。
 
@@ -190,7 +201,7 @@ python3 scripts/capture_device.py \
 
 ```text
 t_ms,event,channel,format,kind,id,dlc,data
-1000,TX_SUBMIT,FDCAN1,STD,RTR,0x00000100,8,
+1000,TX_SUBMIT,FDCAN3,STD,RTR,0x00000100,8,
 ```
 
 - `TX_SUBMIT`：HAL 接受了请求，不等于已在总线上成功发送。

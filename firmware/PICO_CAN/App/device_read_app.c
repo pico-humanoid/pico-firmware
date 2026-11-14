@@ -27,18 +27,18 @@ static void log_frame(const char *event, const CanFrame *frame) {
 #if defined(PICO_POWER_BAUD_TEST)
     /* Snapshot before slow UART output. PSR/ECR reads may clear sticky fields;
        these are discrete observations, not a continuous error history. */
-    extern FDCAN_HandleTypeDef hfdcan1;
+    extern FDCAN_HandleTypeDef hfdcan3;
     bool diagnostic = frame->id == (0x08000000UL | PICO_POWER_ID);
     uint32_t psr=0, ecr=0, brp=0, bto=0, bcf=0, efs=0, ir=0, cccr=0, nbtp=0;
     if (diagnostic) {
-        psr=hfdcan1.Instance->PSR; ecr=hfdcan1.Instance->ECR;
-        brp=hfdcan1.Instance->TXBRP; bto=hfdcan1.Instance->TXBTO;
-        bcf=hfdcan1.Instance->TXBCF; efs=hfdcan1.Instance->TXEFS;
-        ir=hfdcan1.Instance->IR; cccr=hfdcan1.Instance->CCCR; nbtp=hfdcan1.Instance->NBTP;
+        psr=hfdcan3.Instance->PSR; ecr=hfdcan3.Instance->ECR;
+        brp=hfdcan3.Instance->TXBRP; bto=hfdcan3.Instance->TXBTO;
+        bcf=hfdcan3.Instance->TXBCF; efs=hfdcan3.Instance->TXEFS;
+        ir=hfdcan3.Instance->IR; cccr=hfdcan3.Instance->CCCR; nbtp=hfdcan3.Instance->NBTP;
     }
 #endif
     char text[360];
-    int used = snprintf(text, sizeof(text), "%lu,%s,FDCAN1,%s,%s,0x%08lX,%u,",
+    int used = snprintf(text, sizeof(text), "%lu,%s,FDCAN3,%s,%s,0x%08lX,%u,",
         (unsigned long)frame->timestamp_ms, event, frame->extended ? "EXT" : "STD",
         frame->remote ? "RTR" : "DATA", (unsigned long)frame->id, (unsigned)frame->dlc);
     if (!frame->remote)
@@ -158,12 +158,12 @@ void DeviceRead_Init(FDCAN_HandleTypeDef *can, UART_HandleTypeDef *uart) {
     const char *mode = "EXPLICITLY GATED BAUD TEST (boots read-only)";
 #else
 #if defined(PICO_DEVICE_DUAL)
-    const char *mode = "READ ONLY DUAL (BMS+POWER, shared FDCAN1)";
+    const char *mode = "READ ONLY DUAL (BMS+POWER, shared FDCAN3)";
 #else
     const char *mode = "READ ONLY";
 #endif
 #endif
-    (void)snprintf(text, sizeof(text), "# PICO device-read v1; %s; device=%s bitrate=%lu power_id=0x%02X rtr_dlc=%u crc_order=%u status_order=%u\r\n",
+    (void)snprintf(text, sizeof(text), "# PICO device-read v1; %s; channel=FDCAN3 device=%s bitrate=%lu power_id=0x%02X rtr_dlc=%u crc_order=%u status_order=%u\r\n",
         mode,
 #if defined(PICO_DEVICE_DUAL)
         "BMS+POWER",
@@ -187,7 +187,7 @@ void DeviceRead_Init(FDCAN_HandleTypeDef *can, UART_HandleTypeDef *uart) {
     CanTransportFilter filter = config.kind == READER_BMS ? CAN_FILTER_BMS : CAN_FILTER_POWER;
 #endif
     if (!readers_ok || !CanTransport_Init(can, PICO_DEVICE_BITRATE, filter, config.power_id, log_frame)) {
-        line("# FATAL initialization failed; expected FDCAN1=PCLK1=16MHz; no requests will be sent\r\n");
+        line("# FATAL initialization failed; expected FDCAN3=PCLK1=16MHz; no requests will be sent\r\n");
         return;
     }
 #if defined(PICO_POWER_BAUD_TEST)
@@ -250,8 +250,8 @@ void DeviceRead_Step(void) {
             (unsigned long)r->timeouts, (unsigned long)r->query_failures);
 #endif
         FDCAN_ErrorCountersTypeDef errors = {0};
-        extern FDCAN_HandleTypeDef hfdcan1;
-        bool counters_ok = HAL_FDCAN_GetErrorCounters(&hfdcan1, &errors) == HAL_OK;
+        extern FDCAN_HandleTypeDef hfdcan3;
+        bool counters_ok = HAL_FDCAN_GetErrorCounters(&hfdcan3, &errors) == HAL_OK;
         (void)snprintf(text, sizeof(text), "%s,tx_submit=%lu,tx_done=%lu,tx_rejected=%lu,tx_timeout=%lu,rx_fifo_lost=%lu,rx_queue_drop=%lu,rx_read_fail=%lu,rx_unsupported=%lu,tx_event_lost=%lu,tx_event_unknown=%lu,bus_off=%lu,tec=%lu,rec=%lu,counters_ok=%u\r\n",
             prefix, (unsigned long)s.tx_submitted, (unsigned long)s.tx_completed,
             (unsigned long)s.tx_rejected, (unsigned long)s.tx_timed_out,

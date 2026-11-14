@@ -17,6 +17,24 @@ def prepare(mode):
     candidates = ["App/dual_device_reader.c", "App/device_read_app.c"] if app == "Dual" else (
         ["App/device_read_app.c", "App/device_reader.c"] if app in ("BMS", "Power", "PowerBaud") else
         ["App/can_bringup.c", "Core/Src/main.c"])
+    if app == "Motor":
+        candidates = ["App/motor_read_app.c", "App/motor_reader.c", "App/protocol/motor_protocol.c"]
+    elif app in ("MotorDualSpeed","MotorDualFault"):
+        candidates = ["App/motor_dual_speed_app.c", "App/motor_enable_logic.c"]
+    elif app == "MotorTuning":
+        candidates = ["App/motor_tuning_app.c", "App/motor_tuning.c"]
+    elif app == "MotorPositionDiag":
+        candidates = ["App/motor_position_diag_app.c", "App/motor_position_diag.c"]
+    elif app == "MotorSyncPosition":
+        candidates = ["App/motor_sync_position_app.c", "App/motor_sync_logic.c", "App/motor_position_logic.c"]
+    elif app == "MotorDualPosition":
+        candidates = ["App/motor_dual_position_app.c", "App/motor_position_logic.c"]
+    elif app == "MotorPosition":
+        candidates = ["App/motor_position_app.c", "App/motor_position_logic.c"]
+    elif app in ("MotorEnable", "MotorSpeed"):
+        candidates = ["App/motor_enable_app.c", "App/motor_enable_logic.c"]
+    elif app in ("Can1Periodic", "Can2Periodic", "Can3Periodic"):
+        candidates = ["App/can_periodic_tx.c", "Core/Src/main.c"]
     entry = next((project / p for p in candidates if (project / p).is_file()), project / "CMakeLists.txt")
     folder = tools.ROOT / "ui/state/workspaces"
     folder.mkdir(parents=True, exist_ok=True)

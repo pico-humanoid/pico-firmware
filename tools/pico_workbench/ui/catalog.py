@@ -26,34 +26,108 @@ def write(path, value):
     os.replace(temporary, path)
 
 
-def builtins():
+def _all_builtins():
     items = [
         {"id": "Loopback", "name": "内部回环", "description": "当前 100 帧内部回环固件与完整性检查。",
          "base_mode": "Loopback", "project_dir": str(ROOT), "build_type": "Debug",
          "elf_name": "PICO_CAN.elf", "toolchain": "cmake/gcc-arm-none-eabi.cmake",
          "cmake_options": {}, "board_baud": 115200, "builtin": True},
-        {"id": "External", "name": "外部双向收发", "description": "当前 CAN1 / 1 Mbps / 标准帧 100 帧验证。",
-         "base_mode": "External", "project_dir": str(ROOT), "build_type": "Debug",
+        {"id": "External", "name": "外部双向收发 · CAN3", "description": "CAN3 / PA15-TX / PA8-RX（AF11）/ 1Mbps / 扩展帧；灵足USB-CAN AT协议，PC发0x321、开发板发0x123，各100帧。使用06按钮打开双向测试窗口，统一采集两侧日志。",
+         "base_mode": "External", "project_dir": str(ROOT / "projects/pico-firmware/firmware/PICO_CAN"), "build_type": "Debug",
          "elf_name": "PICO_CAN.elf", "toolchain": "cmake/gcc-arm-none-eabi.cmake",
-         "cmake_options": {}, "board_baud": 115200, "builtin": True},
+         "cmake_options": {"PICO_APP": "Can3Bench"}, "board_baud": 115200, "capture_seconds": 25, "builtin": True},
     ]
     device_root = ROOT / "projects/pico-firmware/firmware/PICO_CAN"
     if (device_root / "CMakeLists.txt").is_file():
         for ident, name, app, rate, dlc in [
-            ("BMS-Read-500K", "BMS 只读 · 500K", "BMS", 500000, 8),
-            ("Power-Read-1M", "电源板只读 · 1M", "Power", 1000000, 8),
-            ("Power-Read-500K", "电源板只读 · 500K", "Power", 500000, 8),
-            ("Dual-Read-500K", "BMS + 电源板 · 同总线 500K", "Dual", 500000, 0),
+            ("BMS-Read-500K", "电池 BMS 只读 · CAN3 · 500K", "BMS", 500000, 8),
+            ("Power-Read-1M", "电源板只读 · CAN3 · 1M", "Power", 1000000, 8),
+            ("Power-Read-500K", "电源板只读 · CAN3 · 500K", "Power", 500000, 8),
+            ("Dual-Read-500K", "BMS + 电源板 · CAN3 · 500K", "Dual", 500000, 0),
         ]:
-            items.append({"id": ident, "name": name, "description": "GitHub 新增只读固件；FDCAN1；完整采集后另行验收，不使用旧 100 帧判据。",
+            items.append({"id": ident, "name": name, "description": "本地 CAN3 只读固件；PA15/TX、PA8/RX（AF11），底板 CN5/CN6；完整采集后另行验收，不使用旧 100 帧判据。",
                           "base_mode": "Device", "project_dir": str(device_root), "build_type": "Debug",
                           "elf_name": "PICO_CAN.elf", "toolchain": "cmake/gcc-arm-none-eabi.cmake",
                           "cmake_options": {"PICO_APP": app, "PICO_DEVICE_BITRATE": rate,
                               "PICO_POWER_ID": "0xAA", "PICO_BMS_RTR_DLC": dlc,
                               "PICO_BMS_CRC_ENDIAN": "BIG", "PICO_POWER_STATUS_ENDIAN": "BIG"},
                           "board_baud": 115200, "capture_seconds": 80, "builtin": True})
+        for ident, name, count, first, second, model in [
+            ("RS10P-Read-1M", "RS-10P 单机只读 · CAN1 · 1M", 1, "1", "2", "RS10P"),
+            ("RS00-Read-1M", "RS-00 单机只读 · CAN1 · 1M", 1, "2", "1", "RS00"),
+            ("Motors-Read-1M", "RS-10P + RS-00 双电机 · CAN1 · 1M", 2, "1", "2", "RS10P"),
+        ]:
+            items.append({"id": ident, "name": name,
+                "description": "只读位置、速度、电流和母线电压。CAN1：PA12-TX / PA11-RX；电机 ID=" + first + (" / " + second if count == 2 else "") + "，主机 ID=0xFD。采集串口打开后按 RESET。",
+                "base_mode": "Device", "project_dir": str(device_root), "build_type": "Debug",
+                "elf_name": "PICO_CAN.elf", "toolchain": "cmake/gcc-arm-none-eabi.cmake",
+                "cmake_options": {"PICO_APP": "Motor", "PICO_DEVICE_BITRATE": 1000000, "PICO_MOTOR_CAN_CHANNEL": 1,
+                    "PICO_MOTOR_COUNT": count, "PICO_MOTOR1_ID": first, "PICO_MOTOR2_ID": second,
+                    "PICO_MOTOR_HOST_ID": "0xFD", "PICO_MOTOR1_MODEL": model, "PICO_MOTOR2_MODEL": "RS00"},
+                "board_baud": 115200, "capture_seconds": 80, "builtin": True})
+        for ident,name,motor_id,model in [('RS00-Enable-CAN1','RS-00 单机使能 · ID2 · CAN1',2,'RS00'),
+                                          ('RS10P-Enable-CAN1','RS-10P 单机使能 · ID1 · CAN1',1,'RS10P')]:
+            items.append({'id':ident,'name':name,'description':'CAN1 / 1Mbps；单台电机零电流使能实验。由专用窗口触发，最多3秒自动停机，丢失电脑心跳或反馈异常时请求停机。',
+                'base_mode':'Custom','project_dir':str(device_root),'build_type':'Debug','elf_name':'PICO_CAN.elf',
+                'toolchain':'cmake/gcc-arm-none-eabi.cmake','cmake_options':{'PICO_APP':'MotorEnable','PICO_ENABLE_MOTOR_ID':motor_id,'PICO_ENABLE_MODEL':model},
+                'board_baud':115200,'capture_seconds':80,'builtin':True})
+        for model,motor_id in [('RS00',2),('RS10P',1)]:
+            items.append({'id':model+'-Speed-CAN1','name':f'{model} 单机低速转动 · ID{motor_id} · CAN1',
+                'description':'单机空载低速实验：0.3rad/s（约2.9rpm），限流0.5A，加速度0.5rad/s²，最长3秒。必须手动开始；以实际速度、位置和停机反馈验收。',
+                'base_mode':'Custom','project_dir':str(device_root),'build_type':'Debug','elf_name':'PICO_CAN.elf',
+                'toolchain':'cmake/gcc-arm-none-eabi.cmake','cmake_options':{'PICO_APP':'MotorSpeed','PICO_ENABLE_MOTOR_ID':motor_id,'PICO_ENABLE_MODEL':model},
+                'board_baud':115200,'capture_seconds':80,'builtin':True})
+        items.append({'id':'RS10P-Speed-0700mA','name':'RS10P 起转电流测试 · ID1 · 0.7A',
+            'description':'单机空载，限流0.7A，实测Iq超过0.8A请求停机；0.3rad/s、0.5rad/s²、最长3秒。手动开始；位置反馈突跳中止，不改零位/增益或保存。',
+            'base_mode':'Custom','project_dir':str(device_root),'build_type':'Debug','elf_name':'PICO_CAN.elf',
+            'toolchain':'cmake/gcc-arm-none-eabi.cmake','cmake_options':{'PICO_APP':'MotorSpeed','PICO_ENABLE_MOTOR_ID':1,'PICO_ENABLE_MODEL':'RS10P','PICO_SPEED_LIMIT_MA':700},
+            'board_baud':115200,'capture_seconds':80,'builtin':True})
+        items.append({'id':'Motors-Speed-CAN1','name':'双电机低速联调 · 10P ID1 + 00 ID2 · CAN1',
+            'description':'CAN1 / 1Mbps；两台空载，每台0.3rad/s、限流0.5A、加速度0.5rad/s²。两台参数复核完成才转动；任一台异常请求两台停机，最长使能3秒。此实验不验证机械同步。',
+            'base_mode':'Custom','project_dir':str(device_root),'build_type':'Debug','elf_name':'PICO_CAN.elf',
+            'toolchain':'cmake/gcc-arm-none-eabi.cmake','cmake_options':{'PICO_APP':'MotorDualSpeed'},
+            'board_baud':115200,'capture_seconds':80,'builtin':True})
+        for target in (1,2):
+            items.append({'id':f'Motors-Fault-ID{target}','name':f'双机反馈超时验证 · 屏蔽ID{target}运行反馈',
+                'description':'CAN1 / 1Mbps；低速动作确认后，软件屏蔽正常运行反馈，验证500ms超时与两台停机。保留故障及停机反馈，最长3秒。',
+                'base_mode':'Custom','project_dir':str(device_root),'build_type':'Debug','elf_name':'PICO_CAN.elf',
+                'toolchain':'cmake/gcc-arm-none-eabi.cmake','cmake_options':{'PICO_APP':'MotorDualFault','PICO_FAULT_TARGET':target},
+                'board_baud':115200,'capture_seconds':80,'builtin':True})
+        for model,motor_id in [('RS10P',1),('RS00',2)]:
+            items.append({'id':model+'-Position-Cycles','name':f'{model} 连续位置往返 · ID{motor_id} · ±5°×10轮',
+                'description':'单台CAN1/1Mbps；实测位置为起点，+5°→起点→-5°→起点，10轮，限速0.2rad/s、限流0.5A，到位保持0.5秒。总超时90秒，丢失心跳/反馈/采样500ms停机。',
+                'base_mode':'Custom','project_dir':str(device_root),'build_type':'Debug','elf_name':'PICO_CAN.elf',
+                'toolchain':'cmake/gcc-arm-none-eabi.cmake','cmake_options':{'PICO_APP':'MotorPosition','PICO_ENABLE_MOTOR_ID':motor_id,'PICO_ENABLE_MODEL':model},
+                'board_baud':115200,'capture_seconds':100,'builtin':True})
+        items.append({'id':'Motors-Independent-Position','name':'双电机独立位置轨迹 · 10P ID1 + 00 ID2',
+            'description':'CAN1/1Mbps；10P±5°停留500ms，00先-3°后+3°停留800ms，各10轮。每台限速0.2rad/s、限流0.5A；任一异常请求两台停机。',
+            'base_mode':'Custom','project_dir':str(device_root),'build_type':'Debug','elf_name':'PICO_CAN.elf','toolchain':'cmake/gcc-arm-none-eabi.cmake',
+            'cmake_options':{'PICO_APP':'MotorDualPosition'},'board_baud':115200,'capture_seconds':100,'builtin':True})
+        items.append({'id':'Motors-Sync-Position','name':'双电机共同时间轴平滑轨迹 · 5轮',
+            'description':'CAN1/1Mbps；10P±5°、00反向±3°，每段2秒、8秒一轮，共5轮。MCU每50ms更新五次平滑目标，显示跟踪误差；限速0.2rad/s、限流0.5A，任一异常请求两台停机。',
+            'base_mode':'Custom','project_dir':str(device_root),'build_type':'Debug','elf_name':'PICO_CAN.elf','toolchain':'cmake/gcc-arm-none-eabi.cmake',
+            'cmake_options':{'PICO_APP':'MotorSyncPosition'},'board_baud':115200,'capture_seconds':100,'builtin':True})
+        for model,motor_id in [('RS10P',1),('RS00',2)]:
+            items.append({'id':model+'-Position-Diag','name':f'{model} 停机位置诊断 · ID{motor_id}',
+                'description':'停机后自动读取UID、版本、位置指令/实测位置、零位及偏置。写回验证须手动触发，只写当前实测位置；不使能、不改模式/限制/零位/ID。',
+                'base_mode':'Custom','project_dir':str(device_root),'build_type':'Debug','elf_name':'PICO_CAN.elf','toolchain':'cmake/gcc-arm-none-eabi.cmake',
+                'cmake_options':{'PICO_APP':'MotorPositionDiag','PICO_DIAG_MOTOR_ID':motor_id,'PICO_DIAG_MODEL':model},'board_baud':115200,'capture_seconds':100,'builtin':True})
+    for model, motor_id in [('RS10P',1),('RS00',2)]:
+        items.append({'id':model+'-Tuning','name':f'{model} 交互跟踪示波器 · ID{motor_id}',
+            'description':'两种模式：位置±30°/限速0.01–0.3rad/s/1–300秒；独立速度±0.3rad/s/1–60秒，限流0.5A。手动开始，真实反馈波形，500ms心跳/采样保护，切换模式须停机复位。',
+            'base_mode':'Custom','project_dir':str(device_root),'build_type':'Debug','elf_name':'PICO_CAN.elf','toolchain':'cmake/gcc-arm-none-eabi.cmake',
+            'cmake_options':{'PICO_APP':'MotorTuning','PICO_TUNE_MOTOR_ID':motor_id,'PICO_TUNE_MODEL':model},'board_baud':115200,'builtin':True})
+    items.append({'id':'Motors-Tuning','name':'双电机交互跟踪 · 10P ID1 + 00 ID2',
+        'description':'双机同模式、独立目标及波形；位置1–300秒、速度1–60秒，限流各0.5A。两台准备完成再使能，任一异常联动停机。',
+        'base_mode':'Custom','project_dir':str(device_root),'build_type':'Debug','elf_name':'PICO_CAN.elf','toolchain':'cmake/gcc-arm-none-eabi.cmake',
+        'cmake_options':{'PICO_APP':'MotorTuning','PICO_TUNE_COUNT':2,'PICO_TUNE_MOTOR_ID':1,'PICO_TUNE_MODEL':'RS10P'},'board_baud':115200,'builtin':True})
     return items
 
+
+RETIRED = {'RS00-Enable-CAN1','RS10P-Enable-CAN1','RS10P-Speed-0700mA'}
+
+def builtins():
+    return [p for p in _all_builtins() if p['id'] not in RETIRED]
 
 def profiles():
     with LOCK:
@@ -61,7 +135,7 @@ def profiles():
 
 
 def profile(ident):
-    for item in profiles():
+    for item in profiles() + [p for p in _all_builtins() if p["id"] in RETIRED]:
         if item["id"] == ident:
             return dict(item)
     raise ValueError("找不到实验配置，请重新选择。")

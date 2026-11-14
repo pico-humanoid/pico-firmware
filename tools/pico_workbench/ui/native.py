@@ -4,8 +4,10 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import queue
+import threading
 import tkinter as tk
-from tkinter import messagebox, scrolledtext, ttk
+from tkinter import filedialog, messagebox, scrolledtext, ttk
 import webbrowser
 
 import catalog
@@ -29,55 +31,91 @@ def open_folder(path):
 class Desktop:
     def __init__(self, root):
         self.root, self.manager, self.cursor, self.current = root, Manager(), 0, ""
+        self.export_events=queue.Queue();self.export_thread=None
+        from appearance import apply_theme
+        apply_theme(root)
         self.root.title("PICO 开发控制台 · 桌面版")
-        self.root.geometry("860x880")
-        self.root.minsize(740, 730)
+        self.root.geometry("1160x860")
+        self.root.minsize(1000, 760)
         self.root.protocol("WM_DELETE_WINDOW", self.close)
-        frame = ttk.Frame(root, padding=20)
+        frame = ttk.Frame(root, padding=14)
         frame.pack(fill="both", expand=True)
-        ttk.Label(frame, text="PICO · G474 开发控制台", font=(FONT, 20, "bold")).pack(anchor="w")
-        ttk.Label(frame, text="选择实验 → 打开软件或执行任务。所有操作在本机完成。", foreground="#65788e").pack(anchor="w", pady=(6, 14))
+        ttk.Label(frame, text="PICO  开发控制台", style='Title.TLabel').pack(anchor="w")
+        ttk.Label(frame, text="G474 · CAN 实验工作台　/　工程、设备、轨迹与记录", style='Muted.TLabel').pack(anchor="w", pady=(4, 10))
         row = ttk.Frame(frame)
         row.pack(fill="x")
-        ttk.Label(row, text="实验配置").pack(side="left", padx=(0, 12))
+        ttk.Label(row, text="当前工程 / 实验").pack(side="left", padx=(0, 12))
         self.mode = ttk.Combobox(row, state="readonly")
         self.mode.pack(side="left", fill="x", expand=True)
         self.mode.bind("<<ComboboxSelected>>", self.change_mode)
-        ttk.Button(row, text="新增配置", command=lambda: self.edit_profile()).pack(side="left", padx=(8, 0))
-        ttk.Button(row, text="复制 / 编辑", command=lambda: self.edit_profile(self.profile())).pack(side="left", padx=6)
+        ttk.Button(row, text="编辑 / 复制", command=lambda: self.edit_profile(self.profile())).pack(side="left", padx=8)
+        more=ttk.Menubutton(row,text="更多")
+        menu=tk.Menu(more,tearoff=False)
+        menu.add_command(label="新增实验配置",command=lambda:self.edit_profile())
+        menu.add_command(label="调试软件路径",command=self.debug_app_settings)
+        more.configure(menu=menu);more.pack(side="left")
         self.path_label = tk.StringVar()
-        ttk.Label(frame, textvariable=self.path_label, wraplength=780, foreground="#5c7692").pack(anchor="w", pady=(8, 12))
-        for kind, label in (("board", "开发板日志串口"), ("usbcan", "USB-CAN 串口")):
-            row = ttk.Frame(frame)
-            row.pack(fill="x", pady=3)
-            ttk.Label(row, text=label, width=17).pack(side="left")
-            combo = ttk.Combobox(row, state="readonly")
-            combo.pack(side="left", fill="x", expand=True)
-            setattr(self, kind + "_port", combo)
-            if kind == "board":
-                ttk.Button(row, text="刷新设备", command=self.refresh_ports).pack(side="left", padx=(8, 0))
-        buttons = ttk.Frame(frame)
-        buttons.pack(fill="x", pady=15)
-        buttons.columnconfigure(0, weight=1)
-        buttons.columnconfigure(1, weight=1)
-        self.action_buttons = {}
-        for i, (name, command) in enumerate([
-            ("01  打开 VS Code 对应项目", lambda: self.open_app("vscode")),
-            ("02  打开 CubeMX 配置", lambda: self.open_app("cubemx")),
-            ("03  编译当前实验", lambda: self.start("build")),
-            ("04  烧录当前实验", lambda: self.start("flash")),
-            ("05  采集开发板日志", lambda: self.start("board")),
-            ("06  USB-CAN 100 帧测试", lambda: self.start("usbcan")),
-            ("07  打开日志查看器", lambda: LogViewer(root)),
-            ("08  实验记录 / 备注", self.records),
-            ("09  底板接线 / 固件新功能", self.references),
-            ("10  打开当前项目文件夹", lambda: open_folder(tools.project_dir(self.mode_id()))),
-        ]):
-            button = ttk.Button(buttons, text=name, command=command)
-            button.grid(row=i // 2, column=i % 2, sticky="ew", padx=(0, 8) if i % 2 == 0 else (0, 0), pady=4)
-            self.action_buttons[i] = button
+        ttk.Label(frame, textvariable=self.path_label, wraplength=1100, foreground="#5c7692").pack(anchor="w", pady=(6, 10))
+        row=ttk.Frame(frame);row.pack(fill='x',pady=3)
+        ttk.Label(row,text='开发板日志串口',width=17).pack(side='left')
+        self.board_port=ttk.Combobox(row,state='readonly');self.board_port.pack(side='left',fill='x',expand=True)
+        ttk.Button(row,text='刷新设备',command=self.refresh_ports).pack(side='left',padx=(8,0))
+        self.bench_button=ttk.Button(row,text='打开双向测试',command=lambda:self.start('usbcan'))
+        self.navigation=ttk.Notebook(frame)
+        self.navigation.pack(fill='x',pady=(12,10))
+        work=ttk.Frame(self.navigation,padding=10)
+        labs=ttk.Frame(self.navigation,padding=4)
+        utilities=ttk.Frame(self.navigation,padding=10)
+        self.navigation.add(work,text='工作台')
+        self.navigation.add(labs,text='实验中心')
+        self.navigation.add(utilities,text='工具与资料')
+        self.action_buttons={}
+        actions={
+            'vscode':('VS Code 项目',lambda:self.open_app('vscode')),
+            'cubemx':('CubeMX 配置',lambda:self.open_app('cubemx')),
+            'project':('项目文件夹',lambda:open_folder(tools.project_dir(self.mode_id()))),
+            'build':('编译固件',lambda:self.start('build')),
+            'flash':('烧录固件',lambda:self.start('flash')),
+            'board':('采集开发板日志',lambda:self.start('board')),
+            'waveshare':('微雪 USB-CAN',lambda:self.open_debug_app('waveshare')),
+            'robstride':('灵足电机调试',lambda:self.open_debug_app('robstride')),
+            'logs':('日志查看器',lambda:LogViewer(root)),
+            'records':('实验记录',self.records),
+            'references':('接线与使用说明',self.references),
+            'package':('一键打包',self.export_portable),
+            'speed':('单机低速转动',lambda:self.open_motor_enable('speed')),
+            'tuning':('交互跟踪示波器 · 位置 / 速度',lambda:self.open_motor_enable('tuning')),
+            'position':('单机位置往返',lambda:self.open_motor_enable('position')),
+            'position_diag':('停机位置诊断',lambda:self.open_motor_enable('position_diag')),
+            'dual_tuning':('双机交互跟踪示波器',lambda:self.open_motor_enable('dual_tuning')),
+            'dual_speed':('双机低速联调',lambda:self.open_motor_enable('dual_speed')),
+            'dual_position':('双机独立位置轨迹',lambda:self.open_motor_enable('dual_position')),
+            'sync_position':('共同时间轴平滑轨迹',lambda:self.open_motor_enable('sync_position')),
+            'fault':('反馈超时与联动停机',lambda:self.open_motor_enable('fault')),
+        }
+        entry=ttk.Button(work,text='进入电机实验中心  →',style='Primary.TButton',command=lambda:self.navigation.select(labs))
+        entry.grid(row=0,column=0,columnspan=3,sticky='ew',pady=(0,12))
+        self.action_buttons['experiment_center']=entry
+        for host,keys in [(work,('vscode','cubemx','project','build','flash')),
+                          (utilities,('logs','records','references','waveshare','robstride','package','board'))]:
+            for column in range(3):host.columnconfigure(column,weight=1,uniform='tools')
+            for i,key in enumerate(keys):
+                label,command=actions[key];button=ttk.Button(host,text=label,command=command)
+                button.grid(row=i//3+(1 if host is work else 0),column=i%3,sticky='ew',padx=4,pady=5)
+                self.action_buttons[key]=button
+        groups=[('单机调试','先确认单台电机的通信与基本控制。',('tuning','speed','position','position_diag')),
+                ('双机联调','同一总线，独立目标、反馈和完成进度。',('dual_tuning','dual_speed','dual_position','sync_position')),
+                ('保护验证','反馈超时与联动停机；心跳测试在实验窗口中。',('fault',))]
+        for column,(title,description,keys) in enumerate(groups):
+            labs.columnconfigure(column,weight=1,uniform='experiments')
+            card=ttk.Frame(labs,padding=12,style='Card.TFrame');card.grid(row=0,column=column,sticky='nsew',padx=4,pady=4)
+            ttk.Label(card,text=title,style='CardTitle.TLabel').pack(anchor='w')
+            ttk.Label(card,text=description,style='CardMuted.TLabel',wraplength=285).pack(anchor='w',pady=(5,10))
+            for key in keys:
+                label,command=actions[key];button=ttk.Button(card,text=label,command=command)
+                button.pack(fill='x',pady=4);self.action_buttons[key]=button
         self.tip = tk.StringVar(value="采集串口打开后按开发板 RESET。新设备读取配置不会使用旧 100 帧验收规则。")
-        ttk.Label(frame, textvariable=self.tip, wraplength=780, foreground="#416a99").pack(anchor="w", pady=(0, 10))
+        ttk.Label(frame, textvariable=self.tip, wraplength=1100, foreground="#416a99").pack(anchor="w", pady=(0, 10))
         row = ttk.Frame(frame)
         row.pack(fill="x", pady=(0, 6))
         ttk.Label(row, text="任务输出").pack(side="left")
@@ -88,35 +126,124 @@ class Desktop:
         self.stop_button.pack(side="right")
         self.console = scrolledtext.ScrolledText(frame, height=12, wrap="word",
                          font=("Consolas" if tools.WINDOWS else "DejaVu Sans Mono", 10),
-                         background="#192b40", foreground="#d2e0ef", insertbackground="white")
+                         background="#ffffff", foreground="#334660", insertbackground="#365fdf", relief="flat", borderwidth=0, padx=14, pady=12)
         self.console.pack(fill="both", expand=True)
         self.console.insert("end", "开发控制台已就绪。选择实验后点击相应按钮。\n")
         self.console.configure(state="disabled")
         self.status = tk.StringVar(value="尚无任务")
-        ttk.Label(frame, textvariable=self.status).pack(anchor="w", pady=(10, 0))
-        self.refresh_profiles()
+        ttk.Label(frame, textvariable=self.status).pack(side='bottom',anchor="w", pady=(6, 0),before=self.console)
+        self.refresh_profiles('Motors-Read-1M')
         self.refresh_ports()
         root.after(300, self.poll)
 
     def mode_id(self):
         return self.profiles[max(self.mode.current(), 0)]["id"]
 
+    def export_portable(self):
+        if any(j.status=='running' for j in self.manager.jobs.values()) or self.exporting():
+            messagebox.showinfo('任务运行中','请先完成当前任务后再打包。',parent=self.root);return
+        from datetime import datetime
+        path=filedialog.asksaveasfilename(parent=self.root,title='保存完整离线迁移包',defaultextension='.zip',filetypes=[('ZIP压缩包','*.zip')],initialfile='PICO-Windows-x64-'+datetime.now().strftime('%Y%m%d_%H%M%S')+'.zip')
+        if not path:return
+        self.current='';self.cursor=0
+        def work():
+            try:
+                from portable_export import export
+                export(path,lambda value:self.export_events.put(('progress',value)))
+                self.export_events.put(('done',path))
+            except Exception as exc:self.export_events.put(('error',str(exc)))
+        self.export_thread=threading.Thread(target=work,daemon=True);self.export_thread.start()
+        self.status.set('正在打包，包含运行环境、当前工程与离线开发工具。')
+
+    def exporting(self):
+        thread=getattr(self,'export_thread',None)
+        return bool(thread and thread.is_alive())
+
+    def open_debug_app(self,key):
+        try:
+            import debug_apps
+            debug_apps.launch(key)
+            self.tip.set('已启动'+debug_apps.LABELS[key]+'。连接设备与收发设置在对应软件中操作。')
+        except Exception as exc:
+            messagebox.showerror('启动失败',str(exc),parent=self.root)
+
+    def debug_app_settings(self):
+        import debug_apps
+        dialog=tk.Toplevel(self.root);dialog.title('调试软件路径')
+        frame=ttk.Frame(dialog,padding=18);frame.pack(fill='both',expand=True)
+        values={}
+        for i,(key,label) in enumerate(debug_apps.LABELS.items()):
+            ttk.Label(frame,text=label).grid(row=i,column=0,sticky='w',pady=6,padx=(0,10))
+            value=tk.StringVar(value=debug_apps.paths()[key]);values[key]=value
+            ttk.Entry(frame,textvariable=value,width=70).grid(row=i,column=1,pady=6,sticky='ew')
+            def choose(v=value):
+                path=filedialog.askopenfilename(parent=dialog,title='选择调试程序')
+                if path:v.set(path)
+            ttk.Button(frame,text='浏览',command=choose).grid(row=i,column=2,padx=(8,0))
+        def save():
+            try:debug_apps.save({key:v.get() for key,v in values.items()});dialog.destroy()
+            except Exception as exc:messagebox.showerror('无法保存',str(exc),parent=dialog)
+        ttk.Button(frame,text='保存',command=save).grid(row=2,column=2,pady=(12,0),sticky='e')
+
     def profile(self):
         return catalog.profile(self.mode_id())
+
+    def open_motor_enable(self,experiment=None):
+        if self.exporting():return
+        if any(j.status=='running' for j in self.manager.jobs.values()):
+            messagebox.showinfo('任务运行中','请先结束当前编译、烧录或串口采集。',parent=self.root);return
+        from motor_enable import EnablePanel,SpeedPanel,DualSpeedPanel,FaultPanel,PositionPanel,DualPositionPanel,SyncPositionPanel
+        from position_diagnostic import PositionDiagnosticPanel
+        options=self.profile()['cmake_options'];app=options.get('PICO_APP')
+        if experiment in ('tuning','dual_tuning') or (experiment is None and app=='MotorTuning'):
+            from motor_tuning import TuningPanel
+            model=options.get('PICO_TUNE_MODEL',options.get('PICO_ENABLE_MODEL',options.get('PICO_MOTOR1_MODEL','RS10P')))
+            selected='Motors-Tuning' if experiment=='dual_tuning' or (experiment is None and int(options.get('PICO_TUNE_COUNT',1))==2) else model+'-Tuning'
+            self.refresh_profiles(selected)
+            self.motor_panel=TuningPanel(self.root,self.manager,selected);return self.motor_panel
+        auto_open=experiment is None
+        if experiment is None:experiment='position_diag' if app=='MotorPositionDiag' else 'sync_position' if app=='MotorSyncPosition' else 'dual_position' if app=='MotorDualPosition' else 'position' if app=='MotorPosition' else 'fault' if app=='MotorDualFault' else 'dual_speed' if app=='MotorDualSpeed' else 'speed' if app=='MotorSpeed' else 'enable'
+        if experiment=='position_diag':
+            model=options.get('PICO_DIAG_MODEL',options.get('PICO_ENABLE_MODEL',options.get('PICO_MOTOR1_MODEL','RS10P')))
+            panel,selected=PositionDiagnosticPanel,('RS00' if model=='RS00' else 'RS10P')+'-Position-Diag'
+        elif experiment=='sync_position':panel,selected=SyncPositionPanel,'Motors-Sync-Position'
+        elif experiment=='dual_position':panel,selected=DualPositionPanel,'Motors-Independent-Position'
+        elif experiment=='fault':panel,selected=FaultPanel,'Motors-Fault-ID1'
+        elif experiment=='dual_speed':panel,selected=DualSpeedPanel,'Motors-Speed-CAN1'
+        else:
+            model=options.get('PICO_ENABLE_MODEL',options.get('PICO_MOTOR1_MODEL','RS10P'))
+            if model not in ('RS00','RS10P'):model='RS10P'
+            panel=PositionPanel if experiment=='position' else SpeedPanel if experiment=='speed' else EnablePanel
+            selected=model+('-Position-Cycles' if experiment=='position' else '-Speed-CAN1' if experiment=='speed' else '-Enable-CAN1')
+        self.refresh_profiles(selected)
+        self.motor_panel=panel(self.root,self.manager,selected)
+        return self.motor_panel
 
     def refresh_profiles(self, selected=None):
         self.profiles = catalog.profiles()
         self.mode["values"] = [p["name"] for p in self.profiles]
-        self.mode.current(next((i for i, p in enumerate(self.profiles) if p["id"] == selected), 0))
+        self.mode.current(next((i for i, p in enumerate(self.profiles) if p["id"] == (selected or 'Motors-Read-1M')), 0))
         self.change_mode()
 
     def change_mode(self, _event=None):
-        self.path_label.set(str(tools.project_dir(self.mode_id()).resolve()))
-        self.action_buttons[5].configure(state="normal" if self.profile()["base_mode"] == "External" else "disabled")
+        profile=self.profile();options=profile['cmake_options']
+        if options.get('PICO_APP')=='Motor':
+            ids=' / '.join(str(int(str(options[k]),0)) for k in ('PICO_MOTOR1_ID','PICO_MOTOR2_ID')[:int(options.get('PICO_MOTOR_COUNT',1))])
+            self.path_label.set(f"CAN{options.get('PICO_MOTOR_CAN_CHANNEL',1)}  ·  1 Mbps  ·  电机 ID：{ids}  ·  主机 ID：253")
+        else:self.path_label.set('项目：'+str(tools.project_dir(self.mode_id()).resolve()))
+        can3=self.profile()["cmake_options"].get("PICO_APP") == "Can3Bench"
+        if can3:
+            self.tip.set(self.profile()["description"])
+        elif self.profile()["cmake_options"].get("PICO_APP") in ("MotorPositionDiag", "Motor", "MotorEnable", "MotorSpeed", "MotorDualSpeed", "MotorDualFault", "MotorPosition", "MotorDualPosition", "MotorSyncPosition", "Can1Periodic", "Can2Periodic", "Can3Periodic"):
+            self.tip.set(self.profile()["description"])
+        else:
+            self.tip.set("采集串口打开后按开发板 RESET。设备读取按完整日志验收。")
+        if can3:self.bench_button.pack(side='left',padx=(8,0))
+        else:self.bench_button.pack_forget()
 
     def refresh_ports(self):
         self.port_items = ports()
-        for kind, combo in (("board", self.board_port), ("usbcan", self.usbcan_port)):
+        for kind, combo in (("board", self.board_port),):
             previous = combo.get()
             values = [p["device"] + " · " + p["name"] for p in self.port_items]
             combo["values"] = values
@@ -136,7 +263,17 @@ class Desktop:
             messagebox.showerror("打开失败", str(exc), parent=self.root)
 
     def start(self, kind):
+        if self.exporting():return
         try:
+            if kind=='board' and self.profile()['cmake_options'].get('PICO_APP') in ('MotorTuning','MotorPositionDiag','MotorEnable','MotorSpeed','MotorDualSpeed','MotorDualFault','MotorPosition','MotorDualPosition','MotorSyncPosition'):
+                self.open_motor_enable();return
+            if kind == "usbcan" and self.profile()["cmake_options"].get("PICO_APP") == "Can3Bench":
+                from can_pc_test import PCTest
+                app=PCTest(self.root)
+                app.profile=self.mode_id()
+                self.tip.set("已打开 CAN3 双向测试窗口；由该窗口统一打开两侧串口，请先停止其他串口采集。")
+                return
+            if kind=='usbcan':raise ValueError('请使用微雪或灵足调试软件收发CAN报文。')
             port = ""
             if kind in ("board", "usbcan"):
                 combo = self.board_port if kind == "board" else self.usbcan_port
@@ -160,6 +297,12 @@ class Desktop:
             self.console.configure(state="disabled")
 
     def poll(self):
+        while not self.export_events.empty():
+            kind,value=self.export_events.get_nowait()
+            self.status.set(value if kind=='progress' else '打包完成：'+value if kind=='done' else '打包失败：'+value)
+            self.console.configure(state='normal');self.console.insert('end',self.status.get()+'\n');self.console.see('end');self.console.configure(state='disabled')
+            if kind=='done':messagebox.showinfo('打包完成','已生成完整离线ZIP：\n'+value+'\n\n适用于Windows x64。新电脑可能需要安装包内USB驱动；历史日志未包含。',parent=self.root)
+            elif kind=='error':messagebox.showerror('打包失败',value,parent=self.root)
         with self.manager.lock:
             jobs = list(self.manager.jobs.values())
         self.task_ids = [j.id for j in jobs]
@@ -181,9 +324,10 @@ class Desktop:
         else:
             self.stop_button.configure(state="disabled")
         active = [j for j in jobs if j.status == "running"]
+        if self.exporting():active=[True]
         self.mode.configure(state="disabled" if active else "readonly")
-        for i in (2, 3):
-            self.action_buttons[i].configure(state="disabled" if active else "normal")
+        for key in ('build','flash','package','tuning','speed','dual_speed','fault','position','dual_position'):
+            self.action_buttons[key].configure(state="disabled" if active else "normal")
         self.root.after(500, self.poll)
 
     def stop(self):
@@ -318,13 +462,13 @@ class Desktop:
 
     def references(self):
         dialog = tk.Toplevel(self.root)
-        dialog.title("底板接线与最新固件")
+        dialog.title("接线与使用说明")
         dialog.geometry("1000x760")
         book = ttk.Notebook(dialog)
         book.pack(fill="both", expand=True, padx=12, pady=12)
-        for filename, title in [("wiring.json", "底板接线"), ("firmware.json", "固件新功能"),
-                                ("board-design.md", "底板原文"), ("device-read-validation.md", "设备验收说明")]:
-            path = tools.ROOT / "ui/data" / filename
+        for filename, title in [("Motor_CAN1.md", "当前电机接线"), ("RobStrideSPC_Adaptation.md", "官方控制库适配"), ("Motor_Tuning.md", "交互跟踪示波器"), ("Motor_Position_Diagnostic.md", "停机位置诊断"), ("wiring.json", "底板参考接线"),
+                                ("firmware.json", "固件功能"), ("device-read-validation.md", "设备验收说明")]:
+            path = tools.ROOT / ("docs" if filename.endswith('.md') and filename!='device-read-validation.md' else "ui/data") / filename
             text = scrolledtext.ScrolledText(book, wrap="word", font=(FONT, 11))
             raw = path.read_text(encoding="utf-8")
             if filename == "wiring.json":
@@ -338,7 +482,9 @@ class Desktop:
                 raw = "\n".join(lines)
             elif filename == "firmware.json":
                 data = json.loads(raw)
-                lines = ["固件快照：" + data["updated"] + " / " + data["commit"], ""]
+                lines = ["导入基线：" + data["updated"] + " / " + data["commit"], ""]
+                if data.get("local_updated"):
+                    lines += ["本地配置更新：" + data["local_updated"], data.get("local_change", ""), ""]
                 for f in data["features"]:
                     lines += [f["name"], f["description"], f["status"], ""]
                 lines += data["boundaries"]
@@ -348,6 +494,8 @@ class Desktop:
             book.add(text, text="  " + title + "  ")
 
     def close(self):
+        if self.exporting():
+            messagebox.showinfo('正在打包','请等待打包完成后再关闭，避免中断压缩包生成。',parent=self.root);return
         active = [j for j in self.manager.jobs.values() if j.status == "running"]
         if any(j.kind == "flash" for j in active):
             messagebox.showinfo("正在烧录", "请等待写入和校验完成后再关闭。", parent=self.root)
@@ -363,7 +511,19 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--logs", action="store_true")
     parser.add_argument("--log-file", type=Path)
+    parser.add_argument("--position-diag", action="store_true")
+    parser.add_argument("--diag-log", type=Path)
+    parser.add_argument("--tuning", action="store_true")
     args = parser.parse_args()
+    if args.tuning:
+        from motor_tuning import TuningPanel
+        panel=TuningPanel();panel.window.mainloop();return
+    if args.position_diag or args.diag_log:
+        from position_diagnostic import PositionDiagnosticPanel
+        panel=PositionDiagnosticPanel()
+        if args.diag_log:panel.load_log(args.diag_log)
+        panel.window.mainloop()
+        return
     root = tk.Tk()
     style = ttk.Style(root)
     style.theme_use("clam")

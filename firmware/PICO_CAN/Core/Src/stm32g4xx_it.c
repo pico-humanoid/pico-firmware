@@ -20,6 +20,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32g4xx_it.h"
+#if defined(PICO_MOTOR_ENABLE)
+#include "usart.h"
+#endif
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -56,6 +59,7 @@
 
 /* External variables --------------------------------------------------------*/
 extern FDCAN_HandleTypeDef hfdcan1;
+extern FDCAN_HandleTypeDef hfdcan3;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -212,6 +216,17 @@ void FDCAN1_IT0_IRQHandler(void)
   /* USER CODE END FDCAN1_IT0_IRQn 1 */
 }
 
+/**
+  * @brief This function handles FDCAN3 interrupt 0.
+  */
+void FDCAN3_IT0_IRQHandler(void)
+{
+  HAL_FDCAN_IRQHandler(&hfdcan3);
+}
+
 /* USER CODE BEGIN 1 */
+#if defined(PICO_MOTOR_ENABLE)
+void LPUART1_IRQHandler(void){HAL_UART_IRQHandler(&hlpuart1);}
+#endif
 
 /* USER CODE END 1 */

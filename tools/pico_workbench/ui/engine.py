@@ -254,7 +254,7 @@ class Manager:
                              write_timeout=1, **kwargs)
 
     def _do_board(self, job):
-        if job.profile["base_mode"] in ("Custom", "Device"):
+        if job.profile["base_mode"] in ("Custom", "Device") or job.profile["cmake_options"].get("PICO_APP") == "Can3Bench":
             return self._do_stream(job)
         path = LOGS / ("ui_board_" + job.id + ".csv")
         job.files.append(path.name)
@@ -349,23 +349,44 @@ class Manager:
                         configured = str(job.profile["cmake_options"].get("PICO_DEVICE_BITRATE", ""))
                         if rate_match and configured and rate_match[1] != configured:
                             raise ValueError("板端 CAN 位速率与所选配置不一致。")
+                        if expected == "MOTOR":
+                            options = job.profile["cmake_options"]
+                            pairs = [("count", "PICO_MOTOR_COUNT"), ("motor1_id", "PICO_MOTOR1_ID"), ("host_id", "PICO_MOTOR_HOST_ID")]
+                            if int(options.get("PICO_MOTOR_COUNT", 1)) == 2:
+                                pairs.append(("motor2_id", "PICO_MOTOR2_ID"))
+                            for reported, configured_key in pairs:
+                                found = re.search(r"\b" + reported + r"=([^\s;]+)", line)
+                                if not found or int(found[1], 0) != int(str(options[configured_key]), 0):
+                                    raise ValueError("板端电机数量或 ID 与所选配置不一致，请检查烧录镜像。")
+                            for reported, key in [("motor1_model", "PICO_MOTOR1_MODEL"), ("motor2_model", "PICO_MOTOR2_MODEL")]:
+                                found = re.search(r"\b" + reported + r"=([^\s;]+)", line)
+                                if not found or found[1] != str(options[key]):
+                                    raise ValueError("板端电机型号标签与所选配置不一致。")
+                            channel=int(options.get("PICO_MOTOR_CAN_CHANNEL",1))
+                            found=re.search(r"\bchannel=FDCAN(\d+)\b",line)
+                            if not found or int(found[1])!=channel:
+                                raise ValueError(f"电机实验需使用 CAN{channel}，请重新烧录当前镜像。")
                     if line.startswith("# "):
                         category, _, rest = line[2:].partition(",")
                         fields = dict(part.split("=", 1) for part in rest.split(",") if "=" in part)
                         with job.lock:
-                            if category == "HEALTH":
+                            if category in ("HEALTH", "PC_CAN_HEALTH", "PERIODIC_HEALTH"):
                                 job.telemetry["health"] = fields
                             elif category == "DEVICE_HEALTH":
                                 job.telemetry["devices"][fields.get("device", "UNKNOWN")] = fields
-                            elif category in ("BMS", "POWER"):
-                                group = job.telemetry["values"].setdefault(category, {})
+                            elif category in ("BMS", "POWER", "MOTOR"):
+                                group = job.telemetry["values"].setdefault(fields.get("device", "MOTOR") if category == "MOTOR" else category, {})
                                 if "param" in fields:
                                     group[fields.get("name", fields["param"])] = fields
                                 else:
                                     group.update(fields)
                     row = line.split(",")
-                    if len(row) == 8 and row[1] in ("RX", "TX_SUBMIT", "TX_DONE", "TX_TIMEOUT"):
-                        job.frame(row[1] + (" / RTR" if row[4] == "RTR" else ""), row[5], row[7], row[0], row[3])
+                    is_bench=job.profile["cmake_options"].get("PICO_APP") in ("Can3Bench", "Can1Periodic", "Can2Periodic", "Can3Periodic")
+                    if ((len(row) == 6 and is_bench) or len(row) == 8) and row[1] in ("RX", "TX_SUBMIT", "TX_DONE", "TX_TIMEOUT"):
+                        if len(row)==6:
+                            job.frame(row[1],row[3],row[5],row[0],row[2])
+                        else:
+                            job.frame(row[1] + (" / RTR" if row[4] == "RTR" else ""), row[5], row[7], row[0], row[3])
                         with job.lock:
                             metric = {"RX": "rx", "TX_SUBMIT": "tx", "TX_DONE": "done"}.get(row[1])
                             if metric:
@@ -386,6 +407,8 @@ class Manager:
         job.log(result.get("message", "检查完成"))
 
     def _do_usbcan(self, job):
+        if job.profile["cmake_options"].get("PICO_APP") == "Can3Bench":
+            raise ValueError("此配置使用灵足AT协议，请使用开发控制台06按钮打开CAN3双向测试窗口。")
         path = LOGS / ("ui_usbcan_" + job.id + ".csv")
         job.files.append(path.name)
         frames, decoder, sent = [], Decoder(), 0

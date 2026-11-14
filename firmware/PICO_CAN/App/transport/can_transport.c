@@ -1,12 +1,19 @@
 #include "can_transport.h"
 #include <string.h>
+#if defined(PICO_CAN_PIN_TRACE)
+#include "can_pin_trace.h"
+#endif
 
 #define RX_QUEUE_SIZE 32U
 #define TX_SLOTS 3U
-#define TX_DEADLINE_MS 300U
+#if (defined(PICO_MOTOR_READ) || defined(PICO_MOTOR_ENABLE)) && PICO_MOTOR_CAN_CHANNEL == 1
+#define TRANSPORT_INSTANCE FDCAN1
+#else
+#define TRANSPORT_INSTANCE FDCAN3
+#endif
 
 typedef struct {
-    bool used, cancelling;
+    bool used, cancelling, app_cancel;
     uint8_t marker;
     uint32_t buffer_mask, submitted_at, serial;
     CanFrame frame;
@@ -20,18 +27,22 @@ static TxSlot tx_slots[TX_SLOTS];
 static uint8_t next_marker;
 static uint32_t tx_serial;
 static bool ready;
+static uint32_t retired_id[256];
+static bool retired_valid[256];
 
 bool CanTransport_Init(FDCAN_HandleTypeDef *handle, uint32_t bitrate,
                        CanTransportFilter filter, uint8_t power_id, CanTransportLog log) {
-    if (handle == NULL || handle->Instance != FDCAN1 ||
+    if (handle == NULL || handle->Instance != TRANSPORT_INSTANCE ||
         (bitrate != 500000U && bitrate != 1000000U) ||
-        (filter != CAN_FILTER_BMS && filter != CAN_FILTER_POWER && filter != CAN_FILTER_DUAL) ||
+        (filter != CAN_FILTER_BMS && filter != CAN_FILTER_POWER && filter != CAN_FILTER_DUAL && filter != CAN_FILTER_MOTOR && filter != CAN_FILTER_MOTOR_DIAG) ||
+        ((filter == CAN_FILTER_MOTOR || filter == CAN_FILTER_MOTOR_DIAG) && bitrate != 1000000U) ||
         HAL_RCC_GetPCLK1Freq() != 16000000U) return false;
     ready = false;
     bus = NULL;
     if (HAL_FDCAN_DeInit(handle) != HAL_OK) return false;
     memset((void *)&stats, 0, sizeof(stats));
     memset(tx_slots, 0, sizeof(tx_slots));
+    memset(retired_valid,0,sizeof(retired_valid));
     rx_write = rx_read = 0;
     next_marker = 0;
     tx_serial = 0;
@@ -39,8 +50,16 @@ bool CanTransport_Init(FDCAN_HandleTypeDef *handle, uint32_t bitrate,
     handle->Init.ClockDivider = FDCAN_CLOCK_DIV1;
     handle->Init.FrameFormat = FDCAN_FRAME_CLASSIC;
     handle->Init.Mode = FDCAN_MODE_NORMAL;
-    /* Bound retries in DeviceReader, not indefinitely in the controller. */
+    /* In DAR mode even ordinary arbitration loss cancels a request without a
+       successful Tx event (RM0440, Disabled automatic retransmission mode).
+       Dual position permits controller retries, bounded by the same deadline
+       below and by the application's STOP/abort interlock. Other images keep
+       their existing single-attempt policy. Never re-submit old frames here. */
+#if defined(PICO_CAN_BOUNDED_TX_RETRY) && PICO_CAN_BOUNDED_TX_RETRY
+    handle->Init.AutoRetransmission = ENABLE;
+#else
     handle->Init.AutoRetransmission = DISABLE;
+#endif
     handle->Init.TransmitPause = DISABLE;
     handle->Init.ProtocolException = DISABLE;
     handle->Init.NominalPrescaler = bitrate == 500000U ? 2U : 1U;
@@ -48,7 +67,7 @@ bool CanTransport_Init(FDCAN_HandleTypeDef *handle, uint32_t bitrate,
     handle->Init.NominalTimeSeg1 = 13U;
     handle->Init.NominalTimeSeg2 = 2U;
     handle->Init.StdFiltersNbr = (filter == CAN_FILTER_BMS || filter == CAN_FILTER_DUAL) ? 1U : 0U;
-    handle->Init.ExtFiltersNbr = (filter == CAN_FILTER_POWER || filter == CAN_FILTER_DUAL) ? 1U : 0U;
+    handle->Init.ExtFiltersNbr = filter == CAN_FILTER_MOTOR_DIAG ? 2U : (filter == CAN_FILTER_POWER || filter == CAN_FILTER_DUAL || filter == CAN_FILTER_MOTOR) ? 1U : 0U;
     handle->Init.TxFifoQueueMode = FDCAN_TX_FIFO_OPERATION;
     if (HAL_FDCAN_Init(handle) != HAL_OK) return false;
     FDCAN_FilterTypeDef f = {0};
@@ -61,7 +80,7 @@ bool CanTransport_Init(FDCAN_HandleTypeDef *handle, uint32_t bitrate,
         f.FilterID2 = 0x105U;
         if (HAL_FDCAN_ConfigFilter(handle, &f) != HAL_OK) return false;
     }
-    if (filter == CAN_FILTER_POWER || filter == CAN_FILTER_DUAL) {
+    if (filter == CAN_FILTER_POWER || filter == CAN_FILTER_DUAL || filter == CAN_FILTER_MOTOR || filter == CAN_FILTER_MOTOR_DIAG) {
         /* Standard and extended filter lists are independent in the FDCAN
            message RAM; both use their own index 0. */
         FDCAN_FilterTypeDef ext = {0};
@@ -69,9 +88,11 @@ bool CanTransport_Init(FDCAN_HandleTypeDef *handle, uint32_t bitrate,
         ext.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
         ext.IdType = FDCAN_EXTENDED_ID;
         ext.FilterType = FDCAN_FILTER_MASK;
-        ext.FilterID1 = (uint32_t)power_id << 16;
-        ext.FilterID2 = 0x00FF0000U;
+        bool motor=filter==CAN_FILTER_MOTOR||filter==CAN_FILTER_MOTOR_DIAG;
+        ext.FilterID1 = motor ? power_id : (uint32_t)power_id << 16;
+        ext.FilterID2 = motor ? 0xFFU : 0x00FF0000U;
         if (HAL_FDCAN_ConfigFilter(handle, &ext) != HAL_OK) return false;
+        if(filter==CAN_FILTER_MOTOR_DIAG){ext.FilterIndex=1;ext.FilterID1=0xFEU;if(HAL_FDCAN_ConfigFilter(handle,&ext)!=HAL_OK)return false;}
     }
     if (HAL_FDCAN_ConfigGlobalFilter(handle, FDCAN_REJECT, FDCAN_REJECT,
                                     FDCAN_REJECT_REMOTE, FDCAN_REJECT_REMOTE) != HAL_OK) return false;
@@ -108,12 +129,20 @@ bool CanTransport_Submit(const CanFrame *frame, uint32_t now) {
         if (collision) ++next_marker;
     } while (collision);
     header.MessageMarker = next_marker++;
+    retired_valid[header.MessageMarker]=false;
     uint8_t payload[8] = {0};
     if (!frame->remote) memcpy(payload, frame->data, frame->dlc);
+#if defined(PICO_CAN_PIN_TRACE)
+    CanPinTrace_Begin(bus);
+#endif
     if (HAL_FDCAN_AddMessageToTxFifoQ(bus, &header, payload) != HAL_OK) { ++stats.tx_rejected; return false; }
+#if defined(PICO_CAN_PIN_TRACE)
+    CanPinTrace_Capture(bus);
+#endif
     TxSlot *s = &tx_slots[slot];
     s->used = true;
     s->cancelling = false;
+    s->app_cancel = false;
     s->marker = (uint8_t)header.MessageMarker;
     s->buffer_mask = HAL_FDCAN_GetLatestTxFifoQRequestBuffer(bus);
     s->submitted_at = now;
@@ -142,17 +171,32 @@ void CanTransport_Service(uint32_t now) {
             if (logger != NULL) logger("TX_DONE", &completed);
             break;
         }
+        /* A cancellation may race a successful hardware transmission. Keep
+           its marker until consumed or reused, rather than blaming STOP for
+           a late successful event. Submit drains the three-entry FIFO before
+           reusing a marker; live markers remain collision protected. */
+        if(!found&&event.MessageMarker<256U&&retired_valid[event.MessageMarker]&&
+           retired_id[event.MessageMarker]==event.Identifier){retired_valid[event.MessageMarker]=false;found=true;}
         if (!found) ++stats.tx_event_unknown;
     }
     for (uint8_t i = 0; i < TX_SLOTS; ++i) {
         TxSlot *s = &tx_slots[i];
-        if (!s->used || (uint32_t)(now - s->submitted_at) < TX_DEADLINE_MS) continue;
+        if(s->used&&s->app_cancel&&HAL_FDCAN_IsTxBufferMessagePending(bus,s->buffer_mask)==0U){
+            retired_id[s->marker]=s->frame.id;retired_valid[s->marker]=true;
+            s->used=false;++stats.tx_cancelled;
+            CanFrame cancelled=s->frame;cancelled.timestamp_ms=now;
+            if(logger!=NULL)logger("TX_CANCELLED",&cancelled);
+            continue;
+        }
+        if (!s->used || (uint32_t)(now - s->submitted_at) < CAN_TRANSPORT_TX_DEADLINE_MS) continue;
         if (!s->cancelling) {
             s->cancelling = true;
             ++stats.tx_timed_out;
             CanFrame expired = s->frame;
             expired.timestamp_ms = now;
             if (logger != NULL) logger("TX_TIMEOUT", &expired);
+            if (logger != NULL) logger(HAL_FDCAN_IsTxBufferMessagePending(bus,s->buffer_mask) != 0U ?
+                "TX_TIMEOUT_PENDING" : "TX_TIMEOUT_NOT_PENDING", &expired);
         }
         /* A hardware buffer can be reused before its older Tx event is read
            (or if that event was lost). Never abort a newer frame using an old
@@ -168,6 +212,18 @@ void CanTransport_Service(uint32_t now) {
         else
             (void)HAL_FDCAN_AbortTxRequest(bus, s->buffer_mask);
     }
+}
+void CanTransport_CancelPending(uint32_t now){
+    if(!ready)return;
+    uint32_t mask=0;
+    for(unsigned i=0;i<TX_SLOTS;++i)if(tx_slots[i].used){tx_slots[i].app_cancel=true;mask|=tx_slots[i].buffer_mask;}
+    if(mask!=0U)(void)HAL_FDCAN_AbortTxRequest(bus,mask);
+    CanTransport_Service(now);
+}
+uint32_t CanTransport_AvailableSlots(void){
+    if(!ready||stats.bus_off)return 0;
+    uint32_t slots=0;for(unsigned i=0;i<TX_SLOTS;++i)if(!tx_slots[i].used)++slots;
+    uint32_t hardware=HAL_FDCAN_GetTxFifoFreeLevel(bus);return slots<hardware?slots:hardware;
 }
 bool CanTransport_Receive(CanFrame *frame) {
     if (frame == NULL || rx_read == rx_write) return false;

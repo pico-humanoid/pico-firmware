@@ -6,7 +6,7 @@
 
 static unsigned checks, sends;
 #define CHECK(x) do { ++checks; if (!(x)) { fprintf(stderr, "line %d: %s\n", __LINE__, #x); exit(1); } } while (0)
-FDCAN_HandleTypeDef hfdcan1;
+FDCAN_HandleTypeDef hfdcan3;
 static CanTransportStats stats;
 static CanFrame sent[4];
 static char output[4096];

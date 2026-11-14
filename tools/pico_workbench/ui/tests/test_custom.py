@@ -101,9 +101,9 @@ class DeviceTests(unittest.TestCase):
     def test_dual_boot_health_and_eight_column_frame(self):
         job = engine.Job("board", "Dual-Read-500K", "TEST")
         job.profile["capture_seconds"] = 1
-        text = ("# PICO device-read v1; READ ONLY DUAL; device=BMS+POWER bitrate=500000\n"
+        text = ("# PICO device-read v1; READ ONLY DUAL; channel=FDCAN3 device=BMS+POWER bitrate=500000\n"
                 "t_ms,event,channel,format,kind,id,dlc,data\n"
-                "1000,RX,FDCAN1,STD,DATA,0x00000100,8,01 02 03 04 05 06 07 08\n"
+                "1000,RX,FDCAN3,STD,DATA,0x00000100,8,01 02 03 04 05 06 07 08\n"
                 "# BMS,voltage_mv=48000,current_ma=0\n"
                 "# DEVICE_HEALTH,t_ms=5000,device=BMS,seen=0x01F,valid=0x01F\n"
                 "# HEALTH,t_ms=5000,device=DUAL,bus_off=0,tec=0,rec=0\n")

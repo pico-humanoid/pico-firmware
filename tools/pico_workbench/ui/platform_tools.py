@@ -20,6 +20,7 @@ def bundle_roots():
         str(Path(os.environ["PICO_TOOLS_ROOT"]) / "stm32cube/bundles") if os.environ.get("PICO_TOOLS_ROOT") else "",
         str(ROOT.parent / "tools/stm32cube/bundles"),
         str(Path(os.environ.get("LOCALAPPDATA", "")) / "stm32cube/bundles") if WINDOWS else "",
+        str(Path.home() / ".local/share/pico-stm32-native/bundles"),
         str(Path.home() / ".local/share/stm32cube/bundles"),
         str(ROOT.parents[1] / "STM32Tools/ubuntu/stm32cube/bundles"),
     ]
@@ -39,7 +40,7 @@ def tool(name):
     executable = binary + (".exe" if WINDOWS else "")
     for root in bundle_roots():
         for path in sorted(root.glob(folder + "/*/bin/" + executable), reverse=True):
-            if path.is_file():
+            if path.is_file() and (WINDOWS or os.access(path, os.X_OK)):
                 return str(path)
     return shutil.which(executable)
 
@@ -90,8 +91,6 @@ def validate_mode(mode):
 
 
 def project_dir(mode):
-    if mode in ("Loopback", "External"):
-        return ROOT
     value = catalog.profile(mode)["project_dir"]
     return Path(value) if Path(value).is_absolute() else ROOT / value
 
@@ -101,7 +100,7 @@ def image_for(mode):
     own = build_dir(mode) / profile["elf_name"]
     if own.exists():
         return own
-    if mode in ("Loopback", "External"):
+    if mode in ("Loopback", "External") and project_dir(mode) == ROOT and not profile["cmake_options"]:
         return ROOT / "build" / (mode if WINDOWS else "Ubuntu-" + mode) / "PICO_CAN.elf"
     return own
 

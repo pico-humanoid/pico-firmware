@@ -5,7 +5,7 @@
 #include <string.h>
 static unsigned checks;
 #define CHECK(x) do { ++checks; if (!(x)) { fprintf(stderr,"line %d: %s\n",__LINE__,#x); exit(1); } } while (0)
-FDCAN_HandleTypeDef hfdcan1;
+FDCAN_HandleTypeDef hfdcan3;
 static CanTransportStats stats;
 static uint32_t tec, rec;
 static bool off, counters_ok, log_ok, accept;

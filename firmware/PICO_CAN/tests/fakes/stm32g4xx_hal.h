@@ -5,11 +5,13 @@
 
 typedef enum { HAL_OK, HAL_ERROR } HAL_StatusTypeDef;
 typedef struct { uint32_t TXEFS, PSR, ECR, TXBRP, TXBTO, TXBCF, IR, CCCR, NBTP; } FDCAN_GlobalTypeDef;
-extern FDCAN_GlobalTypeDef fake_fdcan1;
+extern FDCAN_GlobalTypeDef fake_fdcan1, fake_fdcan3;
 #define FDCAN1 (&fake_fdcan1)
+#define FDCAN3 (&fake_fdcan3)
 typedef struct {
     uint32_t ClockDivider, FrameFormat, Mode, AutoRetransmission, TransmitPause, ProtocolException;
     uint32_t NominalPrescaler, NominalSyncJumpWidth, NominalTimeSeg1, NominalTimeSeg2;
+    uint32_t DataPrescaler, DataSyncJumpWidth, DataTimeSeg1, DataTimeSeg2;
     uint32_t StdFiltersNbr, ExtFiltersNbr, TxFifoQueueMode;
 } FDCAN_InitTypeDef;
 typedef struct { FDCAN_GlobalTypeDef *Instance; FDCAN_InitTypeDef Init; } FDCAN_HandleTypeDef;
@@ -25,7 +27,37 @@ typedef struct { int dummy; } UART_HandleTypeDef;
 typedef enum { GPIO_PIN_RESET, GPIO_PIN_SET } GPIO_PinState;
 #define GPIOA ((void *)1)
 #define GPIO_PIN_5 32U
+#define GPIO_PIN_8 (1U << 8)
+#define GPIO_PIN_11 (1U << 11)
+#define GPIO_PIN_12 (1U << 12)
+#define GPIO_PIN_15 (1U << 15)
+#define GPIO_MODE_AF_PP 2U
+#define GPIO_NOPULL 0U
+#define GPIO_SPEED_FREQ_LOW 0U
+#define GPIO_AF9_FDCAN1 9U
+#define GPIO_AF11_FDCAN3 11U
+#define RCC_PERIPHCLK_FDCAN 1U
+#define RCC_FDCANCLKSOURCE_PCLK1 2U
+#define FDCAN_MODE_INTERNAL_LOOPBACK 4U
+typedef struct { uint32_t Pin, Mode, Pull, Speed, Alternate; } GPIO_InitTypeDef;
+typedef struct { uint32_t PeriphClockSelection, FdcanClockSelection; } RCC_PeriphCLKInitTypeDef;
+typedef enum { FDCAN1_IT0_IRQn = 1, FDCAN3_IT0_IRQn = 3 } IRQn_Type;
+void fake_fdcan_clock_enable(void);
+void fake_fdcan_clock_disable(void);
+void fake_gpioa_clock_enable(void);
+#define __HAL_RCC_FDCAN_CLK_ENABLE() fake_fdcan_clock_enable()
+#define __HAL_RCC_FDCAN_CLK_DISABLE() fake_fdcan_clock_disable()
+#define __HAL_RCC_GPIOA_CLK_ENABLE() fake_gpioa_clock_enable()
+HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(const RCC_PeriphCLKInitTypeDef *);
+void HAL_GPIO_Init(void *, const GPIO_InitTypeDef *);
+void HAL_GPIO_DeInit(void *, uint32_t);
+void HAL_NVIC_SetPriority(IRQn_Type, uint32_t, uint32_t);
+void HAL_NVIC_EnableIRQ(IRQn_Type);
+void HAL_NVIC_DisableIRQ(IRQn_Type);
+void HAL_FDCAN_IRQHandler(FDCAN_HandleTypeDef *);
+void HAL_IncTick(void);
 #define DISABLE 0U
+#define ENABLE 1U
 #define FDCAN_CLOCK_DIV1 0U
 #define FDCAN_FRAME_CLASSIC 0U
 #define FDCAN_MODE_NORMAL 0U

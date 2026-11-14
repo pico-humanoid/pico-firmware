@@ -64,8 +64,8 @@ static bool fresh(const DeviceReader *r, uint32_t now) {
 static bool clean(const DeviceReader *r) {
     CanTransportStats s = CanTransport_GetStats();
     FDCAN_ErrorCountersTypeDef e = {0};
-    extern FDCAN_HandleTypeDef hfdcan1;
-    return HAL_FDCAN_GetErrorCounters(&hfdcan1, &e) == HAL_OK &&
+    extern FDCAN_HandleTypeDef hfdcan3;
+    return HAL_FDCAN_GetErrorCounters(&hfdcan3, &e) == HAL_OK &&
         e.TxErrorCnt == 0U && e.RxErrorCnt == 0U && !CanTransport_IsBusOff() &&
 #if defined(PICO_POWER_BAUD_ALLOW_QUERY_TIMEOUTS) && PICO_POWER_BAUD_ALLOW_QUERY_TIMEOUTS
         /* Explicit operator override: historical application reply and Tx-event

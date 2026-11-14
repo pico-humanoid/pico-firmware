@@ -40,6 +40,7 @@ function setPortTags(){
 function paint(){
  syncProfiles();const base=selectedProfile().base_mode;
  const rate=selectedProfile().cmake_options.PICO_DEVICE_BITRATE;
+ document.querySelector('.side-device .chip').textContent=base==='Device'?'FDCAN3':base==='Custom'?'按工程配置':'FDCAN1';
  document.querySelector('.outline-badge').textContent=base==='Device'?'经典 CAN · 设备只读':base==='Custom'?'自定义实验 · 按工程配置':'经典 CAN · 标准帧';
  document.querySelector('.side-device .chip:last-child').textContent=rate?String(Number(rate)/1000)+' Kbps':base==='Custom'?'按工程配置':'1 Mbps';
  $('mode-note').textContent=selectedProfile().description;
@@ -247,7 +248,7 @@ $('record-form').addEventListener('submit',async e=>{
 });
 function paintTelemetry(job){
  const host=$('telemetry');host.replaceChildren();
- if(!job||!job.telemetry){host.append(node('p','采集开始后显示 BMS / POWER 解析值及 HEALTH。'));return}
+ if(!job||!job.telemetry){host.append(node('p','采集开始后显示 BMS / POWER / MOTOR 解析值及 HEALTH。'));return}
  const t=job.telemetry;
  for(const [name,fields] of Object.entries({...{HEALTH:t.health},...t.devices,...t.values})){
   const box=node('article',undefined,'telemetry-group');box.append(node('strong',name));
