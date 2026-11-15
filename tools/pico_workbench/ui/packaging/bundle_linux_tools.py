@@ -8,7 +8,7 @@ def bundle(package,arm):
  shutil.copytree(arm,compiler,symlinks=True)
  binaries=[]
  for name in ['cmake','ctest','cpack','ninja','openocd']:
-  source=Path(shutil.which(name));folder='cmake' if name in ('cmake','ctest','cpack') else name;target=tools/folder/'bin'/name;target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,target);binaries.append(source)
+  source=Path('/usr/bin')/name;folder='cmake' if name in ('cmake','ctest','cpack') else name;target=tools/folder/'bin'/name;target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,target);binaries.append(source)
   script='#!/usr/bin/env bash\nset -euo pipefail\nroot="$(cd -- "$(dirname -- "$0")/.." && pwd)"\nexport LD_LIBRARY_PATH="$root/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"\nexec "$root/'+folder+'/bin/'+name+'" "$@"\n'
   (bin_dir/name).write_text(script,encoding='utf-8');(bin_dir/name).chmod(0o755)
  for p in Path('/usr/share').glob('cmake-*'):shutil.copytree(p,tools/'cmake/share'/p.name,symlinks=True)
