@@ -231,7 +231,7 @@ class TuningPanel:
                 cmdlog.write(json.dumps({'at':datetime.now().isoformat(),'command':text})+'\n');cmdlog.flush()
             try:
                 dev.reset_input_buffer()
-                reset=subprocess.run([tools.tool('programmer'),'-c','port=SWD','sn='+port.serial_number,'mode=HOTPLUG','-rst'],env=tools.environment(),capture_output=True,timeout=15)
+                reset=subprocess.run(tools.reset_command(port.serial_number),env=tools.environment(),capture_output=True,timeout=15)
                 (out/'reset.log').write_bytes(reset.stdout+reset.stderr)
                 if reset.returncode:raise RuntimeError('复位失败，未发送使能。')
                 buf=bytearray();start=time.monotonic();seen=False;backend=False;ready=False;session=False;handshake=keep=0.;stop_sent=False;closing=None;last_rx=start

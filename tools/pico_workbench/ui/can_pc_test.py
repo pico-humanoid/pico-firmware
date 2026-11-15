@@ -120,7 +120,7 @@ class PCTest:
             raw_file=stack.enter_context((out/'usb-raw.jsonl').open('w',encoding='utf-8'))
             frames_file=stack.enter_context((out/'pc-frames.jsonl').open('w',encoding='utf-8'))
             pc.reset_input_buffer();mcu.reset_input_buffer()
-            result=subprocess.run([tools.tool('programmer'),'-c','port=SWD','sn='+sn,'mode=HOTPLUG','-rst'],env=tools.environment(),capture_output=True,timeout=20)
+            result=subprocess.run(tools.reset_command(sn),env=tools.environment(),capture_output=True,timeout=20)
             (out/'reset.log').write_bytes(result.stdout+result.stderr)
             if result.returncode:raise RuntimeError('开发板复位失败。')
             start=time.monotonic()

@@ -87,7 +87,9 @@ def assemble(output, workbench, seed, built):
         rules = packaging / "udev-rules"
         if rules.is_dir():
             copy_tree(rules, result / "usb-permissions")
-    manifest = {"version": "2026.11.05", "platform": system, "contains": ["PICOConsole", "PICOLogViewer", "PICOCLI", "Python/Tk runtime", "six firmware profiles", "source workspace"],
+    if os.name!='nt' and (workbench/'ui/packaging/ubuntu/README_使用说明.md').exists():
+        shutil.copy2(workbench/'ui/packaging/ubuntu/README_使用说明.md',result/'README_使用说明.md')
+    manifest = {"version": "2026.11.15", "platform": system, "contains": ["PICOConsole", "PICOLogViewer", "PICOCLI", "Python/Tk runtime", "latest single and dual motor firmware profiles", "source workspace"],
                 "development_tools_bundled": False, "usb_hardware_validation": "not_run_in_package_test"}
     write_text(result / "bundle.json", json.dumps(manifest, ensure_ascii=False, indent=2))
     return result
@@ -115,6 +117,7 @@ def main():
     parser.add_argument("--repo", type=Path)
     parser.add_argument("--project", type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--linux-tools", type=Path, help="Verified Arm toolchain to bundle with Linux build/flash tools")
     parser.add_argument("--no-archive", action="store_true")
     args = parser.parse_args()
     output = args.output.resolve()
@@ -127,6 +130,10 @@ def main():
     command = [sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--distpath", str(output / "pyinstaller-dist"), "--workpath", str(output / "pyinstaller-work"), str(workbench / "ui/packaging/desktop.spec")]
     subprocess.run(command, env=env, check=True)
     result = assemble(output, workbench, seed, output / "pyinstaller-dist/PICO-Workbench")
+    if args.linux_tools:
+        if os.name=="nt":raise RuntimeError("--linux-tools requires a Linux build host")
+        from bundle_linux_tools import bundle
+        bundle(result,args.linux_tools.resolve())
     print("Distribution:", result, flush=True)
     if not args.no_archive:
         print("Archive:", archive(result), flush=True)

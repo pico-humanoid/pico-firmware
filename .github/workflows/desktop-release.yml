@@ -33,10 +33,21 @@ jobs:
           python-version: '3.12'
       - name: Linux GUI build prerequisites
         if: runner.os == 'Linux'
-        run: sudo apt-get update -qq && sudo apt-get install -y python3-tk xvfb xauth
+        run: sudo apt-get update -qq && sudo apt-get install -y python3-tk xvfb xauth cmake ninja-build openocd fonts-noto-cjk
+      - name: Enable Ubuntu source archives for bundled OpenOCD
+        if: runner.os == 'Linux'
+        run: |
+          sudo sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/ubuntu.sources
+          sudo apt-get update -qq
+      - name: Install verified official ARM toolchain
+        run: python tools/pico_workbench/ui/packaging/install_arm_toolchain.py "${{ runner.temp }}/pico-arm"
       - run: python -m pip install pyinstaller==6.22.3
-      - name: Build portable distribution
+      - name: Build Windows portable distribution
+        if: runner.os == 'Windows'
         run: python tools/pico_workbench/ui/packaging/build_distribution.py --repo . --output dist
+      - name: Build Ubuntu portable distribution with build/flash tools
+        if: runner.os == 'Linux'
+        run: python tools/pico_workbench/ui/packaging/build_distribution.py --repo . --output dist --linux-tools "$PICO_ARM_TOOLCHAIN"
       - name: Windows tests and frozen GUI smoke check
         if: runner.os == 'Windows'
         shell: pwsh
@@ -50,6 +61,9 @@ jobs:
         run: |
           xvfb-run -a python -m unittest discover -s dist/PICO-Workbench-Ubuntu-24.04-x86_64/project/ui/tests
           xvfb-run -a dist/PICO-Workbench-Ubuntu-24.04-x86_64/PICOCLI self-test
+      - name: Validate relocated Ubuntu package and actual ARM firmware builds
+        if: runner.os == 'Linux'
+        run: xvfb-run -a python tools/pico_workbench/ui/packaging/validate_linux_package.py dist/PICO-Workbench-Ubuntu-24.04-x86_64
       - uses: actions/upload-artifact@v4
         with:
           name: PICO-${{ matrix.platform }}

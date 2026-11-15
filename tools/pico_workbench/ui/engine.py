@@ -235,16 +235,17 @@ class Manager:
         if tools.source_newer(image, job.mode):
             raise ValueError("源文件已更新或固件不存在，请先编译当前配置。")
         programmer = tools.tool("programmer")
-        if not programmer:
-            raise ValueError("未找到 STM32CubeProgrammer。")
         job.phase_set("正在识别 ST-LINK")
-        output = self.command(job, [programmer, "-l", "st-link"], collect=True)
-        probes = re.findall(r"ST-LINK SN\s*:\s*(\S+)", output)
+        if programmer:
+            output = self.command(job, [programmer, "-l", "st-link"], collect=True)
+            probes = re.findall(r"ST-LINK SN\s*:\s*(\S+)", output)
+        elif not tools.WINDOWS and tools.tool("openocd"):
+            probes=tools.stlink_serials()
+        else:raise ValueError("未找到STM32CubeProgrammer或OpenOCD。")
         if len(probes) != 1:
-            raise ValueError("需要连接恰好一块 ST-LINK 开发板；当前识别到 " + str(len(probes)) + " 块。")
+            raise ValueError("需要连接恰好一块可识别的ST-LINK开发板；当前识别到 " + str(len(probes)) + " 块。")
         job.phase_set("正在写入固件、校验并复位")
-        self.command(job, [programmer, "-c", "port=SWD", "freq=1000", "sn=" + probes[0],
-                           "-w", str(image), "-v", "-rst"])
+        self.command(job, tools.flash_command(probes[0],image))
         return {"pass": True, "message": "烧录和校验成功；测试结果以实际日志为准",
                 "image": str(image), "sha256": hashlib.sha256(image.read_bytes()).hexdigest()}
 

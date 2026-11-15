@@ -12,7 +12,7 @@ class VendorLauncherTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder,patch.object(catalog,'STATE',Path(folder)):
             exe=Path(folder)/'vendor tool.exe';exe.write_bytes(b'MZ')
             debug_apps.save({'waveshare':str(exe),'robstride':''})
-            with patch.object(debug_apps.tools,'WINDOWS',True),patch.object(debug_apps.tools,'environment',return_value={}),patch.object(debug_apps.tools,'spawn') as spawn:
+            with patch.object(debug_apps.tools,'WINDOWS',True),patch.object(debug_apps.subprocess,'CREATE_NO_WINDOW',0,create=True),patch.object(debug_apps.tools,'environment',return_value={}),patch.object(debug_apps.tools,'spawn') as spawn:
                 self.assertEqual(debug_apps.launch('waveshare'),str(exe))
                 self.assertEqual(spawn.call_args.args[0],[str(exe)])
                 self.assertEqual(spawn.call_args.kwargs['cwd'],str(exe.parent))

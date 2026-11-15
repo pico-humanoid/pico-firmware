@@ -2,6 +2,7 @@
 import os
 from pathlib import Path
 import platform
+import re
 import shutil
 import subprocess
 import sys
@@ -34,6 +35,7 @@ def tool(name):
         "gcc": ("gnu-tools-for-stm32", "arm-none-eabi-gcc"),
         "programmer": ("programmer", "STM32_Programmer_CLI"),
         "gdb": ("gnu-gdb-for-stm32", "arm-none-eabi-gdb"),
+        "openocd": ("openocd", "openocd"),
         "stlink-server": ("stlink-gdbserver", "ST-LINK_gdbserver"),
     }
     folder, binary = mapping[name]
@@ -42,6 +44,8 @@ def tool(name):
         for path in sorted(root.glob(folder + "/*/bin/" + executable), reverse=True):
             if path.is_file() and (WINDOWS or os.access(path, os.X_OK)):
                 return str(path)
+    portable = Path(os.environ.get("PICO_TOOLS_ROOT", str(ROOT.parent / "tools"))) / "bin" / executable
+    if portable.is_file() and (WINDOWS or os.access(portable, os.X_OK)):return str(portable)
     return shutil.which(executable)
 
 
@@ -51,7 +55,7 @@ def environment():
         env["LD_LIBRARY_PATH"] = env.get("LD_LIBRARY_PATH_ORIG", "")
     portable = Path(env.get("PICO_TOOLS_ROOT", str(ROOT.parent / "tools")))
     bins = [str(portable / "bin")] if (portable / "bin").is_dir() else []
-    bins += [str(Path(p).parent) for key in ("gcc", "ninja", "cmake", "programmer") if (p := tool(key))]
+    bins += [str(Path(p).parent) for key in ("gcc", "ninja", "cmake", "programmer", "openocd") if (p := tool(key))]
     roots = bundle_roots()
     if roots:
         env.setdefault("CUBE_BUNDLE_PATH", str(roots[0]))
@@ -180,9 +184,42 @@ def launch_app(app, mode):
             **({"workspace": str(workspace), "entry_file": str(entry)} if app == "vscode" else {})}
 
 
+def openocd_command(serial_number, image=None):
+    if not re.fullmatch(r"[A-Za-z0-9_-]{1,80}",str(serial_number)):raise ValueError("ST-LINK序列号格式不正确。")
+    binary=tool("openocd")
+    if not binary:raise ValueError("未找到STM32CubeProgrammer或OpenOCD。")
+    args=[binary,"-c","gdb_port disabled; tcl_port disabled; telnet_port disabled"]
+    scripts=Path(os.environ.get("PICO_TOOLS_ROOT",str(ROOT.parent/"tools")))/"openocd/share/openocd/scripts"
+    if scripts.is_dir():args += ["-s",str(scripts)]
+    args += ["-f","interface/stlink.cfg","-c","transport select hla_swd","-c","adapter serial "+str(serial_number),"-c","adapter speed 1000","-f","target/stm32g4x.cfg"]
+    if image is None:args += ["-c","init; reset run; shutdown"]
+    else:
+        path=Path(image).resolve().as_posix()
+        if any(c in path for c in '{}\n\r\\'):raise ValueError("OpenOCD固件路径不能包含大括号、反斜杠或换行。")
+        args += ["-c","program {"+path+"} verify reset exit"]
+    return args
+
+def reset_command(serial_number):
+    programmer=tool("programmer")
+    if programmer:return [programmer,'-c','port=SWD','sn='+serial_number,'mode=HOTPLUG','-rst']
+    if WINDOWS:raise ValueError("未找到STM32CubeProgrammer。")
+    return openocd_command(serial_number)
+
+def flash_command(serial_number,image):
+    programmer=tool("programmer")
+    if programmer:return [programmer,'-c','port=SWD','freq=1000','sn='+serial_number,'-w',str(image),'-v','-rst']
+    if WINDOWS:raise ValueError("未找到STM32CubeProgrammer。")
+    return openocd_command(serial_number,image)
+
+def stlink_serials():
+    from serial.tools.list_ports import comports
+    supported={0x3744,0x3748,0x374B,0x374D,0x374E,0x374F,0x3752,0x3753,0x3754}
+    return sorted({p.serial_number for p in comports() if p.vid==0x0483 and p.pid in supported and p.serial_number})
+
 def status():
     found = {name: tool(name) for name in ("cmake", "ninja", "gcc", "programmer")}
     return {"os": platform.system(), "project": str(ROOT), "tools": found, "applications": desktop_tools(),
-            "ready": all(found.values()),
+            "ready": bool(all(found[k] for k in ("cmake","ninja","gcc")) and (found["programmer"] or (not WINDOWS and tool("openocd")))),
+            "programmer_backend": "STM32CubeProgrammer" if found["programmer"] else "OpenOCD" if not WINDOWS and tool("openocd") else None,
             "firmware": {m: {"path": str(image_for(m)), "exists": image_for(m).exists()}
                          for m in (p["id"] for p in catalog.profiles())}}

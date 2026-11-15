@@ -8,3 +8,5 @@ archives/*.zip binary
 # Preserve official upstream bytes and raw experiment evidence.
 firmware/PICO_CAN/App/vendor/robstride_spc/upstream/** -text
 logs/2026-11-14/** -text
+
+*.sh text eol=lf

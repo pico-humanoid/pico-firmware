@@ -199,7 +199,7 @@ class EnablePanel:
                 commands.write(json.dumps({'time':datetime.now().isoformat(),'command':command})+'\n');commands.flush()
             try:
                 dev.reset_input_buffer()
-                reset=subprocess.run([tools.tool('programmer'),'-c','port=SWD','sn='+port.serial_number,'mode=HOTPLUG','-rst'],env=tools.environment(),capture_output=True,timeout=15)
+                reset=subprocess.run(tools.reset_command(port.serial_number),env=tools.environment(),capture_output=True,timeout=15)
                 (out/'reset.log').write_bytes(reset.stdout+reset.stderr)
                 if reset.returncode:raise RuntimeError('开发板复位失败。')
                 buffer=bytearray();start=time.monotonic();verified=False;fault_verified=self.tag!='DUAL_FAULT';command_ready=False;handshake=False;handshake_due=0.;session=False;keep_due=0.;stop_sent=False;closing_at=None

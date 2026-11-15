@@ -157,7 +157,7 @@ class PositionDiagnosticPanel:
                 if dev.write(b)!=len(b):raise RuntimeError('串口命令未完整写入。')
                 commands.write(json.dumps({'time':datetime.now().isoformat(),'command':text})+'\n');commands.flush()
             try:
-                dev.reset_input_buffer();r=subprocess.run([tools.tool('programmer'),'-c','port=SWD','sn='+port.serial_number,'mode=HOTPLUG','-rst'],env=tools.environment(),capture_output=True,timeout=15,**({'creationflags':subprocess.CREATE_NO_WINDOW} if tools.WINDOWS else {}));(folder/'reset.log').write_bytes(r.stdout+r.stderr)
+                dev.reset_input_buffer();r=subprocess.run(tools.reset_command(port.serial_number),env=tools.environment(),capture_output=True,timeout=15,**({'creationflags':subprocess.CREATE_NO_WINDOW} if tools.WINDOWS else {}));(folder/'reset.log').write_bytes(r.stdout+r.stderr)
                 if r.returncode:raise RuntimeError('开发板复位失败。')
                 buffer=bytearray();start=time.monotonic();handshake_due=keep_due=0.;closing=None
                 while True:
