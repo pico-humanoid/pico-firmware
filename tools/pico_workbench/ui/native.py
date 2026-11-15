@@ -143,7 +143,8 @@ class Desktop:
         if any(j.status=='running' for j in self.manager.jobs.values()) or self.exporting():
             messagebox.showinfo('任务运行中','请先完成当前任务后再打包。',parent=self.root);return
         from datetime import datetime
-        path=filedialog.asksaveasfilename(parent=self.root,title='保存完整离线迁移包',defaultextension='.zip',filetypes=[('ZIP压缩包','*.zip')],initialfile='PICO-Windows-x64-'+datetime.now().strftime('%Y%m%d_%H%M%S')+'.zip')
+        extension='.zip' if tools.WINDOWS else '.tar.gz'
+        path=filedialog.asksaveasfilename(parent=self.root,title='保存完整离线迁移包',defaultextension=extension,filetypes=[('ZIP压缩包','*.zip')] if tools.WINDOWS else [('Ubuntu压缩包','*.tar.gz')],initialfile=('PICO-Windows-x64-' if tools.WINDOWS else 'PICO-Ubuntu-x86_64-')+datetime.now().strftime('%Y%m%d_%H%M%S')+extension)
         if not path:return
         self.current='';self.cursor=0
         def work():
@@ -301,7 +302,7 @@ class Desktop:
             kind,value=self.export_events.get_nowait()
             self.status.set(value if kind=='progress' else '打包完成：'+value if kind=='done' else '打包失败：'+value)
             self.console.configure(state='normal');self.console.insert('end',self.status.get()+'\n');self.console.see('end');self.console.configure(state='disabled')
-            if kind=='done':messagebox.showinfo('打包完成','已生成完整离线ZIP：\n'+value+'\n\n适用于Windows x64。新电脑可能需要安装包内USB驱动；历史日志未包含。',parent=self.root)
+            if kind=='done':messagebox.showinfo('打包完成','已生成完整离线ZIP：\n'+value+('\n\n适用于Windows x64。新电脑可能需要安装包内USB驱动；历史日志未包含。' if tools.WINDOWS else '\n\n适用于Ubuntu24.04 x86_64；已包含运行环境和编译/烧录工具。首次USB权限需安装随包规则；历史日志未包含。'),parent=self.root)
             elif kind=='error':messagebox.showerror('打包失败',value,parent=self.root)
         with self.manager.lock:
             jobs = list(self.manager.jobs.values())

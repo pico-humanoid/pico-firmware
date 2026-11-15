@@ -10,7 +10,8 @@
 2. 运行`bash 打开开发控制台.sh`或`bash 打开日志查看器.sh`。包内自带Python/Tk运行环境，无需安装Python依赖。
 3. 运行`bash 检查环境.sh`。包内包括固定Arm GNU14.3.rel1、CMake、Ninja、OpenOCD、依赖库和中文字体；不需要下载这些编译/烧录组件。
 4. 首次访问USB可能需要执行`bash 安装USB权限.sh`并输入管理员密码，完成后拔插ST-LINK/USB-CAN；必要时注销重新登录。
-5. 单机或双机选择对应实验，编译后再烧录。Linux无STM32CubeProgrammer时使用OpenOCD，按可识别的ST-LINK虚拟串口序列号选择唯一开发板；连接实验时只复位，不自动使能。
+5. 工具页“一键打包”会导出Linux tar.gz，含当前源码、运行环境及离线编译/烧录工具；历史日志不包含，另存SHA256校验值。
+6. 单机或双机选择对应实验，编译后再烧录。Linux无STM32CubeProgrammer时使用OpenOCD，按可识别的ST-LINK虚拟串口序列号选择唯一开发板；连接实验时只复位，不自动使能。
 
 VS Code和CubeMX使用本机已安装的Linux版，不把Windows EXE转换成Linux程序。厂商调试软件入口也需要设置可在Linux运行的对应程序，Windows EXE会被明确拒绝。包内编译、烧录和控制台实验不依赖这两个编辑器。
 

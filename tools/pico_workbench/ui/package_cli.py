@@ -89,9 +89,13 @@ def self_test():
 
 def main():
     parser = argparse.ArgumentParser(description="PICO portable build and environment check")
-    parser.add_argument("action", choices=("check", "self-test", "build"))
+    parser.add_argument("action", choices=("check", "self-test", "build", "export"))
     parser.add_argument("profile", nargs="?")
     args = parser.parse_args()
+    if args.action == "export":
+        if not args.profile:parser.error("export requires a destination path")
+        from portable_export import export
+        export(args.profile,print);return 0
     if args.action == "build":
         if not args.profile:
             parser.error("build requires a profile ID")

@@ -41,6 +41,9 @@ jobs:
           sudo apt-get update -qq
       - name: Install verified official ARM toolchain
         run: python tools/pico_workbench/ui/packaging/install_arm_toolchain.py "${{ runner.temp }}/pico-arm"
+      - name: Windows CMake and Ninja prerequisites
+        if: runner.os == 'Windows'
+        run: python -m pip install cmake==3.31.6 ninja==1.11.1.4
       - run: python -m pip install pyinstaller==6.22.3
       - name: Build Windows portable distribution
         if: runner.os == 'Windows'

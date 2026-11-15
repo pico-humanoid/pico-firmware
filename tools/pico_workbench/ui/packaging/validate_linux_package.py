@@ -9,7 +9,11 @@ def main():
   try:
    env=dict(os.environ,PICO_PROJECT_ROOT=str(relocated/'project'),PICO_TOOLS_ROOT=str(relocated/'tools'),PATH=str(relocated/'tools/bin')+os.pathsep+os.environ['PATH'])
    env['FONTCONFIG_FILE']=str(relocated/'tools/fonts/fonts.conf')
-   def run(args):return subprocess.run([str(v) for v in args],env=env,cwd=relocated,check=True,capture_output=True,text=True)
+   def run(args):
+    result=subprocess.run([str(v) for v in args],env=env,cwd=relocated,capture_output=True,text=True,timeout=600)
+    if result.returncode:
+     print(result.stdout,flush=True);print(result.stderr,flush=True);result.check_returncode()
+    return result
    status=json.loads(run([relocated/'PICOCLI','check']).stdout)
    if not status['ready'] or status.get('programmer_backend')!='OpenOCD':raise RuntimeError('Bundled developer tools not ready: '+str(status))
    smoke=run([relocated/'PICOCLI','self-test']);print(smoke.stdout,flush=True)
@@ -18,8 +22,12 @@ def main():
    built={}
    for profile in ('RS10P-Tuning','RS00-Tuning','Motors-Tuning'):
     log=run([relocated/'PICOCLI','build',profile]);built[profile]='PASS';print(profile,'frozen CLI ARM build PASS',flush=True)
+   export_file=Path(temp)/'PICO 再次迁移.tar.gz'
+   run([relocated/'PICOCLI','export',export_file])
+   if not export_file.exists():raise RuntimeError('Linux re-export did not create an archive')
+   export_file.unlink();Path(str(export_file)+'.sha256').unlink()
    # Debugger reset and flash command construction is tested; hardware is absent.
-   report={'platform':'Ubuntu 24.04 x86_64','relocation_with_spaces_and_chinese':'PASS','frozen_native_gui_self_test':'PASS','bundled_tool_detection':status['tools'],'programmer_backend':'OpenOCD','arm_builds':built,'hardware_flash':'NOT_RUN','motor_motion':'NOT_RUN','editors':'use separately installed Linux VS Code / STM32CubeMX'}
+   report={'platform':'Ubuntu 24.04 x86_64','relocation_with_spaces_and_chinese':'PASS','frozen_native_gui_self_test':'PASS','bundled_tool_detection':status['tools'],'programmer_backend':'OpenOCD','arm_builds':built,'native_linux_reexport':'PASS','hardware_flash':'NOT_RUN','motor_motion':'NOT_RUN','editors':'use separately installed Linux VS Code / STM32CubeMX'}
    (relocated/'UBUNTU_VALIDATION.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
    # Do not ship build caches with runner-specific absolute paths.
    project=relocated/'project'
