@@ -23,7 +23,17 @@ static bool ready;
 
 bool CanTransport_Init(FDCAN_HandleTypeDef *handle, uint32_t bitrate,
                        CanTransportFilter filter, uint8_t power_id, CanTransportLog log) {
-    if (handle == NULL || handle->Instance != FDCAN1 ||
+    if (handle == NULL) return false;
+    const bool known_instance =
+        handle->Instance == FDCAN1
+#if defined(FDCAN2)
+        || handle->Instance == FDCAN2
+#endif
+#if defined(FDCAN3)
+        || handle->Instance == FDCAN3
+#endif
+        ;
+    if (!known_instance ||
         (bitrate != 500000U && bitrate != 1000000U) ||
         (filter != CAN_FILTER_BMS && filter != CAN_FILTER_POWER && filter != CAN_FILTER_DUAL) ||
         HAL_RCC_GetPCLK1Freq() != 16000000U) return false;

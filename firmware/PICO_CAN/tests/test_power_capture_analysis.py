@@ -28,9 +28,9 @@ def fixture():
     return HEADER+'\n'+'\n'.join(s for _,s in sorted(events))+'\n'
 
 class Tests(unittest.TestCase):
-    def run_analysis(self,text,code=1,bitrate=1000000):
+    def run_analysis(self,text,code=1,bitrate=1000000,relaxed=False):
         with tempfile.TemporaryDirectory() as d:
-            p=Path(d)/'fixture.log';p.write_text(text);return analysis.analyze(p,code,bitrate)
+            p=Path(d)/'fixture.log';p.write_text(text);return analysis.analyze(p,code,bitrate,relaxed=relaxed)
     def test_baseline(self):
         r=self.run_analysis(fixture());self.assertEqual(r['result'],'PASS');self.assertEqual(r['window_seconds'],60);self.assertTrue(r['arming_gate_counters_eligible'])
     def test_excludes_stale_prefix(self):
@@ -53,5 +53,14 @@ class Tests(unittest.TestCase):
         r=self.run_analysis(text);self.assertEqual(r['result'],'PASS');self.assertFalse(r['arming_gate_counters_eligible']);self.assertEqual(r['latest_health_in_file']['query_timeouts'],1)
     def test_error_inside_window(self):
         self.assertEqual(self.run_analysis(fixture().replace('query_timeouts=0','query_timeouts=1'))['result'],'NOT_PASS')
+    def test_relaxed_timeout_allowed(self):
+        text=fixture().replace('query_timeouts=0','query_timeouts=1')
+        self.assertEqual(self.run_analysis(text)['result'],'NOT_PASS')
+        self.assertEqual(self.run_analysis(text,relaxed=True)['result'],'PASS')
+    def test_relaxed_duplicate_allowed(self):
+        text=fixture(); line=next(s for s in text.splitlines() if s.startswith('1002,RX'))
+        text=text.replace(line,line+'\n'+line,1)
+        self.assertEqual(self.run_analysis(text)['result'],'NOT_PASS')
+        self.assertEqual(self.run_analysis(text,relaxed=True)['result'],'PASS')
 
 if __name__=='__main__':unittest.main()

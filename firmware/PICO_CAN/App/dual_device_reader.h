@@ -11,6 +11,9 @@ typedef struct {
 } DualDeviceReader;
 bool DualDeviceReader_Init(DualDeviceReader *pair, const ReaderConfig *bms,
                            const ReaderConfig *power, uint32_t now);
+bool DualDeviceReader_InitWithDelay(DualDeviceReader *pair, const ReaderConfig *bms,
+                                    const ReaderConfig *power, uint32_t now,
+                                    uint32_t start_delay_ms);
 void DualDeviceReader_Age(DualDeviceReader *pair, uint32_t now);
 void DualDeviceReader_Step(DualDeviceReader *pair, uint32_t now,
                            ReaderSend send, void *context);

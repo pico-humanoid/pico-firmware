@@ -3,12 +3,17 @@
 
 bool DualDeviceReader_Init(DualDeviceReader *pair, const ReaderConfig *bms,
                            const ReaderConfig *power, uint32_t now) {
+    return DualDeviceReader_InitWithDelay(pair, bms, power, now, 1000U);
+}
+bool DualDeviceReader_InitWithDelay(DualDeviceReader *pair, const ReaderConfig *bms,
+                                    const ReaderConfig *power, uint32_t now,
+                                    uint32_t start_delay_ms) {
     if (pair == NULL || bms == NULL || power == NULL ||
         bms->kind != READER_BMS || power->kind != READER_POWER) return false;
     memset(pair, 0, sizeof(*pair));
     if (!DeviceReader_Init(&pair->bms, bms, now) ||
         !DeviceReader_Init(&pair->power, power, now)) return false;
-    pair->next_due = now + 1000U;
+    pair->next_due = now + start_delay_ms;
     return true;
 }
 void DualDeviceReader_Age(DualDeviceReader *pair, uint32_t now) {

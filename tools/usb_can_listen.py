@@ -6,9 +6,10 @@ query is sent. Use it as an independent bus witness while the G474 is running:
   - if G474 RTR frames appear here, the G474 TX path reaches the bus;
   - if BMS DATA replies appear here but not in the G474 log, the G474 RX path is bad.
 
-The adapter is configured for standard frames, normal mode (it ACKs valid bus
-traffic), 500 kbit/s, automatic retransmission disabled. That ACK is intentional
-for a witness test and is not a BMS query.
+The adapter is configured for standard frames (BMS) by default, or extended
+frames with --extended (power board), normal mode (it ACKs valid bus traffic),
+500 kbit/s, automatic retransmission disabled. That ACK is intentional for a
+witness test and is not a device query.
 """
 import argparse
 import datetime
@@ -17,7 +18,7 @@ import time
 from pathlib import Path
 
 from usb_can_bms_read import bms_adapter_config
-from usb_can_power_probe import extract_frames
+from usb_can_power_probe import adapter_config, extract_frames
 
 
 def main(argv=None):
@@ -29,16 +30,18 @@ def main(argv=None):
                         help='new JSONL path (default logs/usb-can/<timestamp>-listen-500k.jsonl)')
     parser.add_argument('--execute', action='store_true',
                         help='actually open the serial port; without it, dry-run only')
+    parser.add_argument('--extended', action='store_true',
+                        help='configure extended frames (power board) instead of standard (BMS)')
     args = parser.parse_args(argv)
 
     if not 0 < args.duration < 3600:
         parser.error('--duration must be between 0 and 3600 seconds')
-    config = bms_adapter_config()
+    config = adapter_config(500000) if args.extended else bms_adapter_config()
     output = args.output
     if output is None:
         stamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S-%f')
         output = Path(__file__).resolve().parents[1] / 'logs' / 'usb-can' / f'{stamp}-listen-500k.jsonl'
-    print(f'Port={args.port} UART={args.serial_baud} CAN=500000 duration={args.duration}s')
+    print(f'Port={args.port} UART={args.serial_baud} CAN=500000 fmt={"EXT" if args.extended else "STD"} duration={args.duration}s')
     print('ADAPTER_CONFIG (serial only, no CAN TX):', config.hex(' '))
     if not args.execute:
         print('DRY RUN: nothing opened/sent; add --execute to listen.')
@@ -62,6 +65,7 @@ def main(argv=None):
                 return entry
 
             record('start', port=args.port, serial_baud=args.serial_baud, can_baud=500000,
+                   frame_format='EXT' if args.extended else 'STD',
                    duration_s=args.duration, can_tx=0,
                    note='passive listener; adapter config only; no CAN query')
             with serial.Serial(args.port, args.serial_baud, timeout=0.1,

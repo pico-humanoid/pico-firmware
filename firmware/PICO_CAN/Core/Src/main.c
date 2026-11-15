@@ -41,6 +41,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#ifndef PICO_CAN_CHANNEL
+#define PICO_CAN_CHANNEL 1
+#endif
 
 /* USER CODE END PD */
 
@@ -96,12 +99,26 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_LPUART1_UART_Init();
+#if PICO_CAN_CHANNEL == 1
   MX_FDCAN1_Init();
+#elif PICO_CAN_CHANNEL == 2
+  MX_FDCAN2_Init();
+#elif PICO_CAN_CHANNEL == 3
+  MX_FDCAN3_Init();
+#else
+#error "PICO_CAN_CHANNEL must be 1, 2, or 3"
+#endif
   /* USER CODE BEGIN 2 */
 #if defined(PICO_PIN_LOOP_TEST)
   PinLoopTest_Init(&hlpuart1);
 #elif defined(PICO_DEVICE_READ)
+#if PICO_CAN_CHANNEL == 1
   DeviceRead_Init(&hfdcan1, &hlpuart1);
+#elif PICO_CAN_CHANNEL == 2
+  DeviceRead_Init(&hfdcan2, &hlpuart1);
+#elif PICO_CAN_CHANNEL == 3
+  DeviceRead_Init(&hfdcan3, &hlpuart1);
+#endif
 #else
   CanTest_Init(&hfdcan1, &hlpuart1);
 #endif

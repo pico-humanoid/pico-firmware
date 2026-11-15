@@ -93,6 +93,56 @@
       }
     },
     {
+      "name": "Linux-BMS-Read-500K-CAN2",
+      "displayName": "Linux: read-only BMS 500K on FDCAN2 (PB12/PB13)",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_APP": "BMS",
+        "PICO_CAN_CHANNEL": "2",
+        "PICO_DEVICE_BITRATE": "500000",
+        "PICO_BMS_RTR_DLC": "0",
+        "PICO_BMS_CRC_ENDIAN": "BIG",
+        "PICO_POWER_STATUS_ENDIAN": "BIG"
+      }
+    },
+    {
+      "name": "Linux-Power-Read-500K-CAN2",
+      "displayName": "Linux: read-only Power 500K on FDCAN2 (PB12/PB13)",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_APP": "Power",
+        "PICO_CAN_CHANNEL": "2",
+        "PICO_DEVICE_BITRATE": "500000",
+        "PICO_POWER_ID": "0xAA",
+        "PICO_POWER_STATUS_ENDIAN": "BIG"
+      }
+    },
+    {
+      "name": "Linux-BMS-Read-500K-CAN3",
+      "displayName": "Linux: read-only BMS 500K on FDCAN3 (PA8/PA15)",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_APP": "BMS",
+        "PICO_CAN_CHANNEL": "3",
+        "PICO_DEVICE_BITRATE": "500000",
+        "PICO_BMS_RTR_DLC": "0",
+        "PICO_BMS_CRC_ENDIAN": "BIG",
+        "PICO_POWER_STATUS_ENDIAN": "BIG"
+      }
+    },
+    {
+      "name": "Linux-Power-Read-500K-CAN3",
+      "displayName": "Linux: read-only Power 500K on FDCAN3 (PA8/PA15)",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_APP": "Power",
+        "PICO_CAN_CHANNEL": "3",
+        "PICO_DEVICE_BITRATE": "500000",
+        "PICO_POWER_ID": "0xAA",
+        "PICO_POWER_STATUS_ENDIAN": "BIG"
+      }
+    },
+    {
       "name": "Linux-Power-Baud-1M-to-500K",
       "displayName": "Linux: GATED Linux-Power-Baud-1M-to-500K",
       "inherits": "linux-base",
@@ -122,6 +172,34 @@
       "inherits": "linux-base",
       "cacheVariables": {
         "PICO_APP": "Dual",
+        "PICO_DEVICE_BITRATE": "500000",
+        "PICO_POWER_ID": "0xAA",
+        "PICO_BMS_RTR_DLC": "0",
+        "PICO_BMS_CRC_ENDIAN": "BIG",
+        "PICO_POWER_STATUS_ENDIAN": "BIG"
+      }
+    },
+    {
+      "name": "Linux-Dual-Read-500K-CAN2",
+      "displayName": "Linux: BMS + Power read-only on shared FDCAN2 500K",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_APP": "Dual",
+        "PICO_CAN_CHANNEL": "2",
+        "PICO_DEVICE_BITRATE": "500000",
+        "PICO_POWER_ID": "0xAA",
+        "PICO_BMS_RTR_DLC": "0",
+        "PICO_BMS_CRC_ENDIAN": "BIG",
+        "PICO_POWER_STATUS_ENDIAN": "BIG"
+      }
+    },
+    {
+      "name": "Linux-Dual-Read-500K-CAN3",
+      "displayName": "Linux: BMS + Power read-only on shared FDCAN3 500K",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_APP": "Dual",
+        "PICO_CAN_CHANNEL": "3",
         "PICO_DEVICE_BITRATE": "500000",
         "PICO_POWER_ID": "0xAA",
         "PICO_BMS_RTR_DLC": "0",
@@ -160,6 +238,22 @@
       "configurePreset": "Linux-Power-Read-500K"
     },
     {
+      "name": "Linux-BMS-Read-500K-CAN2",
+      "configurePreset": "Linux-BMS-Read-500K-CAN2"
+    },
+    {
+      "name": "Linux-Power-Read-500K-CAN2",
+      "configurePreset": "Linux-Power-Read-500K-CAN2"
+    },
+    {
+      "name": "Linux-BMS-Read-500K-CAN3",
+      "configurePreset": "Linux-BMS-Read-500K-CAN3"
+    },
+    {
+      "name": "Linux-Power-Read-500K-CAN3",
+      "configurePreset": "Linux-Power-Read-500K-CAN3"
+    },
+    {
       "name": "Linux-Power-Baud-1M-to-500K",
       "configurePreset": "Linux-Power-Baud-1M-to-500K"
     },
@@ -170,6 +264,14 @@
     {
       "name": "Linux-Dual-Read-500K",
       "configurePreset": "Linux-Dual-Read-500K"
+    },
+    {
+      "name": "Linux-Dual-Read-500K-CAN2",
+      "configurePreset": "Linux-Dual-Read-500K-CAN2"
+    },
+    {
+      "name": "Linux-Dual-Read-500K-CAN3",
+      "configurePreset": "Linux-Dual-Read-500K-CAN3"
     }
   ]
 }

@@ -68,11 +68,11 @@ int main(void) {
     CHECK(strstr(output,"device=DUAL,tx_submit=") && strstr(output,"tec=0,rec=0,counters_ok=1"));
     CHECK(g_dual_device_reader.bms.stats.timeouts==0 && g_dual_device_reader.power.stats.timeouts==0);
     /* An unsolicited power frame while waiting for BMS must not complete BMS. */
-    tick=0; DeviceRead_Init(&hfdcan1,&uart); tick=1000; DeviceRead_Step();
-    rx=dual_test_reply(READER_POWER,0,1001); rx_ready=true; tick=1001; DeviceRead_Step();
+    tick=0; DeviceRead_Init(&hfdcan1,&uart); tick=3000; DeviceRead_Step();
+    rx=dual_test_reply(READER_POWER,0,3001); rx_ready=true; tick=3001; DeviceRead_Step();
     CHECK(g_dual_device_reader.bms.pending && g_dual_device_reader.bms.stats.replies==0);
     CHECK(g_dual_device_reader.power.stats.replies==1 && led==GPIO_PIN_RESET);
-    run(1010,20000,true);
+    run(3010,20000,true);
     CHECK(g_dual_device_reader.bms.stats.timeouts>0 && g_dual_device_reader.power.stats.replies>12);
     CHECK(led==GPIO_PIN_RESET);
     /* Bus-off halts both transmit schedulers, but still ages both devices. */

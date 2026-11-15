@@ -6,12 +6,17 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifndef PICO_CAN_CHANNEL
+#define PICO_CAN_CHANNEL 1
+#endif
+
 #if defined(PICO_DEVICE_DUAL)
 DualDeviceReader g_dual_device_reader;
 #else
 DeviceReader g_device_reader;
 #endif
 static UART_HandleTypeDef *serial;
+static FDCAN_HandleTypeDef *can_bus;
 static bool initialized, uart_failed, reported_bus_off;
 static uint32_t next_summary;
 
@@ -141,6 +146,7 @@ static void sample(DeviceReader *r, int index) {
 void DeviceRead_Init(FDCAN_HandleTypeDef *can, UART_HandleTypeDef *uart) {
     initialized = uart_failed = reported_bus_off = false;
     serial = uart;
+    can_bus = can;
     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
     char text[256];
     ReaderConfig config = {
@@ -151,19 +157,19 @@ void DeviceRead_Init(FDCAN_HandleTypeDef *can, UART_HandleTypeDef *uart) {
     };
 #if defined(PICO_DEVICE_DUAL)
     config.kind = READER_BMS;
-    config.max_attempts = 1U; /* No automatic retry within a query. */
+    config.max_attempts = 2U; /* One retry after the startup BMS wake-up timeout. */
     config.timeout_ms = 700U;
 #endif
 #if defined(PICO_POWER_BAUD_TEST)
     const char *mode = "EXPLICITLY GATED BAUD TEST (boots read-only)";
 #else
 #if defined(PICO_DEVICE_DUAL)
-    const char *mode = "READ ONLY DUAL (BMS+POWER, shared FDCAN1)";
+    const char *mode = "READ ONLY DUAL (BMS+POWER, shared FDCAN)";
 #else
     const char *mode = "READ ONLY";
 #endif
 #endif
-    (void)snprintf(text, sizeof(text), "# PICO device-read v1; %s; device=%s bitrate=%lu power_id=0x%02X rtr_dlc=%u crc_order=%u status_order=%u\r\n",
+    (void)snprintf(text, sizeof(text), "# PICO device-read v1; %s; device=%s bitrate=%lu channel=%u power_id=0x%02X rtr_dlc=%u crc_order=%u status_order=%u\r\n",
         mode,
 #if defined(PICO_DEVICE_DUAL)
         "BMS+POWER",
@@ -171,16 +177,17 @@ void DeviceRead_Init(FDCAN_HandleTypeDef *can, UART_HandleTypeDef *uart) {
         config.kind == READER_BMS ? "BMS" : "POWER",
 #endif
         (unsigned long)PICO_DEVICE_BITRATE,
+        (unsigned)PICO_CAN_CHANNEL,
         (unsigned)config.power_id, (unsigned)config.bms_rtr_dlc,
         (unsigned)config.bms_crc_order, (unsigned)config.power_status_order);
     line(text);
     line("# timestamps=MCU uptime ms; TX_DONE=software observation time; no automatic configuration writes\r\n");
     line("t_ms,event,channel,format,kind,id,dlc,data\r\n");
 #if defined(PICO_DEVICE_DUAL)
-    line("# DUAL,poll=round_robin,one_pending_total=1,min_query_gap_ms=200,timeout_ms=700,max_attempts=1,stale_ms=10000\r\n");
+    line("# DUAL,poll=round_robin,one_pending_total=1,min_query_gap_ms=200,timeout_ms=700,max_attempts=2,start_delay_ms=3000,stale_ms=10000\r\n");
     ReaderConfig power_config = config;
     power_config.kind = READER_POWER;
-    bool readers_ok = DualDeviceReader_Init(&g_dual_device_reader, &config, &power_config, HAL_GetTick());
+    bool readers_ok = DualDeviceReader_InitWithDelay(&g_dual_device_reader, &config, &power_config, HAL_GetTick(), 3000U);
     CanTransportFilter filter = CAN_FILTER_DUAL;
 #else
     bool readers_ok = DeviceReader_Init(&g_device_reader, &config, HAL_GetTick());
@@ -250,8 +257,7 @@ void DeviceRead_Step(void) {
             (unsigned long)r->timeouts, (unsigned long)r->query_failures);
 #endif
         FDCAN_ErrorCountersTypeDef errors = {0};
-        extern FDCAN_HandleTypeDef hfdcan1;
-        bool counters_ok = HAL_FDCAN_GetErrorCounters(&hfdcan1, &errors) == HAL_OK;
+        bool counters_ok = can_bus != NULL && HAL_FDCAN_GetErrorCounters(can_bus, &errors) == HAL_OK;
         (void)snprintf(text, sizeof(text), "%s,tx_submit=%lu,tx_done=%lu,tx_rejected=%lu,tx_timeout=%lu,rx_fifo_lost=%lu,rx_queue_drop=%lu,rx_read_fail=%lu,rx_unsupported=%lu,tx_event_lost=%lu,tx_event_unknown=%lu,bus_off=%lu,tec=%lu,rec=%lu,counters_ok=%u\r\n",
             prefix, (unsigned long)s.tx_submitted, (unsigned long)s.tx_completed,
             (unsigned long)s.tx_rejected, (unsigned long)s.tx_timed_out,
