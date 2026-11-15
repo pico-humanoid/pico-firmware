@@ -12,7 +12,7 @@ if (project/'ui/native.py').is_file():
     os.environ['PICO_PROJECT_ROOT']=str(project)
     os.environ['PICO_TOOLS_ROOT']=str(project.parent/'tools')
     fonts=project.parent/'tools/fonts/fonts.conf'
-    if fonts.is_file() and os.name!='nt':os.environ.setdefault('FONTCONFIG_FILE',str(fonts))
+    if fonts.is_file() and os.name!='nt':os.environ['FONTCONFIG_FILE']=str(fonts)
     sys.path[:0]=[str(project/'ui'),str(project/'ui/vendor'),str(project/'scripts'),str(project/'scripts/linux')]
 
 name = Path(sys.executable).stem.casefold()

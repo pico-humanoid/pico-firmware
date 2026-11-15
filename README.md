@@ -2,7 +2,7 @@
 
 [PICO-Humanoid](https://pico-humanoid.github.io/) 的固件子项目，负责关节、电池 BMS、电源板的 CAN 通信，以及设备状态、运行管理和上下位机接口。
 
-当前验证平台：**NUCLEO-G474RE + SN65HVD230 + USB-CAN-A**。仓库更新日期：2026-11-14。
+当前验证平台：**NUCLEO-G474RE + SN65HVD230 + USB-CAN-A**。仓库更新日期：2026-11-15。
 
 ## 当前进展与时间线
 
@@ -13,9 +13,10 @@
 | 2026-10-27 基础CAN | 内部回环及PC触发板端返回报文已验证；不等同于电机通信通过 |
 | 截至2026-11-10 电机链路 | 尚未完成，继续排查外设、引脚、时钟、速率与真实收发；见[11月10日阶段记录](docs/weekly/2026-11-10.md) |
 | 2026-11-14 后续实测记录 | 已取得双电机参数/目标回读、实际位置/速度/Iq及停止确认记录；同时存在位置跳变、停止后位置不稳定等问题，不宣称整机或全部电机验收通过；见[验证索引](logs/2026-11-14/README.md) |
-| 当前开发控制台 | Windows原生控制台、日志查看器、位置/速度滑块、可设置时长、双机联调、限流与受阻报警；[使用说明](docs/Motor_Tuning.md) |
+| 当前开发控制台 | Windows / Ubuntu原生控制台、日志查看器、位置/速度滑块、可设置时长、双机联调、限流与受阻报警；[使用说明](docs/Motor_Tuning.md) |
 | 软件验证 | 本轮46项固件主机测试与控制台专项测试通过；构建通过不替代硬件验证，额定限流功能未进行实物验收 |
-| Windows发布包 | 用户提供的2026-11-14 Windows-x64快照；[发布下载](https://github.com/pico-humanoid/pico-firmware/releases/tag/desktop-v2026.11.14)，不能在Ubuntu上运行；Ubuntu新版需单独构建验证 |
+| Ubuntu发布包 | 2026-11-15 Ubuntu24.04 x86_64原生包，含最新界面/实验及离线编译和OpenOCD烧录工具；[下载](https://github.com/pico-humanoid/pico-firmware/releases/tag/desktop-v2026.11.15) · [使用和验证边界](docs/Ubuntu_20261115.md) |
+| Windows发布包 | 用户提供的2026-11-14 Windows-x64快照；[发布下载](https://github.com/pico-humanoid/pico-firmware/releases/tag/desktop-v2026.11.14)，不能在Ubuntu上运行；Ubuntu见下方独立发行包 |
 
 当前电机实验使用CAN1（PA12 TX / PA11 RX，1Mbps）；10P ID1、00 ID2。BMS/电源板独立实验与电机链路分别记录。历史失败日志保留，不用软件PASS覆盖原始数据。
 
@@ -39,7 +40,7 @@
 
 ## 工程与日志下载
 
-- **[桌面开发控制台与日志查看器](docs/desktop-workbench.md)**：Windows / Ubuntu 原生程序、迁移步骤、USB 权限及运行环境说明；[下载便携程序](https://github.com/pico-humanoid/pico-firmware/releases/tag/desktop-v2026.11.14)。
+- **[桌面开发控制台与日志查看器](docs/desktop-workbench.md)**：Windows / Ubuntu 原生程序、迁移步骤、USB 权限及运行环境说明；[Windows下载](https://github.com/pico-humanoid/pico-firmware/releases/tag/desktop-v2026.11.14) · [Ubuntu下载](https://github.com/pico-humanoid/pico-firmware/releases/tag/desktop-v2026.11.15)。
 
 - [完整原始工程 ZIP](archives/PICO_CAN_20261027.zip) · [已展开源码](firmware/PICO_CAN/) · [六个烧录文件](firmware/PICO_CAN/IMPORT.md#六个原始固件文件)
 - [本轮原始日志](logs/2026-10-27/) · [全部历史日志索引](docs/validation/log-archive.md)
@@ -48,7 +49,7 @@
 
 1. 继续复现与定位位置反馈跳变、停止后位置不稳定和受阻问题，保留每台UID与失败记录。
 2. 完成额定限流下的温度、负载、停止确认及双机异常联动实物验收。
-3. 单独构建并验证新版Ubuntu包，再逐步开展机械装配与整机联调。
+3. 在目标Ubuntu电脑上验证USB权限、ST-LINK烧录与电机实物通信，再逐步开展机械装配与整机联调。
 
 相关项目：[机械设计](https://github.com/pico-humanoid/pico-mechanism) · [电气设计](https://github.com/pico-humanoid/pico-electronics)
 

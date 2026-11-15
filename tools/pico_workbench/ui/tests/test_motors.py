@@ -34,7 +34,7 @@ class MotorConsoleTests(unittest.TestCase):
                 self.assertIn("-DPICO_MOTOR_COUNT=" + str(p["cmake_options"]["PICO_MOTOR_COUNT"]), command)
                 path, entry = workspace.prepare(mode)
                 self.assertEqual(entry.name, "motor_read_app.c")
-                value = json.loads(path.read_text())
+                value = json.loads(path.read_text(encoding="utf-8"))
                 self.assertEqual(value["settings"]["cmake.configureSettings"]["PICO_APP"], "Motor")
 
     def test_motor_stream_and_units_preserve_both_devices(self):

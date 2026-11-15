@@ -1,8 +1,12 @@
-# 2026-11-14最新Windows快照
+# 当前桌面发行包：Windows 11月14日 / Ubuntu 11月15日
 
 本次Windows包：[PICO-Windows-x64-20261114_215203.zip](https://github.com/pico-humanoid/pico-firmware/releases/download/desktop-v2026.11.14/PICO-Windows-x64-20261114_215203.zip)。请完整解压后启动，不在ZIP内运行；首次USB驱动可能需要管理员权限。
 
-该包包含Windows运行环境和离线开发工具，不能在Ubuntu上运行。历史Ubuntu版不包含本次全部新功能，新版Ubuntu包尚未重新构建验收。第三方工具按原许可证使用，其附带不表示项目替代了厂商授权。
+Windows包包含Windows运行环境和离线开发工具，不能在Ubuntu上运行。最新版Ubuntu包使用原生Linux程序，包含相同的最新位置/速度交互、双机联调、波形、限流和报警功能，以及离线Arm GCC、CMake、Ninja和OpenOCD工具。
+
+**Ubuntu 24.04 x86_64：[发布下载](https://github.com/pico-humanoid/pico-firmware/releases/tag/desktop-v2026.11.15) · [详细使用说明](Ubuntu_20261115.md)。** 解压后运行`bash 打开开发控制台.sh`；首次连接USB执行`bash 安装USB权限.sh`。VS Code/CubeMX使用本机Linux版。第三方工具按原许可证使用，其附带不表示项目替代了厂商授权。
+
+Ubuntu包通过120项源码测试、冻结程序原生界面自检、中文及空格目录迁移、三份最新ARM固件实际编译与原生一键再打包检查。未在CI连接实物开发板或电机，USB权限和实际烧录/收发仍需在目标电脑验证。
 
 [当前交互实验说明](Motor_Tuning.md) · [程序索引](program-index.md) · [11月10日历史状态](weekly/2026-11-10.md) · [11月14日实测及异常](validation/2026-11-14-motor.md)
 

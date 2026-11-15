@@ -9,6 +9,9 @@ def main():
   try:
    env=dict(os.environ,PICO_PROJECT_ROOT=str(relocated/'project'),PICO_TOOLS_ROOT=str(relocated/'tools'),PATH=str(relocated/'tools/bin')+os.pathsep+os.environ['PATH'])
    env['FONTCONFIG_FILE']=str(relocated/'tools/fonts/fonts.conf')
+   # The launcher scripts set these; a re-export must not retain parent paths.
+   env['CUBE_BUNDLE_PATH']=str(relocated/'tools/stm32cube/bundles')
+   env['CMSIS_PACK_ROOT']=str(relocated/'tools/stm32cube/packs')
    def run(args):
     result=subprocess.run([str(v) for v in args],env=env,cwd=relocated,capture_output=True,text=True,timeout=600)
     if result.returncode:

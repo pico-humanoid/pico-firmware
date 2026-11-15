@@ -17,8 +17,8 @@ SPAWN_LOCK = threading.RLock()
 
 def bundle_roots():
     candidates = [
-        os.environ.get("CUBE_BUNDLE_PATH", ""),
         str(Path(os.environ["PICO_TOOLS_ROOT"]) / "stm32cube/bundles") if os.environ.get("PICO_TOOLS_ROOT") else "",
+        os.environ.get("CUBE_BUNDLE_PATH", ""),
         str(ROOT.parent / "tools/stm32cube/bundles"),
         str(Path(os.environ.get("LOCALAPPDATA", "")) / "stm32cube/bundles") if WINDOWS else "",
         str(Path.home() / ".local/share/pico-stm32-native/bundles"),

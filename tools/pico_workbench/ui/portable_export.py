@@ -135,7 +135,7 @@ def export_linux(destination,progress=lambda text:None):
         state=bundle/'project/ui/state';state.mkdir(parents=True,exist_ok=True)
         (state/'profiles.json').write_text(json.dumps(profiles,ensure_ascii=False,indent=2),encoding='utf-8')
         (bundle/'bundle.json').write_text(json.dumps({'created':datetime.now().isoformat(),'platform':'Ubuntu-24.04-x86_64','development_tools_bundled':True,'historical_logs_included':False,'hardware_actions_executed':False},indent=2),encoding='utf-8')
-        progress('验证Ubuntu导出环境…');env=dict(os.environ,PICO_PROJECT_ROOT=str(bundle/'project'),PICO_TOOLS_ROOT=str(bundle/'tools'))
+        progress('验证Ubuntu导出环境…');env=dict(os.environ,PICO_PROJECT_ROOT=str(bundle/'project'),PICO_TOOLS_ROOT=str(bundle/'tools'),CUBE_BUNDLE_PATH=str(bundle/'tools/stm32cube/bundles'),CMSIS_PACK_ROOT=str(bundle/'tools/stm32cube/packs'))
         result=subprocess.run([str(bundle/'PICOCLI'),'check'],env=env,capture_output=True,text=True,timeout=60)
         if result.returncode:raise RuntimeError('导出后的运行环境检查失败：'+result.stderr[-1500:])
         info=json.loads(result.stdout)
