@@ -17,8 +17,11 @@ def main():
    with zipfile.ZipFile(archive) as z:z.extractall(dest)
   else:
    with tarfile.open(archive) as t:t.extractall(dest,filter='data')
- binary=root/'bin'/('arm-none-eabi-gcc.exe' if os.name=='nt' else 'arm-none-eabi-gcc')
- if not binary.is_file():raise RuntimeError('Extracted compiler missing: '+str(binary))
+ compiler='arm-none-eabi-gcc.exe' if os.name=='nt' else 'arm-none-eabi-gcc'
+ # Official ZIP directory names need not match the download filename.
+ candidates=[p for p in dest.rglob(compiler) if p.parent.name=='bin']
+ if len(candidates)!=1:raise RuntimeError('Expected one extracted compiler, found: '+str(candidates))
+ root=candidates[0].parent.parent
  print('Verified Arm GNU toolchain:',root,flush=True)
  for key,value in [('GITHUB_PATH',str(root/'bin')),('GITHUB_ENV','PICO_ARM_TOOLCHAIN='+str(root))]:
   if os.environ.get(key):

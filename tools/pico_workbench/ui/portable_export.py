@@ -109,7 +109,7 @@ def export(destination,progress=lambda text:None):
         # Replace only a new destination; an unrelated existing file is never overwritten.
         if destination.exists():raise FileExistsError(destination)
         shutil.move(str(partial),destination)
-        destination.with_suffix('.zip.sha256').write_text(digest+'  '+destination.name+'\n',encoding='ascii')
+        destination.with_suffix('.zip.sha256').write_text(digest+'  '+destination.name+'\n',encoding='utf-8')
     progress('打包完成：'+str(destination));return destination
 
 def export_linux(destination,progress=lambda text:None):
@@ -146,7 +146,7 @@ def export_linux(destination,progress=lambda text:None):
         with tarfile.open(partial,'w:gz',compresslevel=1) as archive:archive.add(bundle,arcname=bundle.name)
         with partial.open('rb') as stream:digest=hashlib.file_digest(stream,'sha256').hexdigest()
         if destination.exists():raise FileExistsError(destination)
-        shutil.move(str(partial),destination);Path(str(destination)+'.sha256').write_text(digest+'  '+destination.name+'\n',encoding='ascii')
+        shutil.move(str(partial),destination);Path(str(destination)+'.sha256').write_text(digest+'  '+destination.name+'\n',encoding='utf-8')
     progress('打包完成：'+str(destination));return destination
 
 if __name__=='__main__':export(sys.argv[1],print)
