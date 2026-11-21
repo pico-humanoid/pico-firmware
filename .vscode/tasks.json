@@ -1,0 +1,61 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Robot14: Configure (Ubuntu)",
+      "type": "process",
+      "command": "cmake",
+      "args": [
+        "--preset",
+        "Linux-Robot14"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/firmware/PICO_CAN"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Robot14: Build (Ubuntu)",
+      "type": "process",
+      "command": "cmake",
+      "args": [
+        "--build",
+        "--preset",
+        "Linux-Robot14",
+        "--parallel",
+        "4"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/firmware/PICO_CAN"
+      },
+      "dependsOn": "Robot14: Configure (Ubuntu)",
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+    {
+      "label": "Robot14: Host regression (no hardware)",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "${workspaceFolder}/firmware/PICO_CAN/scripts/test-host.sh"
+      ],
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+    {
+      "label": "Robot14: Visual tuning (read-only connect)",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "${workspaceFolder}/tools/pico_workbench/ui/start.sh",
+        "--robot14"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

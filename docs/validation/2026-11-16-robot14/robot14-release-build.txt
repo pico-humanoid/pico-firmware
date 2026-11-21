@@ -1,0 +1,7 @@
+[1/4] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/freertos.c.obj
+[2/4] Building C object CMakeFiles/PICO_CAN.dir/App/robot/Application/robot_app.c.obj
+[3/4] Building C object CMakeFiles/PICO_CAN.dir/App/robot/Modules/motor_network.c.obj
+[4/4] Linking C executable PICO_CAN.elf
+Memory region         Used Size  Region Size  %age Used
+             RAM:       35992 B       128 KB     27.46%
+           FLASH:       29208 B       512 KB      5.57%

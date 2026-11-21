@@ -23,3 +23,10 @@ firmware/PICO_CAN/build/External/*
 /.agents/
 /.codex/
 .DS_Store
+
+# Workbench-generated local UI state / temporary sessions (not archived evidence).
+/tools/pico_workbench/ui/state/
+/tools/pico_workbench/logs/
+/tools/pico_workbench/outputs/
+/dist/
+/host-tests/

@@ -1,0 +1,52 @@
+[1/49] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/stm32g4xx_it.c.obj
+[2/49] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/usart.c.obj
+[3/49] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/stm32g4xx_hal_msp.c.obj
+[4/49] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/gpio.c.obj
+[5/49] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/main.c.obj
+[6/49] Building ASM object CMakeFiles/PICO_CAN.dir/startup_stm32g474xx.s.obj
+[7/49] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/sysmem.c.obj
+[8/49] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/fdcan.c.obj
+[9/49] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/syscalls.c.obj
+[10/49] Building C object CMakeFiles/PICO_CAN.dir/App/dual_device_reader.c.obj
+[11/49] Building C object CMakeFiles/PICO_CAN.dir/App/robot/Communicate/robot_uart.c.obj
+[12/49] Building C object CMakeFiles/PICO_CAN.dir/App/robot/Peripheral/rs_motor.c.obj
+[13/49] Building C object CMakeFiles/PICO_CAN.dir/App/robot/Communicate/robot_link.c.obj
+[14/49] Building C object CMakeFiles/PICO_CAN.dir/App/robot/Communicate/robot_can.c.obj
+[15/49] Building C object CMakeFiles/PICO_CAN.dir/App/robot/Modules/motor_network.c.obj
+[16/49] Building C object CMakeFiles/PICO_CAN.dir/App/protocol/bms_protocol.c.obj
+[17/49] Building C object CMakeFiles/PICO_CAN.dir/App/device_reader.c.obj
+[18/49] Building C object CMakeFiles/PICO_CAN.dir/App/protocol/power_protocol.c.obj
+[19/49] Building C object CMakeFiles/PICO_CAN.dir/App/robot/Application/robot_app.c.obj
+[20/49] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/freertos.c.obj
+[21/49] Building C object CMakeFiles/PICO_CAN.dir/Core/Src/stm32g4xx_hal_timebase_tim.c.obj
+[22/49] Building C object CMakeFiles/robot14_rtos.dir/Middlewares/Third_Party/FreeRTOS/Source/list.c.obj
+[23/49] Building C object CMakeFiles/robot14_rtos.dir/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c.obj
+[24/49] Building C object CMakeFiles/robot14_rtos.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c.obj
+[25/49] Building C object CMakeFiles/robot14_rtos.dir/Middlewares/Third_Party/FreeRTOS/Source/timers.c.obj
+[26/49] Building C object CMakeFiles/robot14_rtos.dir/Middlewares/Third_Party/FreeRTOS/Source/queue.c.obj
+[27/49] Building C object CMakeFiles/robot14_rtos.dir/Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c.obj
+[28/49] Building C object CMakeFiles/robot14_rtos.dir/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c.obj
+[29/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g4xx.c.obj
+[30/49] Building C object CMakeFiles/robot14_rtos.dir/Middlewares/Third_Party/FreeRTOS/Source/tasks.c.obj
+[31/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c.obj
+[32/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc.c.obj
+[33/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash.c.obj
+[34/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc_ex.c.obj
+[35/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_fdcan.c.obj
+[36/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ramfunc.c.obj
+[37/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.c.obj
+[38/49] Building C object CMakeFiles/robot14_rtos.dir/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c.obj
+[39/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ex.c.obj
+[40/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr.c.obj
+[41/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_exti.c.obj
+[42/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma_ex.c.obj
+[43/49] Linking C static library librobot14_rtos.a
+[44/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma.c.obj
+[45/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr_ex.c.obj
+[46/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_cortex.c.obj
+[47/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.c.obj
+[48/49] Building C object cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.c.obj
+[49/49] Linking C executable PICO_CAN.elf
+Memory region         Used Size  Region Size  %age Used
+             RAM:       40728 B       128 KB     31.07%
+           FLASH:       33936 B       512 KB      6.47%

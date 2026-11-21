@@ -1,0 +1,18 @@
+Internal ctest changing into directory: /tmp/pico-multi/host-sanitized
+Test project /tmp/pico-multi/host-sanitized
+    Start 50: robot14_topology_handshake_watchdog_and_peer_stop
+1/6 Test #50: robot14_topology_handshake_watchdog_and_peer_stop ............   Passed    0.05 sec
+    Start 51: robot14_three_bus_transport_rings_deadlines_and_busoff
+2/6 Test #51: robot14_three_bus_transport_rings_deadlines_and_busoff .......   Passed    0.01 sec
+    Start 52: robot14_production_pins_timing_irq_and_shared_clock
+3/6 Test #52: robot14_production_pins_timing_irq_and_shared_clock ..........   Passed    0.01 sec
+    Start 53: robot14_cubemx_clock_pins_and_rtos_invariants
+4/6 Test #53: robot14_cubemx_clock_pins_and_rtos_invariants ................   Passed    0.04 sec
+    Start 54: robot14_binary_session_batch_leases_disable_telemetry_fuzz
+5/6 Test #54: robot14_binary_session_batch_leases_disable_telemetry_fuzz ...   Passed    0.01 sec
+    Start 55: robot14_uart_ring_overflow_repair_and_tx_reserve
+6/6 Test #55: robot14_uart_ring_overflow_repair_and_tx_reserve .............   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 6
+
+Total Test time (real) =   0.13 sec

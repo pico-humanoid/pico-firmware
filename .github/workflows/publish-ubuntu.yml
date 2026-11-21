@@ -1,0 +1,33 @@
+name: Publish existing Ubuntu package
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Existing build run containing the Ubuntu package
+        required: true
+        default: '43665716860'
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish the existing package without rebuilding or testing
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ inputs.run_id }}
+        run: |
+          set -euo pipefail
+          commit=$(gh api "repos/$GH_REPO/actions/runs/$RUN_ID" --jq .head_sha)
+          gh run download "$RUN_ID" --name PICO-Ubuntu-24.04-x86_64 --dir release-assets
+          cp docs/Ubuntu_20261115.md release-assets/Ubuntu_README.md
+          gh release create desktop-v2026.11.15 release-assets/* \
+            --target "$commit" \
+            --title 'PICO 开发控制台 · Ubuntu 24.04 最新适配（2026-11-15）' \
+            --notes-file docs/Ubuntu_20261115.md

@@ -1,0 +1,17 @@
+Build type: DebugPreset CMake variables:
+
+  CMAKE_BUILD_TYPE="Debug"
+  CMAKE_TOOLCHAIN_FILE:FILEPATH="/home/zjy/Systems and Control/PICO/pico-firmware/firmware/PICO_CAN/cmake/gcc-arm-none-eabi.cmake"
+  PICO_APP="Robot14"
+
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zjy/Systems and Control/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Robot14
+[1/4] Building C object CMakeFiles/PICO_CAN.dir/App/robot/Communicate/robot_link.c.obj
+[2/4] Building C object CMakeFiles/PICO_CAN.dir/App/robot/Communicate/robot_uart.c.obj
+[3/4] Building C object CMakeFiles/PICO_CAN.dir/App/robot/Application/robot_app.c.obj
+[4/4] Linking C executable PICO_CAN.elf
+Memory region         Used Size  Region Size  %age Used
+             RAM:       40728 B       128 KB     31.07%
+           FLASH:       56748 B       512 KB     10.82%

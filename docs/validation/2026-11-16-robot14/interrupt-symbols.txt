@@ -1,0 +1,5 @@
+08008034 T HAL_InitTick
+08008460 T PendSV_Handler
+08008210 T SVC_Handler
+0800863c T SysTick_Handler
+08008118 T TIM6_DAC_IRQHandler

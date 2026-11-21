@@ -5,7 +5,7 @@
 #include <string.h>
 static unsigned checks;
 #define CHECK(x) do { ++checks; if (!(x)) { fprintf(stderr,"line %d: %s\n",__LINE__,#x); exit(1); } } while (0)
-FDCAN_HandleTypeDef hfdcan1;
+FDCAN_HandleTypeDef hfdcan3;
 static CanTransportStats stats;
 static uint32_t tec, rec;
 static bool off, counters_ok, log_ok, accept;
@@ -35,7 +35,7 @@ static void setup(void) {
     tec=rec=sends=0; off=false; counters_ok=log_ok=accept=true; output[0]=0;
     r.config.kind=READER_POWER; r.config.stale_ms=10000;
     r.stats.cycles=25; r.power.can_baud_code=PICO_DEVICE_BITRATE==1000000 ? 1 : 2;
-    fresh(60000); PowerBaudTest_Init(0,log_text);
+    fresh(60000); PowerBaudTest_Init(0,log_text,&hfdcan3);
 }
 static void arm(void) {
     g_power_baud_command=POWER_BAUD_ARM;
@@ -126,11 +126,11 @@ int main(void) {
     for(unsigned i=0;i<10;++i) { g_power_baud_command=POWER_BAUD_COMMIT; (void)PowerBaudTest_Step(&r,60006+i,true); }
     CHECK(sends==2); g_power_baud_command=POWER_BAUD_ARM; (void)PowerBaudTest_Step(&r,60100,true); CHECK(sends==2);
     /* Reset explicitly destroys old authorization; no implicit repeated write. */
-    PowerBaudTest_Init(0,log_text); CHECK(g_power_baud_command==0 && g_power_baud_stage==POWER_BAUD_IDLE);
+    PowerBaudTest_Init(0,log_text,&hfdcan3); CHECK(g_power_baud_command==0 && g_power_baud_stage==POWER_BAUD_IDLE);
     setup(); arm(); commit(); write_done(); (void)PowerBaudTest_Step(&r,61002,true);
     CHECK(sends==2 && g_power_baud_stage==POWER_BAUD_STOPPED);
     /* Unsigned time arithmetic survives MCU tick wrap. */
-    setup(); PowerBaudTest_Init(UINT32_MAX-60000U,log_text); fresh(0); g_power_baud_command=POWER_BAUD_ARM;
+    setup(); PowerBaudTest_Init(UINT32_MAX-60000U,log_text,&hfdcan3); fresh(0); g_power_baud_command=POWER_BAUD_ARM;
     (void)PowerBaudTest_Step(&r,0,true); CHECK(g_power_baud_stage==POWER_BAUD_ARMED);
     puts("power baud gate: only a simulated transport; NOT a device PASS");
     printf("%u checks passed\n",checks); return 0;

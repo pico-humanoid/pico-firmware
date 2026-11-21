@@ -1,0 +1,29 @@
+{
+  "repository": "https://github.com/RobStride/RobStrideSPC",
+  "commit": "d8451a447d7265becf71271a008a71f7063b7ecc",
+  "commit_date": "2026-05-12T07:43:37Z",
+  "fetched_on": "2026-11-14",
+  "upstream_files": {
+    "robstride_control.c": {
+      "git_blob_sha1": "2b9fcdf9bbf929c99a271404213978e82285b91a",
+      "sha256": "b949172eb2fce6ecb1738fccaefa694640a8ff7d23f56dcc943cc0038fbbf455",
+      "url": "https://raw.githubusercontent.com/RobStride/RobStrideSPC/d8451a447d7265becf71271a008a71f7063b7ecc/Core/Src/robstride_control.c"
+    },
+    "robstride_control.h": {
+      "git_blob_sha1": "1bb0dee72cc38302012157f330c9751795cadb5b",
+      "sha256": "c4a0f6ff14a85140b4b320a3d8c593bf6cd499cf35b41ba573ace5d44695254d",
+      "url": "https://raw.githubusercontent.com/RobStride/RobStrideSPC/d8451a447d7265becf71271a008a71f7063b7ecc/Core/Inc/robstride_control.h"
+    },
+    "README.upstream.md": {
+      "git_blob_sha1": "c9a633c1679d404bf8133a0c2933feec14c7aae4",
+      "sha256": "219b61a7e2c2f7e9cdbe26b08e083a3bed4cf5e50b4fcd35b3dbb79fc65ba3d6",
+      "url": "https://raw.githubusercontent.com/RobStride/RobStrideSPC/d8451a447d7265becf71271a008a71f7063b7ecc/README.md"
+    },
+    "can.upstream.h": {
+      "git_blob_sha1": "70ddf3576f1b10972fe6e88e468a83dba04aaca0",
+      "sha256": "79ce1a020e8c4de723311cc83fa82fc4c452a0191f9c5264b030e8fb2c604e03",
+      "url": "https://raw.githubusercontent.com/RobStride/RobStrideSPC/d8451a447d7265becf71271a008a71f7063b7ecc/Core/Inc/can.h"
+    }
+  },
+  "adaptation": "Original byte-verified snapshots plus separate G474 port. Only bounded single-frame APIs used by project state machines."
+}

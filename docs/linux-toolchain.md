@@ -156,7 +156,7 @@ sudo udevadm control --reload-rules
 工具安装之后已新增协议、收发层、轮询器和单设备读取应用，历史“业务代码未修改”结论仅指上一阶段。
 
 ```bash
-cd /home/zjy/PICO/pico-firmware
+cd "/home/zjy/Systems and Control/PICO/pico-firmware"
 ./firmware/PICO_CAN/scripts/test-host.sh
 ./firmware/PICO_CAN/scripts/build.sh Devices
 ```
@@ -169,4 +169,4 @@ cd /home/zjy/PICO/pico-firmware
 
 ## 8. 双设备500K预设（2026-11-03）
 
-新增`Linux-Dual-Read-500K`，可通过`bash /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/scripts/build.sh Dual-Read-500K`构建。两个500K设备共用FDCAN1，应用层独立状态、共享轮询；不是双CAN通道。产物位于`/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Dual-Read-500K/`。`Devices`和`All`均包含该镜像。当前主机测试13/13通过，硬件待验收，详见`/home/zjy/PICO/pico-firmware/docs/device-read-validation.md`第9节。
+新增`Linux-Dual-Read-500K`，可通过`bash "/home/zjy/Systems and Control/PICO/pico-firmware/firmware/PICO_CAN/scripts/build.sh" Dual-Read-500K`构建。两个500K设备共用FDCAN1，应用层独立状态、共享轮询；不是双CAN通道。产物位于`"/home/zjy/Systems and Control/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Dual-Read-500K/"`。`Devices`和`All`均包含该镜像。当前主机测试13/13通过，硬件待验收，详见`"/home/zjy/Systems and Control/PICO/pico-firmware/docs/device-read-validation.md"`第9节。

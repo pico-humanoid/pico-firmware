@@ -1,0 +1,116 @@
+Internal ctest changing into directory: /tmp/pico-multi/host
+Test project /tmp/pico-multi/host
+      Start  1: robstride_spc_golden_frames_and_capture_interlocks
+ 1/55 Test  #1: robstride_spc_golden_frames_and_capture_interlocks ...........   Passed    0.00 sec
+      Start  2: stopped_position_diagnostic_no_enable_and_manual_echo
+ 2/55 Test  #2: stopped_position_diagnostic_no_enable_and_manual_echo ........   Passed    0.00 sec
+      Start  3: common_clock_quintic_scheduler_and_metrics
+ 3/55 Test  #3: common_clock_quintic_scheduler_and_metrics ...................   Passed    0.01 sec
+      Start  4: common_clock_full_app_nonblocking_uart_and_peer_stop
+ 4/55 Test  #4: common_clock_full_app_nonblocking_uart_and_peer_stop .........   Passed    0.02 sec
+      Start  5: position_stability_real_log_replay_and_negative_cases
+ 5/55 Test  #5: position_stability_real_log_replay_and_negative_cases ........   Passed    0.00 sec
+      Start  6: motor_position_cycles_limits_deadman_and_stop
+ 6/55 Test  #6: motor_position_cycles_limits_deadman_and_stop ................   Passed    0.01 sec
+      Start  7: motor_position_uart_startup_and_runtime_overrun
+ 7/55 Test  #7: motor_position_uart_startup_and_runtime_overrun ..............   Passed    0.00 sec
+      Start  8: motor_position_full_uart_and_can_application
+ 8/55 Test  #8: motor_position_full_uart_and_can_application .................   Passed    0.01 sec
+      Start  9: dual_position_independent_targets_and_peer_stop
+ 9/55 Test  #9: dual_position_independent_targets_and_peer_stop ..............   Passed    0.01 sec
+      Start 10: motor_enable_readback_deadman_and_stop
+10/55 Test #10: motor_enable_readback_deadman_and_stop .......................   Passed    0.00 sec
+      Start 11: motor_speed_limits_motion_deadman_and_stop
+11/55 Test #11: motor_speed_limits_motion_deadman_and_stop ...................   Passed    0.00 sec
+      Start 12: motor_speed_700mA_readback_deadman_jumps_and_stop
+12/55 Test #12: motor_speed_700mA_readback_deadman_jumps_and_stop ............   Passed    0.00 sec
+      Start 13: motor_speed_700mA_uart_startup_and_overrun
+13/55 Test #13: motor_speed_700mA_uart_startup_and_overrun ...................   Passed    0.00 sec
+      Start 14: motor_speed_700mA_full_uart_can_0
+14/55 Test #14: motor_speed_700mA_full_uart_can_0 ............................   Passed    0.00 sec
+      Start 15: motor_speed_700mA_full_uart_can_1
+15/55 Test #15: motor_speed_700mA_full_uart_can_1 ............................   Passed    0.00 sec
+      Start 16: motor_speed_700mA_full_uart_can_2
+16/55 Test #16: motor_speed_700mA_full_uart_can_2 ............................   Passed    0.00 sec
+      Start 17: motor_speed_700mA_full_uart_can_3
+17/55 Test #17: motor_speed_700mA_full_uart_can_3 ............................   Passed    0.00 sec
+      Start 18: motor_speed_700mA_full_uart_can_4
+18/55 Test #18: motor_speed_700mA_full_uart_can_4 ............................   Passed    0.00 sec
+      Start 19: motor_speed_700mA_full_uart_can_5
+19/55 Test #19: motor_speed_700mA_full_uart_can_5 ............................   Passed    0.00 sec
+      Start 20: dual_motor_speed_barrier_and_peer_stop
+20/55 Test #20: dual_motor_speed_barrier_and_peer_stop .......................   Passed    0.00 sec
+      Start 21: dual_motor_feedback_fault_1
+21/55 Test #21: dual_motor_feedback_fault_1 ..................................   Passed    0.00 sec
+      Start 22: dual_motor_feedback_fault_2
+22/55 Test #22: dual_motor_feedback_fault_2 ..................................   Passed    0.00 sec
+      Start 23: motor_enable_uart_startup_and_runtime_overrun
+23/55 Test #23: motor_enable_uart_startup_and_runtime_overrun ................   Passed    0.00 sec
+      Start 24: motor_speed_uart_startup_and_runtime_overrun
+24/55 Test #24: motor_speed_uart_startup_and_runtime_overrun .................   Passed    0.00 sec
+      Start 25: can_pin_trace_bounds_and_readonly_registers
+25/55 Test #25: can_pin_trace_bounds_and_readonly_registers ..................   Passed    0.00 sec
+      Start 26: motor_read_protocol_and_scheduler
+26/55 Test #26: motor_read_protocol_and_scheduler ............................   Passed    0.00 sec
+      Start 27: motor_application_1_fake_io
+27/55 Test #27: motor_application_1_fake_io ..................................   Passed    0.00 sec
+      Start 28: motor_application_2_fake_io
+28/55 Test #28: motor_application_2_fake_io ..................................   Passed    0.00 sec
+      Start 29: motor_confirmed_7f_fd_readonly_and_timeout_stop
+29/55 Test #29: motor_confirmed_7f_fd_readonly_and_timeout_stop ..............   Passed    0.00 sec
+      Start 30: device_protocols_and_scheduler
+30/55 Test #30: device_protocols_and_scheduler ...............................   Passed    0.00 sec
+      Start 31: can_transport_fake_hal
+31/55 Test #31: can_transport_fake_hal .......................................   Passed    0.00 sec
+      Start 32: can_transport_bounded_arbitration_retry
+32/55 Test #32: can_transport_bounded_arbitration_retry ......................   Passed    0.00 sec
+      Start 33: can3_pins_clock_and_interrupt_routing
+33/55 Test #33: can3_pins_clock_and_interrupt_routing ........................   Passed    0.00 sec
+      Start 34: device_application_fake_io
+34/55 Test #34: device_application_fake_io ...................................   Passed    0.00 sec
+      Start 35: bms_application_fake_io
+35/55 Test #35: bms_application_fake_io ......................................   Passed    0.00 sec
+      Start 36: board_log_capture_pty
+36/55 Test #36: board_log_capture_pty ........................................   Passed    0.79 sec
+      Start 37: power_big_application_fake_io
+37/55 Test #37: power_big_application_fake_io ................................   Passed    0.00 sec
+      Start 38: power_baud_gate_forward
+38/55 Test #38: power_baud_gate_forward ......................................   Passed    0.00 sec
+      Start 39: power_baud_gate_reverse
+39/55 Test #39: power_baud_gate_reverse ......................................   Passed    0.00 sec
+      Start 40: power_baud_force_operator_one_shot
+40/55 Test #40: power_baud_force_operator_one_shot ...........................   Passed    0.00 sec
+      Start 41: power_baud_application_fake_io
+41/55 Test #41: power_baud_application_fake_io ...............................   Passed    0.01 sec
+      Start 42: power_capture_analysis_synthetic
+42/55 Test #42: power_capture_analysis_synthetic .............................   Passed    0.14 sec
+      Start 43: dual_reader_shared_bus_scheduler
+43/55 Test #43: dual_reader_shared_bus_scheduler .............................   Passed    0.00 sec
+      Start 44: dual_application_fake_io
+44/55 Test #44: dual_application_fake_io .....................................   Passed    0.00 sec
+      Start 45: interactive_tuning_modes_readback_and_safety
+45/55 Test #45: interactive_tuning_modes_readback_and_safety .................   Passed    0.00 sec
+      Start 46: interactive_tuning_actual_uart_can_glue
+46/55 Test #46: interactive_tuning_actual_uart_can_glue ......................   Passed    0.01 sec
+      Start 47: interactive_dual_tuning_barriers_duration_and_peer_stop
+47/55 Test #47: interactive_dual_tuning_barriers_duration_and_peer_stop ......   Passed    0.01 sec
+      Start 48: dual_application_can1_selected_bus
+48/55 Test #48: dual_application_can1_selected_bus ...........................   Passed    0.00 sec
+      Start 49: dual_application_can2_selected_bus
+49/55 Test #49: dual_application_can2_selected_bus ...........................   Passed    0.00 sec
+      Start 50: robot14_topology_handshake_watchdog_and_peer_stop
+50/55 Test #50: robot14_topology_handshake_watchdog_and_peer_stop ............   Passed    0.01 sec
+      Start 51: robot14_three_bus_transport_rings_deadlines_and_busoff
+51/55 Test #51: robot14_three_bus_transport_rings_deadlines_and_busoff .......   Passed    0.00 sec
+      Start 52: robot14_production_pins_timing_irq_and_shared_clock
+52/55 Test #52: robot14_production_pins_timing_irq_and_shared_clock ..........   Passed    0.00 sec
+      Start 53: robot14_cubemx_clock_pins_and_rtos_invariants
+53/55 Test #53: robot14_cubemx_clock_pins_and_rtos_invariants ................   Passed    0.04 sec
+      Start 54: robot14_binary_session_batch_leases_disable_telemetry_fuzz
+54/55 Test #54: robot14_binary_session_batch_leases_disable_telemetry_fuzz ...   Passed    0.00 sec
+      Start 55: robot14_uart_ring_overflow_repair_and_tx_reserve
+55/55 Test #55: robot14_uart_ring_overflow_repair_and_tx_reserve .............   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 55
+
+Total Test time (real) =   1.15 sec

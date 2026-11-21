@@ -1,6 +1,7 @@
 #ifndef PICO_POWER_BAUD_TEST_H
 #define PICO_POWER_BAUD_TEST_H
 #include "device_reader.h"
+#include "stm32g4xx_hal.h"
 
 /* Test images only. Neither command is read from the CAN bus or UART.
  * Explicit SWD mailbox writes are required after every MCU reset. */
@@ -21,7 +22,7 @@ extern volatile uint32_t g_power_baud_command;
 extern volatile uint32_t g_power_baud_stage;
 
 typedef bool (*PowerBaudLog)(const char *text);
-void PowerBaudTest_Init(uint32_t now, PowerBaudLog log);
+void PowerBaudTest_Init(uint32_t now, PowerBaudLog log, FDCAN_HandleTypeDef *can);
 /* Return true only when ordinary read polling is allowed. */
 bool PowerBaudTest_Step(DeviceReader *reader, uint32_t now, bool uart_ok);
 void PowerBaudTest_OnTxEvent(const char *event, const CanFrame *frame);

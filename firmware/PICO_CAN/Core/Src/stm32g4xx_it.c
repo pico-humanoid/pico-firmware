@@ -20,6 +20,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32g4xx_it.h"
+#if defined(PICO_MOTOR_ENABLE) || defined(PICO_ROBOT14)
+#include "usart.h"
+#endif
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -143,6 +146,7 @@ void UsageFault_Handler(void)
 /**
   * @brief This function handles System service call via SWI instruction.
   */
+#if !defined(PICO_ROBOT14)
 void SVC_Handler(void)
 {
   /* USER CODE BEGIN SVCall_IRQn 0 */
@@ -152,6 +156,8 @@ void SVC_Handler(void)
 
   /* USER CODE END SVCall_IRQn 1 */
 }
+
+#endif
 
 /**
   * @brief This function handles Debug monitor.
@@ -169,6 +175,7 @@ void DebugMon_Handler(void)
 /**
   * @brief This function handles Pendable request for system service.
   */
+#if !defined(PICO_ROBOT14)
 void PendSV_Handler(void)
 {
   /* USER CODE BEGIN PendSV_IRQn 0 */
@@ -192,6 +199,8 @@ void SysTick_Handler(void)
 
   /* USER CODE END SysTick_IRQn 1 */
 }
+
+#endif /* Robot14 uses port SVC/PendSV and CMSIS-RTOS2 SysTick. */
 
 /******************************************************************************/
 /* STM32G4xx Peripheral Interrupt Handlers                                    */
@@ -231,5 +240,8 @@ void FDCAN3_IT0_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
+#if defined(PICO_MOTOR_ENABLE) || defined(PICO_ROBOT14)
+void LPUART1_IRQHandler(void){HAL_UART_IRQHandler(&hlpuart1);}
+#endif
 
 /* USER CODE END 1 */

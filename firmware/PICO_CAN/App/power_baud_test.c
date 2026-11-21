@@ -19,6 +19,7 @@ static uint32_t started, stage_at, read_at;
 static bool write_done, write_timeout, read_received;
 static uint8_t read_code;
 static PowerBaudLog logger;
+static FDCAN_HandleTypeDef *can_bus;
 
 static uint8_t baud_code(uint32_t bitrate) { return bitrate == 1000000U ? 1U : 2U; }
 static void stop(const char *why) {
@@ -30,7 +31,8 @@ static bool note(const char *text) {
     g_power_baud_stage = POWER_BAUD_STOPPED;
     return false;
 }
-void PowerBaudTest_Init(uint32_t now, PowerBaudLog log) {
+void PowerBaudTest_Init(uint32_t now, PowerBaudLog log, FDCAN_HandleTypeDef *can) {
+    can_bus = can;
     g_power_baud_command = 0U;
     g_power_baud_stage = POWER_BAUD_IDLE;
     started = stage_at = now;
@@ -64,8 +66,7 @@ static bool fresh(const DeviceReader *r, uint32_t now) {
 static bool clean(const DeviceReader *r) {
     CanTransportStats s = CanTransport_GetStats();
     FDCAN_ErrorCountersTypeDef e = {0};
-    extern FDCAN_HandleTypeDef hfdcan1;
-    return HAL_FDCAN_GetErrorCounters(&hfdcan1, &e) == HAL_OK &&
+    return can_bus != NULL && HAL_FDCAN_GetErrorCounters(can_bus, &e) == HAL_OK &&
         e.TxErrorCnt == 0U && e.RxErrorCnt == 0U && !CanTransport_IsBusOff() &&
 #if defined(PICO_POWER_BAUD_ALLOW_QUERY_TIMEOUTS) && PICO_POWER_BAUD_ALLOW_QUERY_TIMEOUTS
         /* Explicit operator override: historical application reply and Tx-event

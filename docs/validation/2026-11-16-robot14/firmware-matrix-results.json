@@ -1,0 +1,499 @@
+[
+  {
+    "id": "Loopback",
+    "returncode": 0,
+    "options": {
+      "PICO_EXTERNAL_CAN": "OFF"
+    }
+  },
+  {
+    "id": "External",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Can3Bench",
+      "PICO_EXTERNAL_CAN": "ON"
+    }
+  },
+  {
+    "id": "BMS-Read-500K",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "BMS",
+      "PICO_CAN_CHANNEL": 3,
+      "PICO_DEVICE_BITRATE": 500000,
+      "PICO_POWER_ID": "0xAA",
+      "PICO_BMS_RTR_DLC": 8,
+      "PICO_BMS_CRC_ENDIAN": "BIG",
+      "PICO_POWER_STATUS_ENDIAN": "BIG"
+    }
+  },
+  {
+    "id": "Power-Read-1M",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Power",
+      "PICO_CAN_CHANNEL": 3,
+      "PICO_DEVICE_BITRATE": 1000000,
+      "PICO_POWER_ID": "0xAA",
+      "PICO_BMS_RTR_DLC": 8,
+      "PICO_BMS_CRC_ENDIAN": "BIG",
+      "PICO_POWER_STATUS_ENDIAN": "BIG"
+    }
+  },
+  {
+    "id": "Power-Read-500K",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Power",
+      "PICO_CAN_CHANNEL": 3,
+      "PICO_DEVICE_BITRATE": 500000,
+      "PICO_POWER_ID": "0xAA",
+      "PICO_BMS_RTR_DLC": 8,
+      "PICO_BMS_CRC_ENDIAN": "BIG",
+      "PICO_POWER_STATUS_ENDIAN": "BIG"
+    }
+  },
+  {
+    "id": "Dual-Read-500K",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Dual",
+      "PICO_CAN_CHANNEL": 3,
+      "PICO_DEVICE_BITRATE": 500000,
+      "PICO_POWER_ID": "0xAA",
+      "PICO_BMS_RTR_DLC": 0,
+      "PICO_BMS_CRC_ENDIAN": "BIG",
+      "PICO_POWER_STATUS_ENDIAN": "BIG"
+    }
+  },
+  {
+    "id": "RS10P-Read-1M",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Motor",
+      "PICO_DEVICE_BITRATE": 1000000,
+      "PICO_MOTOR_CAN_CHANNEL": 1,
+      "PICO_MOTOR_COUNT": 1,
+      "PICO_MOTOR1_ID": "1",
+      "PICO_MOTOR2_ID": "2",
+      "PICO_MOTOR_HOST_ID": "0xFD",
+      "PICO_MOTOR1_MODEL": "RS10P",
+      "PICO_MOTOR2_MODEL": "RS00"
+    }
+  },
+  {
+    "id": "RS00-Read-1M",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Motor",
+      "PICO_DEVICE_BITRATE": 1000000,
+      "PICO_MOTOR_CAN_CHANNEL": 1,
+      "PICO_MOTOR_COUNT": 1,
+      "PICO_MOTOR1_ID": "2",
+      "PICO_MOTOR2_ID": "1",
+      "PICO_MOTOR_HOST_ID": "0xFD",
+      "PICO_MOTOR1_MODEL": "RS00",
+      "PICO_MOTOR2_MODEL": "RS00"
+    }
+  },
+  {
+    "id": "Motors-Read-1M",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Motor",
+      "PICO_DEVICE_BITRATE": 1000000,
+      "PICO_MOTOR_CAN_CHANNEL": 1,
+      "PICO_MOTOR_COUNT": 2,
+      "PICO_MOTOR1_ID": "1",
+      "PICO_MOTOR2_ID": "2",
+      "PICO_MOTOR_HOST_ID": "0xFD",
+      "PICO_MOTOR1_MODEL": "RS10P",
+      "PICO_MOTOR2_MODEL": "RS00"
+    }
+  },
+  {
+    "id": "RS00-Enable-CAN1",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorEnable",
+      "PICO_ENABLE_MOTOR_ID": 2,
+      "PICO_ENABLE_MODEL": "RS00"
+    }
+  },
+  {
+    "id": "RS10P-Enable-CAN1",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorEnable",
+      "PICO_ENABLE_MOTOR_ID": 1,
+      "PICO_ENABLE_MODEL": "RS10P"
+    }
+  },
+  {
+    "id": "RS00-Speed-CAN1",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorSpeed",
+      "PICO_ENABLE_MOTOR_ID": 2,
+      "PICO_ENABLE_MODEL": "RS00"
+    }
+  },
+  {
+    "id": "RS10P-Speed-CAN1",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorSpeed",
+      "PICO_ENABLE_MOTOR_ID": 1,
+      "PICO_ENABLE_MODEL": "RS10P"
+    }
+  },
+  {
+    "id": "RS10P-Speed-0700mA",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorSpeed",
+      "PICO_ENABLE_MOTOR_ID": 1,
+      "PICO_ENABLE_MODEL": "RS10P",
+      "PICO_SPEED_LIMIT_MA": 700
+    }
+  },
+  {
+    "id": "Motors-Speed-CAN1",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorDualSpeed"
+    }
+  },
+  {
+    "id": "Motors-Fault-ID1",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorDualFault",
+      "PICO_FAULT_TARGET": 1
+    }
+  },
+  {
+    "id": "Motors-Fault-ID2",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorDualFault",
+      "PICO_FAULT_TARGET": 2
+    }
+  },
+  {
+    "id": "RS10P-Position-Cycles",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorPosition",
+      "PICO_ENABLE_MOTOR_ID": 1,
+      "PICO_ENABLE_MODEL": "RS10P"
+    }
+  },
+  {
+    "id": "RS00-Position-Cycles",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorPosition",
+      "PICO_ENABLE_MOTOR_ID": 2,
+      "PICO_ENABLE_MODEL": "RS00"
+    }
+  },
+  {
+    "id": "Motors-Independent-Position",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorDualPosition"
+    }
+  },
+  {
+    "id": "Motors-Sync-Position",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorSyncPosition"
+    }
+  },
+  {
+    "id": "RS10P-Position-Diag",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorPositionDiag",
+      "PICO_DIAG_MOTOR_ID": 1,
+      "PICO_DIAG_MODEL": "RS10P"
+    }
+  },
+  {
+    "id": "RS00-Position-Diag",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorPositionDiag",
+      "PICO_DIAG_MOTOR_ID": 2,
+      "PICO_DIAG_MODEL": "RS00"
+    }
+  },
+  {
+    "id": "RS10P-Tuning",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorTuning",
+      "PICO_TUNE_MOTOR_ID": 1,
+      "PICO_TUNE_MODEL": "RS10P"
+    }
+  },
+  {
+    "id": "RS00-Tuning",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorTuning",
+      "PICO_TUNE_MOTOR_ID": 2,
+      "PICO_TUNE_MODEL": "RS00"
+    }
+  },
+  {
+    "id": "Motors-Tuning",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorTuning",
+      "PICO_TUNE_COUNT": 2,
+      "PICO_TUNE_MOTOR_ID": 1,
+      "PICO_TUNE_MODEL": "RS10P"
+    }
+  },
+  {
+    "id": "BMS-Read-500K-CAN1",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "BMS",
+      "PICO_CAN_CHANNEL": 1,
+      "PICO_DEVICE_BITRATE": 500000,
+      "PICO_POWER_ID": "0xAA",
+      "PICO_BMS_RTR_DLC": 8,
+      "PICO_BMS_CRC_ENDIAN": "BIG",
+      "PICO_POWER_STATUS_ENDIAN": "BIG"
+    }
+  },
+  {
+    "id": "BMS-Read-500K-CAN2",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "BMS",
+      "PICO_CAN_CHANNEL": 2,
+      "PICO_DEVICE_BITRATE": 500000,
+      "PICO_POWER_ID": "0xAA",
+      "PICO_BMS_RTR_DLC": 8,
+      "PICO_BMS_CRC_ENDIAN": "BIG",
+      "PICO_POWER_STATUS_ENDIAN": "BIG"
+    }
+  },
+  {
+    "id": "Power-Read-1M-CAN1",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Power",
+      "PICO_CAN_CHANNEL": 1,
+      "PICO_DEVICE_BITRATE": 1000000,
+      "PICO_POWER_ID": "0xAA",
+      "PICO_BMS_RTR_DLC": 8,
+      "PICO_BMS_CRC_ENDIAN": "BIG",
+      "PICO_POWER_STATUS_ENDIAN": "BIG"
+    }
+  },
+  {
+    "id": "Power-Read-1M-CAN2",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Power",
+      "PICO_CAN_CHANNEL": 2,
+      "PICO_DEVICE_BITRATE": 1000000,
+      "PICO_POWER_ID": "0xAA",
+      "PICO_BMS_RTR_DLC": 8,
+      "PICO_BMS_CRC_ENDIAN": "BIG",
+      "PICO_POWER_STATUS_ENDIAN": "BIG"
+    }
+  },
+  {
+    "id": "Power-Read-500K-CAN1",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Power",
+      "PICO_CAN_CHANNEL": 1,
+      "PICO_DEVICE_BITRATE": 500000,
+      "PICO_POWER_ID": "0xAA",
+      "PICO_BMS_RTR_DLC": 8,
+      "PICO_BMS_CRC_ENDIAN": "BIG",
+      "PICO_POWER_STATUS_ENDIAN": "BIG"
+    }
+  },
+  {
+    "id": "Power-Read-500K-CAN2",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Power",
+      "PICO_CAN_CHANNEL": 2,
+      "PICO_DEVICE_BITRATE": 500000,
+      "PICO_POWER_ID": "0xAA",
+      "PICO_BMS_RTR_DLC": 8,
+      "PICO_BMS_CRC_ENDIAN": "BIG",
+      "PICO_POWER_STATUS_ENDIAN": "BIG"
+    }
+  },
+  {
+    "id": "Dual-Read-500K-CAN1",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Dual",
+      "PICO_CAN_CHANNEL": 1,
+      "PICO_DEVICE_BITRATE": 500000,
+      "PICO_POWER_ID": "0xAA",
+      "PICO_BMS_RTR_DLC": 0,
+      "PICO_BMS_CRC_ENDIAN": "BIG",
+      "PICO_POWER_STATUS_ENDIAN": "BIG"
+    }
+  },
+  {
+    "id": "Dual-Read-500K-CAN2",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Dual",
+      "PICO_CAN_CHANNEL": 2,
+      "PICO_DEVICE_BITRATE": 500000,
+      "PICO_POWER_ID": "0xAA",
+      "PICO_BMS_RTR_DLC": 0,
+      "PICO_BMS_CRC_ENDIAN": "BIG",
+      "PICO_POWER_STATUS_ENDIAN": "BIG"
+    }
+  },
+  {
+    "id": "Robot14",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Robot14"
+    }
+  },
+  {
+    "id": "BMS-CAN1-merge",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "BMS",
+      "PICO_CAN_CHANNEL": 1,
+      "PICO_DEVICE_BITRATE": 500000
+    }
+  },
+  {
+    "id": "BMS-CAN2-merge",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "BMS",
+      "PICO_CAN_CHANNEL": 2,
+      "PICO_DEVICE_BITRATE": 500000
+    }
+  },
+  {
+    "id": "BMS-CAN3-merge",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "BMS",
+      "PICO_CAN_CHANNEL": 3,
+      "PICO_DEVICE_BITRATE": 500000
+    }
+  },
+  {
+    "id": "Power-CAN1-merge",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Power",
+      "PICO_CAN_CHANNEL": 1,
+      "PICO_DEVICE_BITRATE": 500000
+    }
+  },
+  {
+    "id": "Power-CAN2-merge",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Power",
+      "PICO_CAN_CHANNEL": 2,
+      "PICO_DEVICE_BITRATE": 500000
+    }
+  },
+  {
+    "id": "Power-CAN3-merge",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Power",
+      "PICO_CAN_CHANNEL": 3,
+      "PICO_DEVICE_BITRATE": 500000
+    }
+  },
+  {
+    "id": "Dual-CAN1-merge",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Dual",
+      "PICO_CAN_CHANNEL": 1,
+      "PICO_DEVICE_BITRATE": 500000
+    }
+  },
+  {
+    "id": "Dual-CAN2-merge",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Dual",
+      "PICO_CAN_CHANNEL": 2,
+      "PICO_DEVICE_BITRATE": 500000
+    }
+  },
+  {
+    "id": "Dual-CAN3-merge",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Dual",
+      "PICO_CAN_CHANNEL": 3,
+      "PICO_DEVICE_BITRATE": 500000
+    }
+  },
+  {
+    "id": "PinLoop-merge",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "PinLoop"
+    }
+  },
+  {
+    "id": "Listen-merge",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "Listen"
+    }
+  },
+  {
+    "id": "CanMultiBench-merge",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "CanMultiBench"
+    }
+  },
+  {
+    "id": "MotorDualFault-merge",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "MotorDualFault"
+    }
+  },
+  {
+    "id": "PowerBaud-1000000-to-500000",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "PowerBaud",
+      "PICO_DEVICE_BITRATE": 1000000,
+      "PICO_POWER_BAUD_TARGET": 500000
+    }
+  },
+  {
+    "id": "PowerBaud-500000-to-1000000",
+    "returncode": 0,
+    "options": {
+      "PICO_APP": "PowerBaud",
+      "PICO_DEVICE_BITRATE": 500000,
+      "PICO_POWER_BAUD_TARGET": 1000000
+    }
+  }
+]

@@ -7,6 +7,15 @@
 #endif
 #define FRAME_COUNT 100U
 #define RX_QUEUE_SIZE 32U
+#if defined(PICO_CAN3_PC_TEST)
+#define TEST_ID_TYPE FDCAN_EXTENDED_ID
+#define TEST_ID_MASK 0x1FFFFFFFU
+#define TEST_FORMAT "EXT"
+#else
+#define TEST_ID_TYPE FDCAN_STANDARD_ID
+#define TEST_ID_MASK 0x7FFU
+#define TEST_FORMAT "STD"
+#endif
 
 typedef struct { FDCAN_RxHeaderTypeDef header; uint8_t data[64]; uint32_t ms; } RxFrame;
 volatile CanTestStatus g_can_test;
@@ -16,6 +25,22 @@ static RxFrame queue[RX_QUEUE_SIZE];
 static volatile uint32_t write_pos, read_pos;
 static uint8_t received[FRAME_COUNT], tx_confirmed[FRAME_COUNT];
 static uint32_t started, start_ms, next_tx_ms, next_sequence, last_blink;
+#if defined(PICO_CAN3_PC_TEST)
+static uint32_t next_health, edge_observations, edge_self_test;
+static void init_edge_latch(void) {
+    /* PA8 stays AF11. Poll EXTI pending; never interrupt on each CAN edge.
+       Counts are latch observations, not exact physical edge counts. */
+    __HAL_RCC_SYSCFG_CLK_ENABLE();
+    HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
+    MODIFY_REG(SYSCFG->EXTICR[2],SYSCFG_EXTICR3_EXTI8,SYSCFG_EXTICR3_EXTI8_PA);
+    EXTI->EMR1&=~GPIO_PIN_8;
+    EXTI->RTSR1|=GPIO_PIN_8;EXTI->FTSR1|=GPIO_PIN_8;
+    EXTI->IMR1|=GPIO_PIN_8;EXTI->PR1=GPIO_PIN_8;
+    EXTI->SWIER1|=GPIO_PIN_8;__DSB();
+    edge_self_test=(EXTI->PR1&GPIO_PIN_8)!=0U;
+    EXTI->PR1=GPIO_PIN_8;
+}
+#endif
 
 static void log_line(const char *text) {
     if (HAL_UART_Transmit(serial, (const uint8_t *)text, (uint16_t)strlen(text), 100) != HAL_OK)
@@ -24,7 +49,7 @@ static void log_line(const char *text) {
 
 static void log_frame(uint32_t ms, const char *event, uint32_t id, const uint8_t data[8]) {
     char line[160];
-    (void)snprintf(line, sizeof(line), "%lu,%s,STD,0x%03lX,8,%02X %02X %02X %02X %02X %02X %02X %02X\r\n",
+    (void)snprintf(line, sizeof(line), "%lu,%s," TEST_FORMAT ",0x%03lX,8,%02X %02X %02X %02X %02X %02X %02X %02X\r\n",
         (unsigned long)ms, event, (unsigned long)id,
         data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
     log_line(line);
@@ -38,6 +63,15 @@ static void fail(uint32_t code) {
 void CanTest_Init(FDCAN_HandleTypeDef *can, UART_HandleTypeDef *uart) {
     bus = can;
     serial = uart;
+#if defined(PICO_CAN3_PC_TEST)
+    log_line("# CAN3_PC_TEST=1; diagnostic=v2 polling=1; channel=FDCAN3 bitrate=1000000 format=EXT; PC=0x321 BOARD=0x123; no motor\r\n");
+    if (can->Instance!=FDCAN3 || HAL_FDCAN_DeInit(can)!=HAL_OK) { fail(2);return; }
+    can->Init.Mode=FDCAN_MODE_NORMAL;
+    can->Init.NominalPrescaler=1;can->Init.NominalSyncJumpWidth=2;
+    can->Init.NominalTimeSeg1=13;can->Init.NominalTimeSeg2=2;
+    can->Init.StdFiltersNbr=0;can->Init.ExtFiltersNbr=1;
+    if (HAL_FDCAN_Init(can)!=HAL_OK) { fail(2);return; }
+#endif
     log_line("# PICO G474 CAN bring-up; timestamps are board uptime milliseconds\r\n");
     log_line(PICO_EXTERNAL_CAN ? "# mode=EXTERNAL_NORMAL; wait for first valid 0x321 frame\r\n"
                               : "# mode=INTERNAL_LOOPBACK; no transceiver required\r\n");
@@ -52,20 +86,25 @@ void CanTest_Init(FDCAN_HandleTypeDef *can, UART_HandleTypeDef *uart) {
         if (HAL_FDCAN_Init(can) != HAL_OK) { fail(2); return; }
     }
     FDCAN_FilterTypeDef filter = {0};
-    filter.IdType = FDCAN_STANDARD_ID;
+    filter.IdType = TEST_ID_TYPE;
     filter.FilterIndex = 0;
     filter.FilterType = FDCAN_FILTER_MASK;
     filter.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
     filter.FilterID1 = PICO_EXTERNAL_CAN ? 0x321U : 0x123U;
-    filter.FilterID2 = 0x7FFU;
+    filter.FilterID2 = TEST_ID_MASK;
     if (HAL_FDCAN_ConfigFilter(can, &filter) != HAL_OK ||
         HAL_FDCAN_ConfigGlobalFilter(can, FDCAN_REJECT, FDCAN_REJECT,
                                     FDCAN_REJECT_REMOTE, FDCAN_REJECT_REMOTE) != HAL_OK ||
+#if !defined(PICO_CAN3_PC_TEST)
         HAL_FDCAN_ActivateNotification(can, FDCAN_IT_RX_FIFO0_NEW_MESSAGE |
             FDCAN_IT_RX_FIFO0_MESSAGE_LOST | FDCAN_IT_BUS_OFF | FDCAN_IT_TX_EVT_FIFO_ELT_LOST, 0) != HAL_OK ||
+#endif
         HAL_FDCAN_Start(can) != HAL_OK) {
         fail(2); log_line("# ERROR FDCAN start/filter/notification\r\n"); return;
     }
+#if defined(PICO_CAN3_PC_TEST)
+    init_edge_latch();next_health=HAL_GetTick()+1000U;
+#endif
     if (!PICO_EXTERNAL_CAN) { started = 1; start_ms = HAL_GetTick() + 2000U; next_tx_ms = start_ms; }
 }
 
@@ -96,6 +135,28 @@ void HAL_FDCAN_TxEventFifoCallback(FDCAN_HandleTypeDef *can, uint32_t flags) {
 
 void CanTest_Step(void) {
     uint32_t now = HAL_GetTick();
+#if defined(PICO_CAN3_PC_TEST)
+    if (EXTI->PR1&GPIO_PIN_8) { ++edge_observations;EXTI->PR1=GPIO_PIN_8; }
+    if (g_can_test.fatal==0U && g_can_test.result==0U) {
+        uint32_t lost=(bus->Instance->IR&FDCAN_IR_RF0L)!=0U;
+        HAL_FDCAN_RxFifo0Callback(bus,lost?FDCAN_IT_RX_FIFO0_MESSAGE_LOST:0U);
+        if (lost) bus->Instance->IR=FDCAN_IR_RF0L;
+        if ((int32_t)(now-next_health)>=0) {
+            const uint32_t psr=bus->Instance->PSR,ecr=bus->Instance->ECR;
+            char health[512];
+            (void)snprintf(health,sizeof(health),
+                "# PC_CAN_HEALTH,t_ms=%lu,rx_unique=%lu,tx_submit=%lu,tx_done=%lu,rx_invalid=%lu,rx_read_failed=%lu,rx_edge_observations=%lu,edge_latch_test=%lu,rx_pin=%u,lec=%lu,tec=%lu,rec=%lu,psr=0x%08lX,cccr=0x%08lX,nbtp=0x%08lX\r\n",
+                (unsigned long)now,(unsigned long)g_can_test.rx_unique,
+                (unsigned long)g_can_test.tx_submitted,(unsigned long)g_can_test.tx_completed,
+                (unsigned long)g_can_test.rx_invalid,(unsigned long)g_can_test.rx_read_failed,
+                (unsigned long)edge_observations,(unsigned long)edge_self_test,
+                HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_8)==GPIO_PIN_SET?1U:0U,
+                (unsigned long)(psr&7U),(unsigned long)(ecr&255U),(unsigned long)((ecr>>8)&127U),
+                (unsigned long)psr,(unsigned long)bus->Instance->CCCR,(unsigned long)bus->Instance->NBTP);
+            log_line(health);next_health=now+1000U;
+        }
+    }
+#endif
     if (g_can_test.result == 0 && g_can_test.fatal != 0) g_can_test.result = 2;
     if (g_can_test.result != 0) {
         if (g_can_test.result == 1) HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
@@ -108,7 +169,7 @@ void CanTest_Step(void) {
         read_pos = (read_pos + 1U) % RX_QUEUE_SIZE;
         const uint8_t internal_tail[7] = {0x22,0x33,0x44,0x55,0x66,0x77,0x88};
         const uint8_t external_tail[7] = {0x88,0x77,0x66,0x55,0x44,0x33,0x22};
-        if (frame.header.IdType != FDCAN_STANDARD_ID || frame.header.RxFrameType != FDCAN_DATA_FRAME ||
+        if (frame.header.IdType != TEST_ID_TYPE || frame.header.RxFrameType != FDCAN_DATA_FRAME ||
             frame.header.FDFormat != FDCAN_CLASSIC_CAN || frame.header.DataLength != FDCAN_DLC_BYTES_8 ||
             frame.header.Identifier != (PICO_EXTERNAL_CAN ? 0x321U : 0x123U) ||
             frame.data[0] >= FRAME_COUNT || memcmp(frame.data + 1, PICO_EXTERNAL_CAN ? external_tail : internal_tail, 7) != 0) {
@@ -133,7 +194,7 @@ void CanTest_Step(void) {
     if (started && next_sequence < FRAME_COUNT && (int32_t)(now - next_tx_ms) >= 0) {
         FDCAN_TxHeaderTypeDef header = {0};
         header.Identifier = 0x123U;
-        header.IdType = FDCAN_STANDARD_ID;
+        header.IdType = TEST_ID_TYPE;
         header.TxFrameType = FDCAN_DATA_FRAME;
         header.DataLength = FDCAN_DLC_BYTES_8;
         header.ErrorStateIndicator = FDCAN_ESI_ACTIVE;

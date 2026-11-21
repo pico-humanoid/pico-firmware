@@ -20,6 +20,15 @@ static FDCAN_HandleTypeDef *can_bus;
 static bool initialized, uart_failed, reported_bus_off;
 static uint32_t next_summary;
 
+static unsigned selected_channel(void) {
+    if (can_bus == NULL) return 0U;
+    if (can_bus->Instance == FDCAN1) return 1U;
+#if defined(FDCAN2)
+    if (can_bus->Instance == FDCAN2) return 2U;
+#endif
+    if (can_bus->Instance == FDCAN3) return 3U;
+    return 0U;
+}
 static void line(const char *text) {
     if (uart_failed) return;
     if (HAL_UART_Transmit(serial, (const uint8_t *)text, (uint16_t)strlen(text), 100U) != HAL_OK)
@@ -32,19 +41,18 @@ static void log_frame(const char *event, const CanFrame *frame) {
 #if defined(PICO_POWER_BAUD_TEST)
     /* Snapshot before slow UART output. PSR/ECR reads may clear sticky fields;
        these are discrete observations, not a continuous error history. */
-    extern FDCAN_HandleTypeDef hfdcan1;
     bool diagnostic = frame->id == (0x08000000UL | PICO_POWER_ID);
     uint32_t psr=0, ecr=0, brp=0, bto=0, bcf=0, efs=0, ir=0, cccr=0, nbtp=0;
-    if (diagnostic) {
-        psr=hfdcan1.Instance->PSR; ecr=hfdcan1.Instance->ECR;
-        brp=hfdcan1.Instance->TXBRP; bto=hfdcan1.Instance->TXBTO;
-        bcf=hfdcan1.Instance->TXBCF; efs=hfdcan1.Instance->TXEFS;
-        ir=hfdcan1.Instance->IR; cccr=hfdcan1.Instance->CCCR; nbtp=hfdcan1.Instance->NBTP;
+    if (diagnostic && can_bus != NULL && can_bus->Instance != NULL) {
+        psr=can_bus->Instance->PSR; ecr=can_bus->Instance->ECR;
+        brp=can_bus->Instance->TXBRP; bto=can_bus->Instance->TXBTO;
+        bcf=can_bus->Instance->TXBCF; efs=can_bus->Instance->TXEFS;
+        ir=can_bus->Instance->IR; cccr=can_bus->Instance->CCCR; nbtp=can_bus->Instance->NBTP;
     }
 #endif
     char text[360];
-    int used = snprintf(text, sizeof(text), "%lu,%s,FDCAN1,%s,%s,0x%08lX,%u,",
-        (unsigned long)frame->timestamp_ms, event, frame->extended ? "EXT" : "STD",
+    int used = snprintf(text, sizeof(text), "%lu,%s,FDCAN%u,%s,%s,0x%08lX,%u,",
+        (unsigned long)frame->timestamp_ms, event, selected_channel(), frame->extended ? "EXT" : "STD",
         frame->remote ? "RTR" : "DATA", (unsigned long)frame->id, (unsigned)frame->dlc);
     if (!frame->remote)
         for (uint8_t i = 0; i < frame->dlc; ++i)
@@ -177,7 +185,7 @@ void DeviceRead_Init(FDCAN_HandleTypeDef *can, UART_HandleTypeDef *uart) {
         config.kind == READER_BMS ? "BMS" : "POWER",
 #endif
         (unsigned long)PICO_DEVICE_BITRATE,
-        (unsigned)PICO_CAN_CHANNEL,
+        selected_channel(),
         (unsigned)config.power_id, (unsigned)config.bms_rtr_dlc,
         (unsigned)config.bms_crc_order, (unsigned)config.power_status_order);
     line(text);
@@ -194,11 +202,11 @@ void DeviceRead_Init(FDCAN_HandleTypeDef *can, UART_HandleTypeDef *uart) {
     CanTransportFilter filter = config.kind == READER_BMS ? CAN_FILTER_BMS : CAN_FILTER_POWER;
 #endif
     if (!readers_ok || !CanTransport_Init(can, PICO_DEVICE_BITRATE, filter, config.power_id, log_frame)) {
-        line("# FATAL initialization failed; expected FDCAN1=PCLK1=16MHz; no requests will be sent\r\n");
+        line("# FATAL initialization failed; expected selected FDCAN PCLK1=16MHz; no requests will be sent\r\n");
         return;
     }
 #if defined(PICO_POWER_BAUD_TEST)
-    PowerBaudTest_Init(HAL_GetTick(), baud_log);
+    PowerBaudTest_Init(HAL_GetTick(), baud_log, can_bus);
 #endif
     next_summary = HAL_GetTick() + 5000U;
     initialized = true;

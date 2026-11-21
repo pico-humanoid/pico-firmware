@@ -1,0 +1,12 @@
+test_bad_serial_frame_is_rejected (__main__.ProtocolTests) ... ok
+test_capture_pty_and_independent_log_check (__main__.ProtocolTests) ... ok
+test_commands_are_not_data (__main__.ProtocolTests) ... ok
+test_exact_transmit_frame (__main__.ProtocolTests) ... ok
+test_full_return_sequence_and_negative_cases (__main__.ProtocolTests) ... ok
+test_official_configuration_vector (__main__.ProtocolTests) ... ok
+test_split_stream_with_delimiters_in_payload (__main__.ProtocolTests) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.091s
+
+OK

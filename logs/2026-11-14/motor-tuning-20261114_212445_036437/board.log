@@ -1,0 +1,114 @@
+# TUNE_STATE,state=DONE,mode=POS,id=1,reason=CURRENT_LIMIT,accepted_seq=4,applied_seq=4,enable_confirmed=1,stop_confirmed=1,target_cleared=1,error=1,bus_off=0,uart_errors=0,duration_ms=60000,elapsed_ms=33349
+# TUNE_STATE,state=DONE,mode=POS,id=2,reason=STOPPED_POSITION_UNSTABLE,accepted_seq=4,applied_seq=4,enable_confirmed=1,stop_confirmed=1,target_cleared=0,error=1,bus_off=0,uart_errors=0,duration_ms=60000,elapsed_ms=33353
+# TUNE_GROUP_STATE,state=DONE,id=0,reason=STOPPED_POSITION_UNSTABLE,stop_confirmed=1,target_cleared=0,error=1,accepted_seq=4,applied_seq=4,duration_ms=60000,elapsed_ms=33353
+# PICO_MOTOR_TUNING=1; channel=FDCAN1 bitrate=1000000 model=RS10P,RS00 motor_id=0 motor_count=2 host_id=253 protocol=5 position_limit_mdeg=30000 current_limit_ma=500 speed_limit_mrad=300 max_position_ms=300000 max_speed_ms=60000 host_timeout_ms=500
+# CONTROL_BACKEND,library=RobStrideSPC,commit=d8451a447d7265becf71271a008a71f7063b7ecc,port=G474_CAPTURE_V1,safety=READBACK_STATE_MACHINE
+# TX=PA12 RX=PA11 AF9; manual_ARM_only; mode_switch_requires_reset; uart_tx=NONBLOCKING; dual_enable_barrier=1; sample_output_max_hz_per_motor=10; no_hardware_sync_claim
+# TUNE_COMMAND_READY=1; protocol=5
+# TUNE_STATE,state=CONFIRM_STOP,mode=POS,id=1,reason=BOOT_STOP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=0,target_cleared=0,error=0,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_STATE,state=CONFIRM_STOP,mode=POS,id=2,reason=BOOT_STOP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=0,target_cleared=0,error=0,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_GROUP_STATE,state=PREPARING,id=0,reason=BOTH_MOTORS,stop_confirmed=0,target_cleared=0,error=0,accepted_seq=0,applied_seq=0,duration_ms=0,elapsed_ms=0
+# SESSION_OK token=66F5A4A0 id=0
+200,TX_SUBMIT,FDCAN1,EXT,DATA,0x0400FD01,8,00 00 00 00 00 00 00 00
+200,TX_SUBMIT,FDCAN1,EXT,DATA,0x0400FD02,8,00 00 00 00 00 00 00 00
+200,RX,FDCAN1,EXT,DATA,0x020001FD,8,4E E0 7F C4 7F FF 01 2C
+202,RX,FDCAN1,EXT,DATA,0x020002FD,8,9A 40 80 10 7F FF 01 36
+223,TX_SUBMIT,FDCAN1,EXT,DATA,0x0000FD01,8,00 00 00 00 00 00 00 00
+223,RX,FDCAN1,EXT,DATA,0x000001FE,8,5B 09 38 00 1C 44 39 16
+# TUNE_UID,id=1,uid=5B0938001C443916,samples=1
+227,TX_SUBMIT,FDCAN1,EXT,DATA,0x0000FD02,8,00 00 00 00 00 00 00 00
+228,RX,FDCAN1,EXT,DATA,0x000002FE,8,5A 02 38 00 90 23 B7 11
+# TUNE_UID,id=2,uid=5A0238009023B711,samples=1
+265,TX_SUBMIT,FDCAN1,EXT,DATA,0x0000FD01,8,00 00 00 00 00 00 00 00
+265,RX,FDCAN1,EXT,DATA,0x000001FE,8,5B 09 38 00 1C 44 39 16
+# TUNE_UID,id=1,uid=5B0938001C443916,samples=2
+269,TX_SUBMIT,FDCAN1,EXT,DATA,0x0000FD02,8,00 00 00 00 00 00 00 00
+270,RX,FDCAN1,EXT,DATA,0x000002FE,8,5A 02 38 00 90 23 B7 11
+# TUNE_UID,id=2,uid=5A0238009023B711,samples=2
+306,TX_SUBMIT,FDCAN1,EXT,DATA,0x0000FD01,8,00 00 00 00 00 00 00 00
+306,RX,FDCAN1,EXT,DATA,0x000001FE,8,5B 09 38 00 1C 44 39 16
+# TUNE_UID,id=1,uid=5B0938001C443916,samples=3
+311,TX_SUBMIT,FDCAN1,EXT,DATA,0x0000FD02,8,00 00 00 00 00 00 00 00
+311,RX,FDCAN1,EXT,DATA,0x000002FE,8,5A 02 38 00 90 23 B7 11
+# TUNE_UID,id=2,uid=5A0238009023B711,samples=3
+347,TX_SUBMIT,FDCAN1,EXT,DATA,0x1100FD01,8,19 70 00 00 00 00 00 00
+347,RX,FDCAN1,EXT,DATA,0x110001FD,8,19 70 00 00 DA 5E 9A C0
+353,TX_SUBMIT,FDCAN1,EXT,DATA,0x1100FD02,8,19 70 00 00 00 00 00 00
+353,RX,FDCAN1,EXT,DATA,0x110002FD,8,19 70 00 00 3B 01 25 40
+378,TX_SUBMIT,FDCAN1,EXT,DATA,0x1100FD01,8,19 70 00 00 00 00 00 00
+378,RX,FDCAN1,EXT,DATA,0x110001FD,8,19 70 00 00 DA 5E 9A C0
+385,TX_SUBMIT,FDCAN1,EXT,DATA,0x1100FD02,8,19 70 00 00 00 00 00 00
+385,RX,FDCAN1,EXT,DATA,0x110002FD,8,19 70 00 00 7C 02 25 40
+409,TX_SUBMIT,FDCAN1,EXT,DATA,0x1100FD01,8,19 70 00 00 00 00 00 00
+409,RX,FDCAN1,EXT,DATA,0x110001FD,8,19 70 00 00 39 5E 9A C0
+417,TX_SUBMIT,FDCAN1,EXT,DATA,0x1100FD02,8,19 70 00 00 00 00 00 00
+417,RX,FDCAN1,EXT,DATA,0x110002FD,8,19 70 00 00 9A 00 25 40
+440,TX_SUBMIT,FDCAN1,EXT,DATA,0x1100FD01,8,19 70 00 00 00 00 00 00
+440,RX,FDCAN1,EXT,DATA,0x110001FD,8,19 70 00 00 79 5E 9A C0
+449,TX_SUBMIT,FDCAN1,EXT,DATA,0x1100FD02,8,19 70 00 00 00 00 00 00
+449,RX,FDCAN1,EXT,DATA,0x110002FD,8,19 70 00 00 3B 01 25 40
+471,TX_SUBMIT,FDCAN1,EXT,DATA,0x1100FD01,8,19 70 00 00 00 00 00 00
+471,RX,FDCAN1,EXT,DATA,0x110001FD,8,19 70 00 00 DA 5E 9A C0
+481,TX_SUBMIT,FDCAN1,EXT,DATA,0x1100FD02,8,19 70 00 00 00 00 00 00
+481,RX,FDCAN1,EXT,DATA,0x110002FD,8,19 70 00 00 7C 02 25 40
+# TUNE_STATE,state=READY,mode=POS,id=1,reason=WAIT_MANUAL_ARM,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=0,error=0,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_STATE,state=READY,mode=POS,id=2,reason=WAIT_MANUAL_ARM,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=0,error=0,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_GROUP_STATE,state=READY,id=0,reason=BOTH_MOTORS,stop_confirmed=1,target_cleared=0,error=0,accepted_seq=0,applied_seq=0,duration_ms=0,elapsed_ms=0
+# TUNE_SAMPLE,t_ms=519,id=1,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=1,error_mdeg=-1,iq_mA=0,limit_mA=500,velocity_mrad_s=-3,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=530,id=2,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=-6,error_mdeg=6,iq_mA=0,limit_mA=500,velocity_mrad_s=-2,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=619,id=1,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=1,error_mdeg=-1,iq_mA=0,limit_mA=500,velocity_mrad_s=-20,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=630,id=2,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=-6,error_mdeg=6,iq_mA=0,limit_mA=500,velocity_mrad_s=-38,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=719,id=1,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=0,error_mdeg=0,iq_mA=0,limit_mA=500,velocity_mrad_s=-13,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=730,id=2,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=-4,error_mdeg=4,iq_mA=0,limit_mA=500,velocity_mrad_s=-3,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=819,id=1,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=0,error_mdeg=0,iq_mA=0,limit_mA=500,velocity_mrad_s=-24,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=830,id=2,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=-4,error_mdeg=4,iq_mA=0,limit_mA=500,velocity_mrad_s=43,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=919,id=1,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=6,error_mdeg=-6,iq_mA=0,limit_mA=500,velocity_mrad_s=9,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=930,id=2,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=-8,error_mdeg=8,iq_mA=0,limit_mA=500,velocity_mrad_s=3,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_STATE,state=READY,mode=POS,id=1,reason=WAIT_MANUAL_ARM,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=0,error=0,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_STATE,state=READY,mode=POS,id=2,reason=WAIT_MANUAL_ARM,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=0,error=0,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_GROUP_STATE,state=READY,id=0,reason=BOTH_MOTORS,stop_confirmed=1,target_cleared=0,error=0,accepted_seq=0,applied_seq=0,duration_ms=0,elapsed_ms=0
+# TUNE_SAMPLE,t_ms=1019,id=1,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=0,error_mdeg=0,iq_mA=0,limit_mA=500,velocity_mrad_s=0,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=1030,id=2,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=-10,error_mdeg=10,iq_mA=0,limit_mA=500,velocity_mrad_s=-42,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=1119,id=1,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=0,error_mdeg=0,iq_mA=0,limit_mA=500,velocity_mrad_s=-23,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=1130,id=2,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=-6,error_mdeg=6,iq_mA=0,limit_mA=500,velocity_mrad_s=51,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=1219,id=1,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=1,error_mdeg=-1,iq_mA=0,limit_mA=500,velocity_mrad_s=-5,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=1230,id=2,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=0,error_mdeg=0,iq_mA=0,limit_mA=500,velocity_mrad_s=-6,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=1319,id=1,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=0,error_mdeg=0,iq_mA=0,limit_mA=500,velocity_mrad_s=-15,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=1330,id=2,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=-8,error_mdeg=8,iq_mA=0,limit_mA=500,velocity_mrad_s=31,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=1419,id=1,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=4,error_mdeg=-4,iq_mA=0,limit_mA=500,velocity_mrad_s=-5,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_SAMPLE,t_ms=1430,id=2,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=76,error_mdeg=-76,iq_mA=0,limit_mA=500,velocity_mrad_s=17,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+1478,TX_SUBMIT,FDCAN1,EXT,DATA,0x0400FD02,8,00 00 00 00 00 00 00 00
+1478,TX_SUBMIT,FDCAN1,EXT,DATA,0x0400FD01,8,00 00 00 00 00 00 00 00
+1479,RX,FDCAN1,EXT,DATA,0x020002FD,8,9A DD 86 02 7F FF 01 36
+1481,RX,FDCAN1,EXT,DATA,0x020001FD,8,4E E0 80 11 7F FF 01 2C
+1502,TX_SUBMIT,FDCAN1,EXT,DATA,0x1200FD02,8,0A 70 00 00 00 00 00 00
+1502,RX,FDCAN1,EXT,DATA,0x020002FD,8,9B 44 87 5F 7F FF 01 36
+1505,TX_SUBMIT,FDCAN1,EXT,DATA,0x1200FD01,8,0A 70 00 00 00 00 00 00
+# TUNE_STATE,state=VERIFY_CLEARED_TARGET,mode=POS,id=1,reason=POSITION_SAMPLE_JUMP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=0,error=1,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_STATE,state=VERIFY_CLEARED_TARGET,mode=POS,id=2,reason=POSITION_SAMPLE_JUMP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=0,error=1,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_GROUP_STATE,state=STOPPING,id=0,reason=POSITION_SAMPLE_JUMP,stop_confirmed=1,target_cleared=0,error=1,accepted_seq=0,applied_seq=0,duration_ms=0,elapsed_ms=0
+1506,RX,FDCAN1,EXT,DATA,0x020001FD,8,4E E0 7F E2 7F FF 01 2C
+# TUNE_SAMPLE,t_ms=1519,id=1,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=2,error_mdeg=-2,iq_mA=0,limit_mA=500,velocity_mrad_s=-10,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+1522,TX_SUBMIT,FDCAN1,EXT,DATA,0x1100FD02,8,0A 70 00 00 00 00 00 00
+1522,RX,FDCAN1,EXT,DATA,0x110002FD,8,0A 70 00 00 00 00 00 00
+# TUNE_RESULT,result=ERROR,reason=POSITION_SAMPLE_JUMP,id=2,stop_confirmed=1,target_cleared=1,accepted_seq=0,applied_seq=0
+1527,TX_SUBMIT,FDCAN1,EXT,DATA,0x1100FD01,8,0A 70 00 00 00 00 00 00
+1528,RX,FDCAN1,EXT,DATA,0x110001FD,8,0A 70 00 00 00 00 00 00
+# TUNE_RESULT,result=ERROR,reason=POSITION_SAMPLE_JUMP,id=1,stop_confirmed=1,target_cleared=1,accepted_seq=0,applied_seq=0
+# TUNE_SAMPLE,t_ms=1532,id=2,mode=POS,accepted_seq=0,applied_seq=0,command_angle_mdeg=0,target_angle_mdeg=0,actual_angle_mdeg=1217,error_mdeg=-1217,iq_mA=0,limit_mA=500,velocity_mrad_s=1329,command_velocity_mrad_s=NA,target_velocity_mrad_s=NA,speed_limit_mrad_s=0
+# TUNE_STATE,state=DONE,mode=POS,id=1,reason=POSITION_SAMPLE_JUMP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=1,error=1,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_STATE,state=DONE,mode=POS,id=2,reason=POSITION_SAMPLE_JUMP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=1,error=1,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_GROUP_STATE,state=DONE,id=0,reason=POSITION_SAMPLE_JUMP,stop_confirmed=1,target_cleared=1,error=1,accepted_seq=0,applied_seq=0,duration_ms=0,elapsed_ms=0
+# TUNE_GROUP_RESULT,result=ERROR,id=0,reason=POSITION_SAMPLE_JUMP,stop_confirmed=1,target_cleared=1,error=1
+# TUNE_STATE,state=DONE,mode=POS,id=1,reason=POSITION_SAMPLE_JUMP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=1,error=1,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_STATE,state=DONE,mode=POS,id=2,reason=POSITION_SAMPLE_JUMP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=1,error=1,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_GROUP_STATE,state=DONE,id=0,reason=POSITION_SAMPLE_JUMP,stop_confirmed=1,target_cleared=1,error=1,accepted_seq=0,applied_seq=0,duration_ms=0,elapsed_ms=0
+# TUNE_STATE,state=DONE,mode=POS,id=1,reason=POSITION_SAMPLE_JUMP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=1,error=1,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_STATE,state=DONE,mode=POS,id=2,reason=POSITION_SAMPLE_JUMP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=1,error=1,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_GROUP_STATE,state=DONE,id=0,reason=POSITION_SAMPLE_JUMP,stop_confirmed=1,target_cleared=1,error=1,accepted_seq=0,applied_seq=0,duration_ms=0,elapsed_ms=0
+# TUNE_STATE,state=DONE,mode=POS,id=1,reason=POSITION_SAMPLE_JUMP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=1,error=1,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_STATE,state=DONE,mode=POS,id=2,reason=POSITION_SAMPLE_JUMP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=1,error=1,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_GROUP_STATE,state=DONE,id=0,reason=POSITION_SAMPLE_JUMP,stop_confirmed=1,target_cleared=1,error=1,accepted_seq=0,applied_seq=0,duration_ms=0,elapsed_ms=0
+# TUNE_STATE,state=DONE,mode=POS,id=1,reason=POSITION_SAMPLE_JUMP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=1,error=1,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_STATE,state=DONE,mode=POS,id=2,reason=POSITION_SAMPLE_JUMP,accepted_seq=0,applied_seq=0,enable_confirmed=0,stop_confirmed=1,target_cleared=1,error=1,bus_off=0,uart_errors=0,duration_ms=0,elapsed_ms=0
+# TUNE_GROUP_STATE,state=DONE,id=0,reason=POSITION_SAMPLE_JUMP,stop_confirmed=1,target_cleared=1,error=1,accepted_seq=0,applied_seq=0,duration_ms=0,elapsed_ms=0

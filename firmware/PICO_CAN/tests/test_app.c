@@ -10,8 +10,8 @@ static unsigned completed;
 
 static unsigned checks;
 #define CHECK(x) do { ++checks; if (!(x)) { fprintf(stderr,"%s:%d: %s\n",__FILE__,__LINE__,#x); exit(1); } } while(0)
-FDCAN_GlobalTypeDef fake_fdcan1;
-FDCAN_HandleTypeDef hfdcan1={.Instance=FDCAN1};
+FDCAN_GlobalTypeDef fake_fdcan1, fake_fdcan2, fake_fdcan3;
+FDCAN_HandleTypeDef hfdcan3={.Instance=FDCAN3};
 static UART_HandleTypeDef uart;
 static uint32_t tick;
 static CanTransportLog logger;
@@ -34,7 +34,7 @@ HAL_StatusTypeDef HAL_FDCAN_GetErrorCounters(const FDCAN_HandleTypeDef *h,FDCAN_
     (void)h; c->TxErrorCnt=0; c->RxErrorCnt=0; return HAL_OK;
 }
 bool CanTransport_Init(FDCAN_HandleTypeDef *h,uint32_t bitrate,CanTransportFilter filter,uint8_t id,CanTransportLog log) {
-    CHECK(h==&hfdcan1 && bitrate==PICO_DEVICE_BITRATE && id==0xAA);
+    CHECK(h==&hfdcan3 && bitrate==PICO_DEVICE_BITRATE && id==0xAA);
     CHECK(filter==(PICO_DEVICE_KIND==0 ? CAN_FILTER_BMS : CAN_FILTER_POWER)); logger=log; return init_ok;
 }
 bool CanTransport_Submit(const CanFrame *frame,uint32_t now) {
@@ -70,7 +70,7 @@ static void inject_reply(uint8_t job,uint32_t now) {
     rx_ready=true;
 }
 int main(void) {
-    tick=0; DeviceRead_Init(&hfdcan1,&uart);
+    tick=0; DeviceRead_Init(&hfdcan3,&uart);
 #if defined(PICO_POWER_BAUD_TEST)
     CHECK(strstr(output,"EXPLICITLY GATED BAUD TEST") && strstr(output,"default=READ_ONLY"));
 #else
@@ -93,14 +93,14 @@ int main(void) {
     uart_status=HAL_ERROR; tick=4000; inject_reply(0,tick); DeviceRead_Step();
     CHECK(led==GPIO_PIN_RESET);
     unsigned halted=sends; tick=4200; DeviceRead_Step(); CHECK(sends==halted);
-    uart_status=HAL_OK; tick=0; DeviceRead_Init(&hfdcan1,&uart);
+    uart_status=HAL_OK; tick=0; DeviceRead_Init(&hfdcan3,&uart);
     CHECK(led==GPIO_PIN_RESET);
 #if PICO_DEVICE_KIND == 0
-    CHECK(strstr(output,"FDCAN1,STD,RTR,0x00000100,8,\r\n"));
+    CHECK(strstr(output,"FDCAN3,STD,RTR,0x00000100,8,\r\n"));
     CHECK(strstr(output,"# BMS,voltage_mv=0,current_ma=0,remaining_mah=0"));
     CHECK(strstr(output,"temperature_decic=-2731/-2731/-2731"));
 #else
-    CHECK(strstr(output,"FDCAN1,EXT,DATA,0x050000AA,8,"));
+    CHECK(strstr(output,"FDCAN3,EXT,DATA,0x050000AA,8,"));
 #if PICO_POWER_STATUS_ORDER == 0
     CHECK(strstr(output,"status03_numeric=UNCONFIRMED_ENDIAN"));
 #else
@@ -117,12 +117,12 @@ int main(void) {
     /* A UART error halts the application; it cannot silently continue unlogged traffic. */
     uart_status=HAL_ERROR; tick=25000; DeviceRead_Step();
     unsigned before=sends; off=false; tick=26000; DeviceRead_Step(); CHECK(sends==before);
-    uart_status=HAL_OK; init_ok=false; tick=0; DeviceRead_Init(&hfdcan1,&uart);
+    uart_status=HAL_OK; init_ok=false; tick=0; DeviceRead_Init(&hfdcan3,&uart);
     CHECK(strstr(output,"FATAL initialization failed"));
     before=sends; tick=1000; DeviceRead_Step(); CHECK(sends==before);
 #if defined(PICO_POWER_BAUD_TEST)
     off=false; init_ok=true; uart_status=HAL_OK; sends=completed=0; output_size=0; output[0]=0;
-    tick=0; DeviceRead_Init(&hfdcan1,&uart);
+    tick=0; DeviceRead_Init(&hfdcan3,&uart);
     for(uint32_t t=0;t<=60050;t+=10) {
         tick=t; DeviceRead_Step();
         if(g_device_reader.pending) {

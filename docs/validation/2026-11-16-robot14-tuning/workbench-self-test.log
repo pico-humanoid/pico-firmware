@@ -1,0 +1,19 @@
+{
+  "result": "PASS",
+  "project": "/home/zjy/Systems and Control/PICO/pico-firmware/tools/pico_workbench",
+  "profiles": 32,
+  "checks": [
+    "native_console",
+    "robot14_readonly_overview_and_explicit_control_entry",
+    "native_log_viewer",
+    "grouped_experiment_center",
+    "live_trajectory_and_log_tabs",
+    "stopped_diagnostic_entry_and_offline_values",
+    "main_buttons_open_tuning_single_and_dual_speed",
+    "CSV_and_comment_parsing",
+    "units",
+    "zero_error_counters",
+    "portable_project",
+    "VS_Code_build_command"
+  ]
+}

@@ -206,6 +206,14 @@
         "PICO_BMS_CRC_ENDIAN": "BIG",
         "PICO_POWER_STATUS_ENDIAN": "BIG"
       }
+    },
+    {
+      "name": "Linux-Robot14",
+      "displayName": "Linux: 14 motors + CAN1 dual devices (160MHz / FreeRTOS)",
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "PICO_APP": "Robot14"
+      }
     }
   ],
   "buildPresets": [
@@ -272,6 +280,10 @@
     {
       "name": "Linux-Dual-Read-500K-CAN3",
       "configurePreset": "Linux-Dual-Read-500K-CAN3"
+    },
+    {
+      "name": "Linux-Robot14",
+      "configurePreset": "Linux-Robot14"
     }
   ]
 }

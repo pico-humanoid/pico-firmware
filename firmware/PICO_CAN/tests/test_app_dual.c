@@ -6,8 +6,21 @@
 
 static unsigned checks, sends, completed;
 #define CHECK(x) do { ++checks; if (!(x)) { fprintf(stderr,"%s:%d: %s\n",__FILE__,__LINE__,#x); exit(1); } } while(0)
-FDCAN_GlobalTypeDef fake_fdcan1;
-FDCAN_HandleTypeDef hfdcan1={.Instance=FDCAN1};
+FDCAN_GlobalTypeDef fake_fdcan1, fake_fdcan2, fake_fdcan3;
+#ifndef TEST_CAN_CHANNEL
+#define TEST_CAN_CHANNEL 3
+#endif
+#if TEST_CAN_CHANNEL == 1
+#define TEST_INSTANCE FDCAN1
+#define TEST_LABEL "FDCAN1"
+#elif TEST_CAN_CHANNEL == 2
+#define TEST_INSTANCE FDCAN2
+#define TEST_LABEL "FDCAN2"
+#else
+#define TEST_INSTANCE FDCAN3
+#define TEST_LABEL "FDCAN3"
+#endif
+FDCAN_HandleTypeDef hfdcan3={.Instance=TEST_INSTANCE};
 static UART_HandleTypeDef uart;
 static uint32_t tick;
 static CanTransportLog logger;
@@ -25,10 +38,10 @@ HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *h,const uint8_t *data,ui
 }
 void HAL_GPIO_WritePin(void *port,uint16_t pin,GPIO_PinState state) { (void)port; (void)pin; led=state; }
 HAL_StatusTypeDef HAL_FDCAN_GetErrorCounters(const FDCAN_HandleTypeDef *h,FDCAN_ErrorCountersTypeDef *c) {
-    (void)h; c->TxErrorCnt=0; c->RxErrorCnt=0; return HAL_OK;
+    CHECK(h==&hfdcan3); c->TxErrorCnt=0; c->RxErrorCnt=0; return HAL_OK;
 }
 bool CanTransport_Init(FDCAN_HandleTypeDef *h,uint32_t bitrate,CanTransportFilter filter,uint8_t id,CanTransportLog log) {
-    CHECK(h==&hfdcan1 && bitrate==500000 && filter==CAN_FILTER_DUAL && id==0xAA);
+    CHECK(h==&hfdcan3 && bitrate==500000 && filter==CAN_FILTER_DUAL && id==0xAA);
     logger=log; return init_ok;
 }
 bool CanTransport_Submit(const CanFrame *f,uint32_t now) {
@@ -55,20 +68,22 @@ static void run(uint32_t begin,uint32_t end,bool power_only) {
     }
 }
 int main(void) {
-    DeviceRead_Init(&hfdcan1,&uart);
+    DeviceRead_Init(&hfdcan3,&uart);
     CHECK(strstr(output,"READ ONLY DUAL") && strstr(output,"device=BMS+POWER bitrate=500000"));
     CHECK(strstr(output,"no automatic configuration writes") && strstr(output,"one_pending_total=1"));
     tick=999; DeviceRead_Step(); CHECK(sends==0);
-    run(1000,65000,false);
+    tick=2999; DeviceRead_Step(); CHECK(sends==0);
+    CHECK(g_dual_device_reader.bms.config.max_attempts==2 && g_dual_device_reader.power.config.max_attempts==2);
+    run(3000,65000,false);
     CHECK(g_dual_device_reader.bms.valid_mask==0x1F && g_dual_device_reader.power.valid_mask==0xFFF);
     CHECK(led==GPIO_PIN_SET && g_dual_device_reader.power.power.can_baud_code==2);
-    CHECK(strstr(output,"FDCAN1,STD,RTR,0x00000100,0,") && strstr(output,"FDCAN1,EXT,DATA,0x050000AA,8,"));
+    CHECK(strstr(output,TEST_LABEL ",STD,RTR,0x00000100,0,") && strstr(output,TEST_LABEL ",EXT,DATA,0x050000AA,8,"));
     CHECK(strstr(output,"# BMS,voltage_mv=45860") && strstr(output,"# POWER,version=V1.08"));
     CHECK(strstr(output,"# DEVICE_HEALTH,t_ms=5000,device=BMS") && strstr(output,"device=POWER,seen="));
     CHECK(strstr(output,"device=DUAL,tx_submit=") && strstr(output,"tec=0,rec=0,counters_ok=1"));
     CHECK(g_dual_device_reader.bms.stats.timeouts==0 && g_dual_device_reader.power.stats.timeouts==0);
     /* An unsolicited power frame while waiting for BMS must not complete BMS. */
-    tick=0; DeviceRead_Init(&hfdcan1,&uart); tick=3000; DeviceRead_Step();
+    tick=0; DeviceRead_Init(&hfdcan3,&uart); tick=3000; DeviceRead_Step();
     rx=dual_test_reply(READER_POWER,0,3001); rx_ready=true; tick=3001; DeviceRead_Step();
     CHECK(g_dual_device_reader.bms.pending && g_dual_device_reader.bms.stats.replies==0);
     CHECK(g_dual_device_reader.power.stats.replies==1 && led==GPIO_PIN_RESET);
@@ -80,10 +95,10 @@ int main(void) {
     CHECK(sends==before && led==GPIO_PIN_RESET);
     CHECK(g_dual_device_reader.bms.valid_mask==0 && g_dual_device_reader.power.valid_mask==0);
     CHECK(strstr(output,"BUS_OFF latched"));
-    off=false; tick=0; DeviceRead_Init(&hfdcan1,&uart);
+    off=false; tick=0; DeviceRead_Init(&hfdcan3,&uart);
     uart_status=HAL_ERROR; tick=5000; DeviceRead_Step(); before=sends;
     tick=6000; DeviceRead_Step(); CHECK(sends==before && led==GPIO_PIN_RESET);
-    uart_status=HAL_OK; init_ok=false; tick=0; DeviceRead_Init(&hfdcan1,&uart);
+    uart_status=HAL_OK; init_ok=false; tick=0; DeviceRead_Init(&hfdcan3,&uart);
     CHECK(strstr(output,"FATAL initialization failed"));
     before=sends; tick=1000; DeviceRead_Step(); CHECK(sends==before);
     printf("dual application: %u checks passed\n",checks);

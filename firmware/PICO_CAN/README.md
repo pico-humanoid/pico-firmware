@@ -73,8 +73,12 @@ CSV 每行包含板端毫秒时间、事件、帧格式、ID、长度及原始�
 2026-11-03新增`Dual-Read-500K`：**两个设备共用FDCAN1总线**，不是双CAN通道。BMS使用标准RTR DLC0/CRC大端，电源板使用扩展帧/ID0xAA/状态大端。固定500K，交替轮询、分别统计，不改速、不写控制参数。
 
 ```bash
-bash /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/scripts/build.sh Dual-Read-500K
-bash /home/zjy/PICO/pico-firmware/firmware/PICO_CAN/scripts/test-host.sh
+bash "/home/zjy/Systems and Control/PICO/pico-firmware/firmware/PICO_CAN/scripts/build.sh" Dual-Read-500K
+bash "/home/zjy/Systems and Control/PICO/pico-firmware/firmware/PICO_CAN/scripts/test-host.sh"
 ```
 
-镜像目录：`/home/zjy/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Dual-Read-500K/`，内含`PICO_CAN.elf`、`PICO_CAN.hex`、`PICO_CAN.bin`。配置与待上板验收条件见`/home/zjy/PICO/pico-firmware/docs/device-read-validation.md`第9节。编译与主机测试通过不等于硬件通信通过。
+镜像目录：`"/home/zjy/Systems and Control/PICO/pico-firmware/firmware/PICO_CAN/build/Linux-Dual-Read-500K/"`，内含`PICO_CAN.elf`、`PICO_CAN.hex`、`PICO_CAN.bin`。配置与待上板验收条件见`"/home/zjy/Systems and Control/PICO/pico-firmware/docs/device-read-validation.md"`第9节。编译与主机测试通过不等于硬件通信通过。
+
+## Robot14（160MHz / FreeRTOS / 三路 CAN）
+
+`bash scripts/build.sh Robot14` 构建 14 电机整机镜像。CAN2/3 各 7 台、CAN1 双设备500K；默认只读，不自动使能。旧镜像保留原16MHz。参见 [Robot14 驱动与 CubeMX 说明](../../docs/Robot14_Driver.md)，特别注意 CubeMX 再生成审查与尚未完成的实机验收。

@@ -3,12 +3,12 @@
 set -euo pipefail
 project_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 usage() {
-    echo "Usage: $0 [Loopback|External|BMS-Read-500K|Power-Read-1M|Power-Read-500K|Dual-Read-500K|Power-Baud-1M-to-500K|Power-Baud-500K-to-1M|Devices|All]"
+    echo "Usage: $0 [Robot14|Loopback|External|BMS-Read-500K|Power-Read-1M|Power-Read-500K|Dual-Read-500K|Power-Baud-1M-to-500K|Power-Baud-500K-to-1M|Devices|All]"
     echo 'Set PICO_BUILD_JOBS to override the default parallelism (4).'
 }
 if (( $# > 1 )); then usage >&2; exit 2; fi
 case "${1:-Loopback}" in
-    Loopback|External|BMS-Read-500K|Power-Read-1M|Power-Read-500K|Dual-Read-500K|Power-Baud-1M-to-500K|Power-Baud-500K-to-1M) modes=("${1:-Loopback}") ;;
+    Robot14|Loopback|External|BMS-Read-500K|Power-Read-1M|Power-Read-500K|Dual-Read-500K|Power-Baud-1M-to-500K|Power-Baud-500K-to-1M) modes=("${1:-Loopback}") ;;
     Devices) modes=(BMS-Read-500K Power-Read-1M Power-Read-500K Dual-Read-500K) ;;
     All) modes=(Loopback External BMS-Read-500K Power-Read-1M Power-Read-500K Dual-Read-500K) ;;
     -h|--help) usage; exit 0 ;;
