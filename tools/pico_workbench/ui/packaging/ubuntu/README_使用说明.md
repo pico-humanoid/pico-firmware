@@ -22,3 +22,5 @@ VS Code和CubeMX使用本机已安装的Linux版，不把Windows EXE转换成Lin
 没有在云端连接ST-LINK或电机，所以OpenOCD实际写入、Linux串口实物通信、实际停机反馈和USB权限在用户机器上仍需验证；不会把软件自检视为实物通过。历史Windows包保持原样，本次新增Ubuntu包单独发布。
 
 OpenOCD命令依据官方文档：[烧录及verify/reset](https://openocd.org/doc/html/Flash-Programming.html)、[调试器序列号选择](https://openocd.org/doc/html/Debug-Adapter-Configuration.html)。Arm GNU下载校验值来自Arm官方固定版本SHA256文件。OpenOCD对应Ubuntu源码与补丁、各工具许可证随包保留。
+
+七电机实机状态机：实验中心 → 保护验证。固件见 project/firmware-images，说明见 project/fsm7。此版本已移除停机位置诊断；联动停机等保护不变。

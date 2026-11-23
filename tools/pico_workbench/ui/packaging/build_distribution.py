@@ -26,6 +26,8 @@ def seed_project(destination, workbench, repo=None, local=None):
     if local:
         for name in ("App", "Core", "Drivers", "cmake", ".vscode", "ui", "scripts"):
             copy_tree(local / name, destination / name)
+        for optional in ("fsm7", "firmware-images"):
+            if (local / optional).is_dir(): copy_tree(local / optional, destination / optional)
         for pattern in ("CMakeLists.txt", "*.ioc", "*.ld", "*.s"):
             for path in local.glob(pattern):
                 shutil.copy2(path, destination / path.name)
@@ -89,7 +91,7 @@ def assemble(output, workbench, seed, built):
             copy_tree(rules, result / "usb-permissions")
     if os.name!='nt' and (workbench/'ui/packaging/ubuntu/README_使用说明.md').exists():
         shutil.copy2(workbench/'ui/packaging/ubuntu/README_使用说明.md',result/'README_使用说明.md')
-    manifest = {"version": "2026.11.15", "platform": system, "contains": ["PICOConsole", "PICOLogViewer", "PICOCLI", "Python/Tk runtime", "latest single and dual motor firmware profiles", "source workspace"],
+    manifest = {"version": "2026.11.23", "platform": system, "contains": ["PICOConsole", "PICOLogViewer", "PICOCLI", "Python/Tk runtime", "latest single and dual motor firmware profiles", "source workspace"],
                 "development_tools_bundled": False, "usb_hardware_validation": "not_run_in_package_test"}
     write_text(result / "bundle.json", json.dumps(manifest, ensure_ascii=False, indent=2))
     return result

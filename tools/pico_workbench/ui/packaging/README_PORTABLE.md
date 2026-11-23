@@ -67,3 +67,5 @@ GitHub 公开包中的日志查看器可直接使用。开发控制台界面和�
 - 应用测试与固件编译通过不代表硬件 CAN 验收通过，硬件结果以对应实物日志为准。
 
 程序与构建源码见仓库 `tools/pico_workbench`；发行附件见仓库 Releases。版本中附带的第三方软件保留各自许可与声明，详见 THIRD_PARTY_NOTICES.md。
+
+七电机实机状态机：实验中心 → 保护验证。固件见 project/firmware-images，说明见 project/fsm7。此版本已移除停机位置诊断；联动停机等保护不变。

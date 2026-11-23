@@ -1,0 +1,16 @@
+#ifndef ROBOT_CONFIG_H
+#define ROBOT_CONFIG_H
+#include <stdint.h>
+#define ROBOT_MOTOR_COUNT 14U
+#define ROBOT_HOST_ID 0xFDU
+#define ROBOT_POWER_ID 0xAAU
+#define ROBOT_CAN1_BITRATE 500000U
+#define ROBOT_MOTOR_BITRATE 1000000U
+#define ROBOT_CONTROL_PERIOD_MS 10U
+#define ROBOT_COMMAND_LEASE_MS 100U
+#define ROBOT_FEEDBACK_TIMEOUT_MS 100U
+#define ROBOT_HANDSHAKE_MS 300U
+/* Manual 0x7028: 20000 units/s. 4000 = 200 ms; written/read back before enable.
+ */
+#define ROBOT_DEVICE_WATCHDOG 4000U
+#endif

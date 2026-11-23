@@ -12,11 +12,13 @@ import webbrowser
 
 import catalog
 from engine import LOGS, Manager, ports
+from experiment_log import display_line, show_legend
 import platform_tools as tools
 from log_viewer import LogViewer, error_line
 
 FONT = "Microsoft YaHei UI" if tools.WINDOWS else "Noto Sans CJK SC"
-NAMES = {"build": "编译", "flash": "烧录", "board": "板端采集", "usbcan": "USB-CAN 测试", "manual": "人工记录"}
+NAMES = {"build": "编译", "flash": "烧录", "board": "板端采集", "usbcan": "USB-CAN 测试", "manual": "人工记录",
+         "fsm": "状态机单板验证"}
 STATUS = {"running": "进行中", "pass": "通过", "fail": "未通过", "error": "操作异常",
           "cancelled": "已停止", "recorded": "已记录 / 待验收"}
 
@@ -86,12 +88,13 @@ class Desktop:
             'speed':('单机低速转动',lambda:self.open_motor_enable('speed')),
             'tuning':('交互跟踪示波器 · 位置 / 速度',lambda:self.open_motor_enable('tuning')),
             'position':('单机位置往返',lambda:self.open_motor_enable('position')),
-            'position_diag':('停机位置诊断',lambda:self.open_motor_enable('position_diag')),
             'dual_tuning':('双机交互跟踪示波器',lambda:self.open_motor_enable('dual_tuning')),
             'dual_speed':('双机低速联调',lambda:self.open_motor_enable('dual_speed')),
             'dual_position':('双机独立位置轨迹',lambda:self.open_motor_enable('dual_position')),
             'sync_position':('共同时间轴平滑轨迹',lambda:self.open_motor_enable('sync_position')),
             'fault':('反馈超时与联动停机',lambda:self.open_motor_enable('fault')),
+            'board_fsm':('状态机单板验证',self.open_board_fsm),
+            'motor_fsm7':('七电机实机状态机',self.open_motor_fsm7),
         }
         entry=ttk.Button(work,text='进入电机实验中心  →',style='Primary.TButton',command=lambda:self.navigation.select(labs))
         entry.grid(row=0,column=0,columnspan=3,sticky='ew',pady=(0,12))
@@ -103,9 +106,9 @@ class Desktop:
                 label,command=actions[key];button=ttk.Button(host,text=label,command=command)
                 button.grid(row=i//3+(1 if host is work else 0),column=i%3,sticky='ew',padx=4,pady=5)
                 self.action_buttons[key]=button
-        groups=[('单机调试','先确认单台电机的通信与基本控制。',('tuning','speed','position','position_diag')),
+        groups=[('单机调试','先确认单台电机的通信与基本控制。',('tuning','speed','position')),
                 ('双机联调','同一总线，独立目标、反馈和完成进度。',('dual_tuning','dual_speed','dual_position','sync_position')),
-                ('保护验证','反馈超时与联动停机；心跳测试在实验窗口中。',('fault',))]
+                ('保护验证','反馈超时、联动停机与状态机。',('fault','board_fsm','motor_fsm7'))]
         for column,(title,description,keys) in enumerate(groups):
             labs.columnconfigure(column,weight=1,uniform='experiments')
             card=ttk.Frame(labs,padding=12,style='Card.TFrame');card.grid(row=0,column=column,sticky='nsew',padx=4,pady=4)
@@ -124,6 +127,7 @@ class Desktop:
         self.task_select.bind("<<ComboboxSelected>>", self.select_task)
         self.stop_button = ttk.Button(row, text="停止当前任务", command=self.stop)
         self.stop_button.pack(side="right")
+        ttk.Button(row, text="日志说明", command=lambda: show_legend(self.root)).pack(side="right", padx=7)
         self.console = scrolledtext.ScrolledText(frame, height=12, wrap="word",
                          font=("Consolas" if tools.WINDOWS else "DejaVu Sans Mono", 10),
                          background="#ffffff", foreground="#334660", insertbackground="#365fdf", relief="flat", borderwidth=0, padx=14, pady=12)
@@ -189,12 +193,42 @@ class Desktop:
     def profile(self):
         return catalog.profile(self.mode_id())
 
+    def open_motor_fsm7(self):
+        if self.exporting() or any(job.status == "running" for job in self.manager.jobs.values()):
+            messagebox.showinfo("任务运行中", "请先结束当前任务，再打开七电机实机状态机。", parent=self.root)
+            return
+        from motor_fsm7_panel import create_panel
+        panel = getattr(self, "motor_fsm7_panel", None)
+        if panel is not None and panel.window.winfo_exists():
+            panel.window.lift()
+            return panel
+        index = self.board_port.current()
+        selected_port = self.port_items[index]["device"] if index >= 0 else ""
+        self.motor_fsm7_panel = create_panel(self.root, selected_port=selected_port, log_root=LOGS)
+        self.motor_fsm7_panel.window.grab_set()
+        return self.motor_fsm7_panel
+
+    def open_board_fsm(self):
+        if self.exporting():
+            return
+        if not any(profile["id"] == "BoardFsm" for profile in self.profiles):
+            messagebox.showinfo("缺少固件源码", "此副本缺少 BoardFsm 固件源码，请使用更新后的 PICO 项目。", parent=self.root)
+            return
+        if any(job.status == "running" for job in self.manager.jobs.values()):
+            messagebox.showinfo("任务运行中", "请先结束当前任务。", parent=self.root)
+            return
+        from board_fsm_panel import BoardFsmPanel
+        index = self.board_port.current()
+        selected_port = self.port_items[index]["device"] if index >= 0 else ""
+        self.refresh_profiles("BoardFsm")
+        self.board_fsm_panel = BoardFsmPanel(self.root, self.manager, selected_port)
+        return self.board_fsm_panel
+
     def open_motor_enable(self,experiment=None):
         if self.exporting():return
         if any(j.status=='running' for j in self.manager.jobs.values()):
             messagebox.showinfo('任务运行中','请先结束当前编译、烧录或串口采集。',parent=self.root);return
         from motor_enable import EnablePanel,SpeedPanel,DualSpeedPanel,FaultPanel,PositionPanel,DualPositionPanel,SyncPositionPanel
-        from position_diagnostic import PositionDiagnosticPanel
         options=self.profile()['cmake_options'];app=options.get('PICO_APP')
         if experiment in ('tuning','dual_tuning') or (experiment is None and app=='MotorTuning'):
             from motor_tuning import TuningPanel
@@ -203,11 +237,8 @@ class Desktop:
             self.refresh_profiles(selected)
             self.motor_panel=TuningPanel(self.root,self.manager,selected);return self.motor_panel
         auto_open=experiment is None
-        if experiment is None:experiment='position_diag' if app=='MotorPositionDiag' else 'sync_position' if app=='MotorSyncPosition' else 'dual_position' if app=='MotorDualPosition' else 'position' if app=='MotorPosition' else 'fault' if app=='MotorDualFault' else 'dual_speed' if app=='MotorDualSpeed' else 'speed' if app=='MotorSpeed' else 'enable'
-        if experiment=='position_diag':
-            model=options.get('PICO_DIAG_MODEL',options.get('PICO_ENABLE_MODEL',options.get('PICO_MOTOR1_MODEL','RS10P')))
-            panel,selected=PositionDiagnosticPanel,('RS00' if model=='RS00' else 'RS10P')+'-Position-Diag'
-        elif experiment=='sync_position':panel,selected=SyncPositionPanel,'Motors-Sync-Position'
+        if experiment is None:experiment='sync_position' if app=='MotorSyncPosition' else 'dual_position' if app=='MotorDualPosition' else 'position' if app=='MotorPosition' else 'fault' if app=='MotorDualFault' else 'dual_speed' if app=='MotorDualSpeed' else 'speed' if app=='MotorSpeed' else 'enable'
+        if experiment=='sync_position':panel,selected=SyncPositionPanel,'Motors-Sync-Position'
         elif experiment=='dual_position':panel,selected=DualPositionPanel,'Motors-Independent-Position'
         elif experiment=='fault':panel,selected=FaultPanel,'Motors-Fault-ID1'
         elif experiment=='dual_speed':panel,selected=DualSpeedPanel,'Motors-Speed-CAN1'
@@ -235,7 +266,7 @@ class Desktop:
         can3=self.profile()["cmake_options"].get("PICO_APP") == "Can3Bench"
         if can3:
             self.tip.set(self.profile()["description"])
-        elif self.profile()["cmake_options"].get("PICO_APP") in ("MotorPositionDiag", "Motor", "MotorEnable", "MotorSpeed", "MotorDualSpeed", "MotorDualFault", "MotorPosition", "MotorDualPosition", "MotorSyncPosition", "Can1Periodic", "Can2Periodic", "Can3Periodic"):
+        elif self.profile()["cmake_options"].get("PICO_APP") in ("BoardFsm", "Motor", "MotorEnable", "MotorSpeed", "MotorDualSpeed", "MotorDualFault", "MotorPosition", "MotorDualPosition", "MotorSyncPosition", "Can1Periodic", "Can2Periodic", "Can3Periodic"):
             self.tip.set(self.profile()["description"])
         else:
             self.tip.set("采集串口打开后按开发板 RESET。设备读取按完整日志验收。")
@@ -266,7 +297,10 @@ class Desktop:
     def start(self, kind):
         if self.exporting():return
         try:
-            if kind=='board' and self.profile()['cmake_options'].get('PICO_APP') in ('MotorTuning','MotorPositionDiag','MotorEnable','MotorSpeed','MotorDualSpeed','MotorDualFault','MotorPosition','MotorDualPosition','MotorSyncPosition'):
+            if kind == "board" and self.profile()["cmake_options"].get("PICO_APP") == "BoardFsm":
+                self.open_board_fsm()
+                return
+            if kind=='board' and self.profile()['cmake_options'].get('PICO_APP') in ('MotorTuning','MotorEnable','MotorSpeed','MotorDualSpeed','MotorDualFault','MotorPosition','MotorDualPosition','MotorSyncPosition'):
                 self.open_motor_enable();return
             if kind == "usbcan" and self.profile()["cmake_options"].get("PICO_APP") == "Can3Bench":
                 from can_pc_test import PCTest
@@ -314,7 +348,10 @@ class Desktop:
             snapshot = job.snapshot(True, self.cursor)
             if snapshot["lines"]:
                 self.console.configure(state="normal")
-                self.console.insert("end", "\n".join(x["text"] for x in snapshot["lines"]) + "\n")
+                texts = (x["text"] for x in snapshot["lines"])
+                if job.kind in ('board', 'usbcan'):
+                    texts = map(display_line, texts)
+                self.console.insert("end", "\n".join(texts) + "\n")
                 self.console.see("end")
                 self.console.configure(state="disabled")
             self.cursor = snapshot["sequence"]
@@ -327,7 +364,7 @@ class Desktop:
         active = [j for j in jobs if j.status == "running"]
         if self.exporting():active=[True]
         self.mode.configure(state="disabled" if active else "readonly")
-        for key in ('build','flash','package','tuning','speed','dual_speed','fault','position','dual_position'):
+        for key in ('build','flash','package','tuning','speed','dual_speed','fault','position','dual_position','board_fsm','motor_fsm7'):
             self.action_buttons[key].configure(state="disabled" if active else "normal")
         self.root.after(500, self.poll)
 
@@ -512,19 +549,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--logs", action="store_true")
     parser.add_argument("--log-file", type=Path)
-    parser.add_argument("--position-diag", action="store_true")
-    parser.add_argument("--diag-log", type=Path)
     parser.add_argument("--tuning", action="store_true")
     args = parser.parse_args()
     if args.tuning:
         from motor_tuning import TuningPanel
         panel=TuningPanel();panel.window.mainloop();return
-    if args.position_diag or args.diag_log:
-        from position_diagnostic import PositionDiagnosticPanel
-        panel=PositionDiagnosticPanel()
-        if args.diag_log:panel.load_log(args.diag_log)
-        panel.window.mainloop()
-        return
     root = tk.Tk()
     style = ttk.Style(root)
     style.theme_use("clam")

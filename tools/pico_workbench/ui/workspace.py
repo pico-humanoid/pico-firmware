@@ -19,12 +19,12 @@ def prepare(mode):
         ["App/can_bringup.c", "Core/Src/main.c"])
     if app == "Motor":
         candidates = ["App/motor_read_app.c", "App/motor_reader.c", "App/protocol/motor_protocol.c"]
+    elif app == "BoardFsm":
+        candidates = ["App/board_fsm.c", "App/board_fsm_app.c"]
     elif app in ("MotorDualSpeed","MotorDualFault"):
         candidates = ["App/motor_dual_speed_app.c", "App/motor_enable_logic.c"]
     elif app == "MotorTuning":
         candidates = ["App/motor_tuning_app.c", "App/motor_tuning.c"]
-    elif app == "MotorPositionDiag":
-        candidates = ["App/motor_position_diag_app.c", "App/motor_position_diag.c"]
     elif app == "MotorSyncPosition":
         candidates = ["App/motor_sync_position_app.c", "App/motor_sync_logic.c", "App/motor_position_logic.c"]
     elif app == "MotorDualPosition":

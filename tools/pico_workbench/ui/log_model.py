@@ -73,7 +73,9 @@ def severity(raw, event="", values=None):
         return "warning", "未及时观察到发送完成；需结合回复、TEC/REC 和事件统计"
     if re.search(r",TX_TIMEOUT,", upper):
         return "warning", "发送完成超时"
-    if re.search(r"\bERROR\b|\bCRC MISMATCH\b|\bFAIL(?:ED)?\b", upper):
+    if number(values.get("error")) not in (None, 0):
+        return "error", "本行的错误标志非零"
+    if re.search(r"\bERROR\b(?!\s*=)|\bCRC MISMATCH\b|\bFAIL(?:ED)?\b", upper):
         return "error", "日志包含明确错误或失败信息"
     if values.get("crc_ok") is False or str(values.get("crc_ok")).lower() == "false":
         return "error", "CRC 校验失败"
@@ -83,7 +85,9 @@ def severity(raw, event="", values=None):
                if k in WARNING_COUNTERS and number(v) not in (None, 0)]
     if nonzero:
         return "warning", "累计 / 当前计数非零：" + "，".join(nonzero)
-    if "UNCONFIRMED" in upper:
+    if (number(values.get("stop_unconfirmed")) not in (None, 0) or
+            any(str(v).upper().startswith("UNCONFIRMED_") for v in values.values()) or
+            re.search(r"\bUNCONFIRMED\b", upper)):
         return "warning", "字段含未确认值，不能作为已确认物理量"
     return "normal", ""
 
@@ -143,7 +147,8 @@ def parse_record(line, index):
             return rec
         original = str(item.get("event", "INFO"))
         rec.event = "RX" if original == "can" else original.upper()
-        rec.time = str(float(item["elapsed_s"]) * 1000) if number(item.get("elapsed_s")) is not None else str(item.get("time", ""))
+        elapsed = number(item.get("elapsed_s"))
+        rec.time = str(elapsed * 1000) if elapsed is not None else str(item.get("time", ""))
         rec.channel = "USB-CAN"
         rec.identifier = str(item.get("id", ""))
         if "extended" in item:
@@ -162,6 +167,9 @@ def parse_record(line, index):
             rec.values = dict(p.split("=", 1) for p in body.replace(",", " ").split() if "=" in p)
         elif rec.event in ("HEALTH", "DEVICE_HEALTH", "BMS", "POWER", "MOTOR"):
             rec.values = fields_of(body)
+        elif rec.event.endswith(("_STATE", "_RESULT", "_HEALTH", "_SAMPLE")):
+            rec.values = fields_of(body)
+            rec.event = "INFO"
         elif "PICO" in body or body.startswith("mode="):
             rec.event = "START"
         else:

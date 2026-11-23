@@ -225,7 +225,13 @@ void FDCAN3_IT0_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-#if defined(PICO_MOTOR_ENABLE)
+#if defined(PICO_BOARD_FSM)
+#include "board_fsm_app.h"
+void LPUART1_IRQHandler(void)
+{
+  BoardFsmApp_UartIrq();
+}
+#elif defined(PICO_MOTOR_ENABLE)
 void LPUART1_IRQHandler(void){HAL_UART_IRQHandler(&hlpuart1);}
 #endif
 

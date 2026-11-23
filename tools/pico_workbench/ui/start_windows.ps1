@@ -1,4 +1,4 @@
-param([switch]$Logs,[switch]$PositionDiag,[string]$DiagLog,[switch]$Tuning)
+param([switch]$Logs,[switch]$Tuning)
 $ErrorActionPreference = 'Stop'
 $pythonCandidates = @(
     'X:\miniconda3\pythonw.exe',
@@ -12,7 +12,5 @@ if (-not $pythonExe) { throw 'Python 3 not found. Use the Python installed for t
 $appFile = Join-Path $PSScriptRoot 'native.py'
 $appArguments = @(('"' + $appFile + '"'))
 if ($Logs) { $appArguments += '--logs' }
-if ($PositionDiag) { $appArguments += '--position-diag' }
 if ($Tuning) { $appArguments += '--tuning' }
-if ($DiagLog) { $appArguments += @('--diag-log',('"' + $DiagLog + '"')) }
 Start-Process -FilePath $pythonExe -ArgumentList $appArguments -WorkingDirectory $PSScriptRoot -WindowStyle Normal

@@ -24,7 +24,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#if defined(PICO_MOTOR_ENABLE)
+#if defined(PICO_BOARD_FSM)
+#include "board_fsm_app.h"
+#elif defined(PICO_MOTOR_ENABLE)
 #include "motor_enable_app.h"
 #elif defined(PICO_CAN_PERIODIC_TX)
 #include "can_periodic_tx.h"
@@ -106,7 +108,9 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_LPUART1_UART_Init();
-#if defined(PICO_CAN_PERIODIC_TX)
+#if defined(PICO_BOARD_FSM)
+  /* Board FSM bench uses LPUART1 and the LED only. */
+#elif defined(PICO_CAN_PERIODIC_TX)
   /* The periodic app configures only the selected CAN instance. */
 #elif defined(PICO_CAN_MULTI_TEST)
   /* The diagnostic initializes all three instances before starting any bus. */
@@ -118,7 +122,9 @@ int main(void)
   MX_FDCAN1_Init();
 #endif
   /* USER CODE BEGIN 2 */
-#if defined(PICO_MOTOR_ENABLE)
+#if defined(PICO_BOARD_FSM)
+  BoardFsmApp_Init(&hlpuart1);
+#elif defined(PICO_MOTOR_ENABLE)
   MotorEnableApp_Init(&hfdcan1,&hlpuart1);
 #elif defined(PICO_CAN_PERIODIC_TX)
 #if PICO_PERIODIC_CHANNEL == 1
@@ -162,7 +168,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-#if defined(PICO_MOTOR_ENABLE)
+#if defined(PICO_BOARD_FSM)
+    BoardFsmApp_Step();
+#elif defined(PICO_MOTOR_ENABLE)
     MotorEnableApp_Step();
 #elif defined(PICO_CAN_PERIODIC_TX)
     CanPeriodicTx_Step();

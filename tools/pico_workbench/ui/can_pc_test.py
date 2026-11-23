@@ -20,6 +20,7 @@ import platform_tools as tools
 from can_monitor_model import ATDecoder
 from can_pc_test_model import request,assess,multi_request,assess_multi,channel_ids,multi_health
 from runtime_paths import project_root
+from experiment_log import capture_notes, display_line, show_legend
 
 PROFILE='CAN3-PC-Test-1M'
 class PCTest:
@@ -59,6 +60,7 @@ class PCTest:
         ttk.Button(row,text='停止测试',command=self.stop_event.set).pack(side='left')
         self.status=tk.StringVar(value='未测试。关闭占用这两个串口的官方软件、旁路监控和板端采集后再开始。')
         ttk.Label(frame,textvariable=self.status,wraplength=920).pack(anchor='w',pady=5)
+        ttk.Button(frame,text='日志说明',command=lambda:show_legend(self.window)).pack(anchor='e')
         self.output=scrolledtext.ScrolledText(frame,font=('Consolas',10),wrap='word');self.output.pack(fill='both',expand=True)
         self.output.insert('end','本测试程序会主动发送专用测试帧，不能作为只读旁路监听使用。\n适配器CAN速率需事先设为1M。不会修改电机参数；但本测试不应连接电机。\n')
         self.refresh();self.window.protocol('WM_DELETE_WINDOW',self.close);self.window.after(100,self.poll)
@@ -113,55 +115,56 @@ class PCTest:
             'protocol':'RobStride AT extended classic data','ports':[{'device':p.device,'description':p.description,
             'hwid':p.hwid,'serial_number':p.serial_number} for p in comports()]},ensure_ascii=False,indent=2),encoding='utf-8')
         self.events.put(('text','日志：'+str(out)))
-        with ExitStack() as stack:
-            pc=stack.enter_context(serial.Serial(adapter,baud,timeout=0,write_timeout=1))
-            mcu=stack.enter_context(serial.Serial(board,115200,timeout=0))
-            board_file=stack.enter_context((out/'board.log').open('wb'))
-            raw_file=stack.enter_context((out/'usb-raw.jsonl').open('w',encoding='utf-8'))
-            frames_file=stack.enter_context((out/'pc-frames.jsonl').open('w',encoding='utf-8'))
-            pc.reset_input_buffer();mcu.reset_input_buffer()
-            result=subprocess.run(tools.reset_command(sn),env=tools.environment(),capture_output=True,timeout=20)
-            (out/'reset.log').write_bytes(result.stdout+result.stderr)
-            if result.returncode:raise RuntimeError('开发板复位失败。')
-            start=time.monotonic()
-            while time.monotonic()-start<23 and not self.stop_event.is_set():
-                now=time.monotonic();data=mcu.read(mcu.in_waiting or 1)
-                if data:
-                    board_raw+=data;board_file.write(data);board_file.flush();board_lines.extend(data)
-                    while b'\n' in board_lines:
-                        line,_,remaining=board_lines.partition(b'\n');board_lines=bytearray(remaining)
-                        text=line.decode('utf-8',errors='replace').rstrip()
-                        self.events.put(('text','开发板：'+text))
-                        health=multi_health(text)
-                        if multi and health:self.events.put(('health',health))
-                if send_started is None and now-start>=1:
-                    expected=[b'# CAN_MULTI_TEST=1;',b'# MULTI_READY=1;'] if multi else [b'# CAN3_PC_TEST=1;']
-                    if not all(marker in board_raw for marker in expected):
-                        raise RuntimeError('板内不是当前测试所需的固件，或初始化未完成；请编译烧录。未发送任何测试帧。')
-                    send_started=now;next_send=now
-                if send_started is not None and sent<100 and now>=next_send:
-                    packet=multi_request(sent,channel) if multi else request(sent)
-                    if pc.write(packet)!=len(packet):raise RuntimeError('串口写入不完整。')
-                    frames_file.write(json.dumps({'event':'SERIAL_SUBMITTED','id':hex(request_id),'channel':channel,'sequence':sent,'packet_hex':packet.hex(' ')})+'\n')
-                    sent+=1;next_send=now+.1
-                    if sent%10==0:self.events.put(('text',f'电脑串口已提交 {sent}/100 帧（不等于硬件已发送完成）'))
-                data=pc.read(pc.in_waiting or 1)
-                if data:
-                    raw_file.write(json.dumps({'pc_time':datetime.now().isoformat(),'bytes':data.hex(' ')})+'\n')
-                    for identifier,payload in decoder.feed(data):
-                        received.append((identifier,payload))
-                        frames_file.write(json.dumps({'event':'RX','id':hex(identifier),'data':payload.hex(' ')})+'\n')
-                        self.events.put(('text',f'电脑收到：ID=0x{identifier:X} DATA={payload.hex(" ").upper()}'))
-                time.sleep(.002)
-        board_log=board_raw.decode('utf-8',errors='replace')
-        result=assess_multi(sent,received,board_log,channel,self.stop_event.is_set()) if multi else assess(sent,received,board_log,self.stop_event.is_set())
-        result['decoder_discarded_bytes']=decoder.discarded
-        result['decoder_unsupported_frames']=decoder.unsupported
-        result['decoder_pending_bytes']=len(decoder.buffer)
-        if decoder.discarded or decoder.unsupported or decoder.buffer:result['pass']=False
-        (out/'result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
-        self.events.put(('text',json.dumps(result,ensure_ascii=False,indent=2)))
-        self.events.put(('text','双向测试通过' if result['pass'] else '未通过。已保留电脑与开发板两侧原始记录。'))
+        with capture_notes(out, lambda text: self.events.put(('text',text)), f'CAN{channel} 双向测试'):
+            with ExitStack() as stack:
+                pc=stack.enter_context(serial.Serial(adapter,baud,timeout=0,write_timeout=1))
+                mcu=stack.enter_context(serial.Serial(board,115200,timeout=0))
+                board_file=stack.enter_context((out/'board.log').open('wb'))
+                raw_file=stack.enter_context((out/'usb-raw.jsonl').open('w',encoding='utf-8'))
+                frames_file=stack.enter_context((out/'pc-frames.jsonl').open('w',encoding='utf-8'))
+                pc.reset_input_buffer();mcu.reset_input_buffer()
+                result=subprocess.run(tools.reset_command(sn),env=tools.environment(),capture_output=True,timeout=20)
+                (out/'reset.log').write_bytes(result.stdout+result.stderr)
+                if result.returncode:raise RuntimeError('开发板复位失败。')
+                start=time.monotonic()
+                while time.monotonic()-start<23 and not self.stop_event.is_set():
+                    now=time.monotonic();data=mcu.read(mcu.in_waiting or 1)
+                    if data:
+                        board_raw+=data;board_file.write(data);board_file.flush();board_lines.extend(data)
+                        while b'\n' in board_lines:
+                            line,_,remaining=board_lines.partition(b'\n');board_lines=bytearray(remaining)
+                            text=line.decode('utf-8',errors='replace').rstrip()
+                            self.events.put(('text','开发板：'+text))
+                            health=multi_health(text)
+                            if multi and health:self.events.put(('health',health))
+                    if send_started is None and now-start>=1:
+                        expected=[b'# CAN_MULTI_TEST=1;',b'# MULTI_READY=1;'] if multi else [b'# CAN3_PC_TEST=1;']
+                        if not all(marker in board_raw for marker in expected):
+                            raise RuntimeError('板内不是当前测试所需的固件，或初始化未完成；请编译烧录。未发送任何测试帧。')
+                        send_started=now;next_send=now
+                    if send_started is not None and sent<100 and now>=next_send:
+                        packet=multi_request(sent,channel) if multi else request(sent)
+                        if pc.write(packet)!=len(packet):raise RuntimeError('串口写入不完整。')
+                        frames_file.write(json.dumps({'event':'SERIAL_SUBMITTED','id':hex(request_id),'channel':channel,'sequence':sent,'packet_hex':packet.hex(' ')})+'\n')
+                        sent+=1;next_send=now+.1
+                        if sent%10==0:self.events.put(('text',f'电脑串口已提交 {sent}/100 帧（不等于硬件已发送完成）'))
+                    data=pc.read(pc.in_waiting or 1)
+                    if data:
+                        raw_file.write(json.dumps({'pc_time':datetime.now().isoformat(),'bytes':data.hex(' ')})+'\n')
+                        for identifier,payload in decoder.feed(data):
+                            received.append((identifier,payload))
+                            frames_file.write(json.dumps({'event':'RX','id':hex(identifier),'data':payload.hex(' ')})+'\n')
+                            self.events.put(('text',f'电脑收到：ID=0x{identifier:X} DATA={payload.hex(" ").upper()}'))
+                    time.sleep(.002)
+            board_log=board_raw.decode('utf-8',errors='replace')
+            result=assess_multi(sent,received,board_log,channel,self.stop_event.is_set()) if multi else assess(sent,received,board_log,self.stop_event.is_set())
+            result['decoder_discarded_bytes']=decoder.discarded
+            result['decoder_unsupported_frames']=decoder.unsupported
+            result['decoder_pending_bytes']=len(decoder.buffer)
+            if decoder.discarded or decoder.unsupported or decoder.buffer:result['pass']=False
+            (out/'result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
+            self.events.put(('text',json.dumps(result,ensure_ascii=False,indent=2)))
+            self.events.put(('text','双向测试通过' if result['pass'] else '未通过。已保留电脑与开发板两侧原始记录。'))
     def poll(self):
         if self.closed:return
         for _ in range(300):
@@ -172,7 +175,7 @@ class PCTest:
                 if self.multi:self.channel.configure(state='readonly')
             elif kind=='health':
                 self.health_table.item(value['channel'],values=[value.get(k,'—') for k in ('channel','state','rx_unique','tx_done','rx_edge_observations','lec','tec','rec')])
-            else:self.output.insert('end',value+'\n');self.output.see('end');self.status.set(value[-250:])
+            else:self.output.insert('end',display_line(value)+'\n');self.output.see('end');self.status.set(value[-250:])
         self.window.after(100,self.poll)
     def close(self):self.stop_event.set();self.closed=True;self.window.destroy()
 

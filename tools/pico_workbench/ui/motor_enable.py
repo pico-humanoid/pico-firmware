@@ -19,6 +19,7 @@ import catalog
 import platform_tools as tools
 from engine import Manager
 from runtime_paths import project_root
+from experiment_log import capture_notes, display_line, show_legend
 
 PROFILES=('RS00-Enable-CAN1','RS10P-Enable-CAN1')
 PHASES={'STOPPING':'请求停机','READ_BASELINE':'读取原模式','READY':'已停机，等待手动使能',
@@ -128,7 +129,8 @@ class EnablePanel:
         self.details=ttk.Notebook(frame);self.details.pack(fill='both',expand=True,pady=10)
         from trajectory_plot import TrajectoryPlot
         self.plot=TrajectoryPlot(self.details);self.details.add(self.plot,text='实时波形')
-        self.log_tab=ttk.Frame(self.details);self.details.add(self.log_tab,text='原始日志')
+        self.log_tab=ttk.Frame(self.details);self.details.add(self.log_tab,text='中文日志与原文')
+        ttk.Button(self.log_tab,text='日志说明',command=lambda:show_legend(self.window)).pack(anchor='e',padx=6,pady=3)
         self.output=scrolledtext.ScrolledText(self.log_tab,font=('Consolas',10),wrap='word',background='#ffffff',foreground='#334660',relief='flat',padx=12,pady=10);self.output.pack(fill='both',expand=True)
         if self.tag not in ('POSITION','DUAL_POSITION','SYNC_POSITION'):self.details.select(self.log_tab)
         self.output.insert('end',self.explanation+'\n'+self.stop_notice+'\n若显示“停机未确认”，应使用实物断电措施处理，不能把软件请求当作停机已经完成。\n')
@@ -192,7 +194,8 @@ class EnablePanel:
         for _ in range(self.commands.qsize()):
             try:self.commands.get_nowait()
             except queue.Empty:break
-        with (out/'board.log').open('wb') as raw,(out/'commands.jsonl').open('w',encoding='utf-8') as commands,serial.Serial(port.device,115200,timeout=.02,write_timeout=.3) as dev:
+        with capture_notes(out, lambda text: self.events.put(('text',text)), profile['name']), \
+             (out/'board.log').open('wb') as raw,(out/'commands.jsonl').open('w',encoding='utf-8') as commands,serial.Serial(port.device,115200,timeout=.02,write_timeout=.3) as dev:
             def write(command):
                 packet=(command+'\n').encode('ascii')
                 if dev.write(packet)!=len(packet):raise RuntimeError('串口命令写入不完整。')
@@ -257,7 +260,7 @@ class EnablePanel:
             except queue.Empty:break
             if kind=='text':
                 self.plot.feed(value)
-                self.output.insert('end',value+'\n');self.output.see('end')
+                self.output.insert('end',display_line(value)+'\n');self.output.see('end')
                 if value.startswith('操作失败：'):self.state.set(value)
             elif kind=='folder':self.log_folder.set(value);self.plot.folder=Path(value)
             elif kind=='connected':

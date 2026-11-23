@@ -12,6 +12,7 @@ import catalog
 import platform_tools as tools
 from engine import Manager
 from runtime_paths import project_root
+from experiment_log import capture_notes, display_line, show_legend
 from tuning_scope import TuningScope,fields
 
 ACTIVE={'RUNNING','APPLY_WRITE','APPLY_READ'}
@@ -126,7 +127,9 @@ class TuningPanel:
         self.scope_frame=ttk.LabelFrame(self.scope_panes,text='电机1');self.scope_panes.add(self.scope_frame,weight=1)
         self.scope=TuningScope(self.scope_frame);self.scope.pack(fill='both',expand=True)
         self.scope_frame2=ttk.LabelFrame(self.scope_panes,text='RS00 · ID2');self.scope2=TuningScope(self.scope_frame2);self.scope2.pack(fill='both',expand=True)
-        log=ttk.Frame(tabs);tabs.add(log,text='原始记录');self.output=scrolledtext.ScrolledText(log,height=8,font=('Consolas',9));self.output.pack(fill='both',expand=True)
+        log=ttk.Frame(tabs);tabs.add(log,text='中文日志与原文')
+        ttk.Button(log,text='日志说明',command=lambda:show_legend(self.window)).pack(anchor='e',padx=6,pady=3)
+        self.output=scrolledtext.ScrolledText(log,height=8,font=('Consolas',9));self.output.pack(fill='both',expand=True)
         for var in (self.angle,self.speed_limit,self.velocity,self.angle2,self.speed_limit2,self.velocity2):var.trace_add('write',self.edited)
         self.choice.bind('<<ComboboxSelected>>',lambda _:self.profile_changed())
         self.profile_changed();self.mode_changed();self.refresh();self.window.protocol('WM_DELETE_WINDOW',self.close);self.timer=self.window.after(80,self.poll)
@@ -224,7 +227,8 @@ class TuningPanel:
         out=project_root()/'logs'/('motor-tuning-'+datetime.now().strftime('%Y%m%d_%H%M%S_%f'));out.mkdir(parents=True)
         self.events.put(('folder',str(out)));last={};result=None
         (out/'settings.json').write_text(json.dumps({'profile':profile,'port':port.device,'baud':115200},ensure_ascii=False,indent=2),encoding='utf-8')
-        with (out/'board.log').open('wb') as raw,(out/'commands.jsonl').open('w',encoding='utf-8') as cmdlog,serial.Serial(port.device,115200,timeout=.02,write_timeout=.2) as dev:
+        with capture_notes(out, lambda text: self.events.put(('notes',text)), profile['name']), \
+             (out/'board.log').open('wb') as raw,(out/'commands.jsonl').open('w',encoding='utf-8') as cmdlog,serial.Serial(port.device,115200,timeout=.02,write_timeout=.2) as dev:
             def write(text):
                 data=(text+'\n').encode('ascii')
                 if dev.write(data)!=len(data):raise RuntimeError('串口写入不完整')
@@ -311,7 +315,8 @@ class TuningPanel:
                 else:
                     scope=self.scope2 if self.dual() and fields(value).get('id')=='2' else self.scope
                     scope.feed(value)
-                log_lines.append(value)
+                log_lines.append(display_line(value))
+            elif kind=='notes':log_lines.append(value)
             elif kind=='folder':self.folder.set(value)
             elif kind=='connected':self.connected=True;self.stop_button.configure(state='normal');self.disconnect_button.configure(state='normal')
             elif kind=='reset':

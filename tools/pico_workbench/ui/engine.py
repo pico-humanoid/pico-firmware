@@ -7,12 +7,14 @@ import json
 import os
 from pathlib import Path
 import re
+from queue import Empty, Queue
 import subprocess
 import sys
 import threading
 import time
 import uuid
 from runtime_paths import project_root
+from experiment_log import export_notes
 
 HERE = project_root() / "ui"
 sys.path.insert(0, str(HERE / "vendor"))
@@ -58,6 +60,8 @@ class Job:
         self.cancel = threading.Event()
         self.lock = threading.RLock()
         self.process = None
+        if kind == "fsm":
+            self.commands = Queue(maxsize=1)
 
     def log(self, message):
         with self.lock:
@@ -102,12 +106,14 @@ class Manager:
         self.lock, self.jobs = threading.RLock(), {}
 
     def start(self, kind, mode, port=""):
-        if kind not in ("build", "flash", "board", "usbcan"):
+        if kind not in ("build", "flash", "board", "usbcan", "fsm"):
             raise ValueError("不支持此操作。")
         tools.validate_mode(mode)
-        if kind in ("board", "usbcan"):
+        if kind in ("board", "usbcan", "fsm"):
             if not port or port not in {p["device"] for p in ports()}:
                 raise ValueError("请选择已连接的串口，然后重试。")
+        if kind == "fsm" and mode != "BoardFsm":
+            raise ValueError("状态机串口只用于单板验证配置。")
         if kind == "usbcan" and catalog.profile(mode)["base_mode"] != "External":
             raise ValueError("USB-CAN 测试适用于外部 CAN 配置。")
         with self.lock:
@@ -144,6 +150,17 @@ class Manager:
             job.log("操作失败：" + str(exc))
             job.result = {"pass": False, "message": str(exc)}
         finally:
+            if job.kind in ('board', 'usbcan'):
+                source = next((LOGS / name for name in job.files if name.endswith('.csv')), None)
+                if source is not None and source.is_file():
+                    try:
+                        readable = export_notes(source.with_name(source.stem + '_中文说明.log'), [source],
+                                                status=job.phase, result=job.result, name=job.profile['name'])
+                        with job.lock:
+                            job.files.append(readable.name)
+                        job.log('中文日志说明：' + str(readable))
+                    except (ValueError, OSError) as exc:
+                        job.log('中文说明保存失败，原始日志仍在：' + str(exc))
             with job.lock:
                 job.ended = datetime.now().isoformat(timespec="seconds")
             (RECORDS / (job.id + ".json")).write_text(
@@ -253,6 +270,139 @@ class Manager:
         kwargs = {"exclusive": True} if os.name != "nt" else {}
         return serial.Serial(job.port, baud, timeout=0.01 if job.kind == "usbcan" else 0.08,
                              write_timeout=1, **kwargs)
+
+    def fsm_command(self, job, command):
+        if command not in {"ZERO", "DAMP", "DEBUG", "RESET", "VERIFY", "DISCONNECT"}:
+            raise ValueError("未知状态机命令。")
+        with job.lock:
+            if job.kind != "fsm" or job.status != "running" or job.cancel.is_set():
+                raise ValueError("状态机串口未连接。")
+            state = job.telemetry.get("fsm")
+            if job.telemetry.get("busy"):
+                raise ValueError("请等待当前操作结束。")
+            if command != "DISCONNECT" and (not state or state["pending"] == "1"):
+                raise ValueError("请等待开发板识别或状态切换完成。")
+            if command in {"DAMP", "ZERO", "DEBUG"} and state["state"] == "FAULT_LOCKED":
+                raise ValueError("故障已锁定，请先重新自检。")
+            job.commands.put_nowait(command)
+            job.telemetry["busy"] = True
+
+    def _do_fsm(self, job):
+        from board_fsm_protocol import Bench, MODE_NAMES, REPLY, VERIFY_STEPS, parse_state, verify
+        from board_fsm_report import FsmReport, LEGEND, led_text
+
+        path = LOGS / ("ui_fsm_" + job.id + ".log")
+        readable_path = path.with_name(path.stem + "_readable.log")
+        job.files.extend((path.name, readable_path.name))
+        job.phase_set("正在识别单板状态机固件")
+        last_feedback = None
+
+        def progress(index, status, detail):
+            with job.lock:
+                if index == 1 and status == "RUNNING":
+                    job.telemetry["fsm_steps"] = [{"status": "WAITING", "detail": ""} for _ in VERIFY_STEPS]
+                job.telemetry["fsm_steps"][index - 1] = {"status": status, "detail": detail}
+                job.telemetry["fsm_step"] = index
+            job.phase_set(f"第{index}/8项 · {VERIFY_STEPS[index - 1][0]} · "
+                          + {"RUNNING": "正在验证", "PASS": "通过", "FAIL": "未通过"}[status])
+
+        def observe_led(state, seconds):
+            text = f"{MODE_NAMES[state['state']]}：LD2 {led_text(state)}。留 {seconds} 秒观察。"
+            job.phase_set("观察灯光 · " + text)
+            report.emit("观察灯光", text)
+
+        def line_received(line):
+            nonlocal last_feedback
+            state = parse_state(line)
+            if state:
+                last_feedback = time.monotonic()
+                with job.lock:
+                    job.telemetry["fsm"] = state
+                if job.phase == "正在识别单板状态机固件":
+                    job.phase_set("已识别 BoardFsm，电机反馈为模拟值")
+            elif line.startswith(REPLY):
+                with job.lock:
+                    job.telemetry["reply"] = line[len(REPLY):]
+            job.log("[原始接收] " + line)
+            report.receive(line)
+
+        def command_sent(command):
+            job.log("[原始发送] > " + command)
+            report.command(command)
+
+        def checkpoint():
+            if job.cancel.is_set():
+                if report.running:
+                    report.step(report.step_index, "FAIL", "验证被停止，未执行的项目不判定通过")
+                    report.finish("FAIL", "验证被停止，本轮没有完成全部项目。")
+                    with job.lock:
+                        job.telemetry["validation"] = "FAIL"
+                report.emit("连接结束", "操作者关闭了本次连接，日志已保存。")
+            job.checkpoint()
+
+        with self._serial(job, 115200) as dev, path.open("x", encoding="utf-8", buffering=1) as log, \
+                readable_path.open("x", encoding="utf-8", buffering=1) as readable:
+            readable.write("PICO 状态机单板验证 · 日志标志说明\n" + LEGEND + "\n--- 本次运行记录 ---\n")
+            report = FsmReport(readable, output=job.log, on_progress=progress)
+            report.start()
+            bench = Bench(dev, log, output=job.log, on_line=line_received, checkpoint=checkpoint,
+                          on_command=command_sent, on_step=report.step)
+            start = time.monotonic()
+            while True:
+                checkpoint()
+                try:
+                    command = job.commands.get_nowait()
+                except Empty:
+                    command = None
+                if command == "DISCONNECT":
+                    report.emit("连接结束", "已断开串口，中文说明和原始报文均已保存。")
+                    return {"capture_only": True, "message": "已断开串口，日志已保存",
+                            "validation": job.telemetry.get("validation")}
+                if command == "VERIFY":
+                    with job.lock:
+                        job.telemetry["validation"] = "RUNNING"
+                    try:
+                        verify(bench, on_observe=observe_led)
+                    except (RuntimeError, OSError) as exc:
+                        outcome = "FAIL"
+                        if report.running:
+                            report.step(report.step_index, "FAIL", str(exc))
+                        report.finish(outcome, str(exc))
+                    else:
+                        outcome = "PASS"
+                        report.finish(outcome)
+                    with job.lock:
+                        job.telemetry["validation"] = outcome
+                        job.telemetry["busy"] = False
+                    job.phase_set("一键验证：" + ("8/8项通过，已恢复零力矩" if outcome == "PASS" else "未通过，请查看失败步骤"))
+                    job.log("[原始结果] BOARD_FSM_SERIAL_RESULT=" + outcome)
+                    log.write("BOARD_FSM_SERIAL_RESULT=" + outcome + "\n")
+                elif command:
+                    # Await a fresh board response before releasing the command buttons.
+                    job.phase_set("手动操作：" + {"ZERO": "请求零力矩", "DAMP": "请求阻尼",
+                                                 "DEBUG": "进入调试预留", "RESET": "重新自检"}[command])
+                    try:
+                        if command == "RESET":
+                            bench.reset()
+                            job.phase_set("重新自检完成，两路确认已收到，已回到零力矩")
+                        else:
+                            bench.command(command)
+                            reply = bench.wait(lambda line: line.startswith(REPLY + "command=" + command + ","),
+                                               "指令 " + command + " 的回包").rsplit("=", 1)[-1]
+                            bench.wait(parse_state, "指令后的状态")
+                            if command == "DEBUG" and reply == "DEBUG_RESERVED":
+                                job.phase_set("旧固件只返回预留标记。请编译并烧录新版 BoardFsm。")
+                    except (RuntimeError, OSError) as exc:
+                        report.emit("异常报警", str(exc))
+                        raise
+                    finally:
+                        with job.lock:
+                            job.telemetry["busy"] = False
+                else:
+                    bench.read_message()
+                if time.monotonic() - (last_feedback if last_feedback is not None else start) >= 4:
+                    report.emit("异常报警", "连续4秒没有有效状态，连接结束；检查串口、固件和USB连接。")
+                    raise RuntimeError("未收到 BoardFsm 状态。请确认串口、固件和 USB 连接。")
 
     def _do_board(self, job):
         if job.profile["base_mode"] in ("Custom", "Device") or job.profile["cmake_options"].get("PICO_APP") == "Can3Bench":

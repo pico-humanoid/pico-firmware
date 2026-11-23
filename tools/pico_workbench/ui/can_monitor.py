@@ -16,6 +16,7 @@ import serial
 from serial.tools.list_ports import comports
 from can_monitor_model import ATDecoder,describe
 from runtime_paths import project_root
+from experiment_log import capture_notes, show_legend
 
 class CANMonitor:
     def __init__(self,parent=None):
@@ -51,6 +52,7 @@ class CANMonitor:
         self.follow=tk.BooleanVar(value=True);ttk.Checkbutton(frame,text='跟随最新报文（列表保留最近2000帧，文件保存全部帧）',variable=self.follow).pack(anchor='w')
         ttk.Label(frame,text='请求预期：0x1100FD7F；回复预期：0x11007FFD。方向按ID字段推断，CAN帧本身不携带物理发送节点标识。',wraplength=1100).pack(anchor='w',pady=6)
         self.refresh();self.window.protocol('WM_DELETE_WINDOW',self.close)
+        ttk.Button(frame,text='日志说明',command=lambda:show_legend(self.window)).pack(anchor='e')
         self.window.after(100,self.poll)
     def refresh(self):
         self.port_items=list(comports())
@@ -78,7 +80,9 @@ class CANMonitor:
             device=serial.Serial(port=None,baudrate=baud,timeout=.2)
             device.dtr=False;device.rts=False;device.port=port
             device.open()
-            with device, (folder/'frames.csv').open('w',encoding='utf-8-sig',newline='') as output, (folder/'raw.jsonl').open('w',encoding='utf-8') as raw:
+            with capture_notes(folder, lambda text: self.events.put_nowait(('status',text))
+                               if not self.events.full() else None, 'CAN 旁路监听', final={'capture_only':True}), \
+                 device, (folder/'frames.csv').open('w',encoding='utf-8-sig',newline='') as output, (folder/'raw.jsonl').open('w',encoding='utf-8') as raw:
                 writer=csv.writer(output);writer.writerow(['pc_utc','elapsed_ms','origin_inferred','format','id','dlc','data','meaning'])
                 self.events.put(('status','已打开 '+port+'，串口 '+str(baud)+'；只读监听。日志：'+str(folder)))
                 skipped=0

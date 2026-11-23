@@ -38,6 +38,14 @@ def _all_builtins():
          "cmake_options": {"PICO_APP": "Can3Bench"}, "board_baud": 115200, "capture_seconds": 25, "builtin": True},
     ]
     device_root = ROOT / "projects/pico-firmware/firmware/PICO_CAN"
+    if (device_root / "App/board_fsm_app.c").is_file():
+        items.append({
+            "id": "BoardFsm", "name": "状态机单板验证",
+            "description": "只接开发板和 ST-LINK USB。验证自检、零力矩、阻尼、调试预留和超时恢复，电机反馈为模拟值。",
+            "base_mode": "Custom", "project_dir": str(device_root), "build_type": "Debug",
+            "elf_name": "PICO_CAN.elf", "toolchain": "cmake/gcc-arm-none-eabi.cmake",
+            "cmake_options": {"PICO_APP": "BoardFsm"}, "board_baud": 115200, "builtin": True,
+        })
     if (device_root / "CMakeLists.txt").is_file():
         for ident, name, app, rate, dlc in [
             ("BMS-Read-500K", "电池 BMS 只读 · CAN3 · 500K", "BMS", 500000, 8),
@@ -107,11 +115,6 @@ def _all_builtins():
             'description':'CAN1/1Mbps；10P±5°、00反向±3°，每段2秒、8秒一轮，共5轮。MCU每50ms更新五次平滑目标，显示跟踪误差；限速0.2rad/s、限流0.5A，任一异常请求两台停机。',
             'base_mode':'Custom','project_dir':str(device_root),'build_type':'Debug','elf_name':'PICO_CAN.elf','toolchain':'cmake/gcc-arm-none-eabi.cmake',
             'cmake_options':{'PICO_APP':'MotorSyncPosition'},'board_baud':115200,'capture_seconds':100,'builtin':True})
-        for model,motor_id in [('RS10P',1),('RS00',2)]:
-            items.append({'id':model+'-Position-Diag','name':f'{model} 停机位置诊断 · ID{motor_id}',
-                'description':'停机后自动读取UID、版本、位置指令/实测位置、零位及偏置。写回验证须手动触发，只写当前实测位置；不使能、不改模式/限制/零位/ID。',
-                'base_mode':'Custom','project_dir':str(device_root),'build_type':'Debug','elf_name':'PICO_CAN.elf','toolchain':'cmake/gcc-arm-none-eabi.cmake',
-                'cmake_options':{'PICO_APP':'MotorPositionDiag','PICO_DIAG_MOTOR_ID':motor_id,'PICO_DIAG_MODEL':model},'board_baud':115200,'capture_seconds':100,'builtin':True})
     for model, motor_id in [('RS10P',1),('RS00',2)]:
         items.append({'id':model+'-Tuning','name':f'{model} 交互跟踪示波器 · ID{motor_id}',
             'description':'两种模式：位置±30°/限速0.01–0.3rad/s/1–300秒；独立速度±0.3rad/s/1–60秒，限流0.5A。手动开始，真实反馈波形，500ms心跳/采样保护，切换模式须停机复位。',
@@ -131,7 +134,7 @@ def builtins():
 
 def profiles():
     with LOCK:
-        return builtins() + load(STATE / "profiles.json", [])
+        return builtins() + [p for p in load(STATE / "profiles.json", []) if p.get("cmake_options", {}).get("PICO_APP") != "MotorPositionDiag"]
 
 
 def profile(ident):
@@ -167,6 +170,8 @@ def save_profile(value):
         options = value.get("cmake_options", {})
         if not isinstance(options, dict) or len(options) > 40:
             raise ValueError("CMake 参数应为 JSON 对象，最多 40 项。")
+        if options.get("PICO_APP") == "MotorPositionDiag":
+            raise ValueError("停机位置诊断已移除。")
         for key, val in options.items():
             if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", key) or not isinstance(val, (str, int, bool)):
                 raise ValueError("CMake 参数名或值无效。")

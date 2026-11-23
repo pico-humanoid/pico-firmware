@@ -5,6 +5,7 @@ from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog, messagebox, scrolledtext, ttk
 
+from experiment_log import describe, export_notes
 import log_model as model
 import platform_tools as tools
 
@@ -53,7 +54,7 @@ class LogViewer:
         ttk.Label(heading, text="读取本机文件 · 支持实时更新", foreground=COLORS["muted"]).pack(side="right")
         bar = ttk.Frame(body, padding=(0, 10, 0, 10))
         bar.pack(fill="x")
-        for text, command in (("打开文件…", self.choose), ("刷新列表", self.scan), ("另存原始副本…", self.export)):
+        for text, command in (("打开文件…", self.choose), ("刷新列表", self.scan), ("另存原始副本…", self.export), ("导出中文说明…", self.export_chinese)):
             ttk.Button(bar, text=text, command=command).pack(side="left", padx=(0, 7))
         ttk.Checkbutton(bar, text="自动刷新", variable=self.auto_refresh).pack(side="left", padx=(12, 4))
         ttk.Checkbutton(bar, text="跟随最新", variable=self.follow, command=self.render).pack(side="left", padx=4)
@@ -352,7 +353,7 @@ class LogViewer:
             row = "event-" + str(rec.line)
             self.table.insert("", "end", iid=row, values=(rec.line, rec.display_time, rec.label,
                     rec.channel or "—", rec.identifier or "—", " / ".join(x for x in (rec.format, rec.kind) if x) or "—",
-                    rec.dlc or "—", rec.description), tags=self.tags(rec, i))
+                    rec.dlc or "—", (describe(rec.raw, compact=True) or rec.description) if rec.event == "INFO" else rec.description), tags=self.tags(rec, i))
             self.row_records[(self.table, row)] = rec
         index = {r.line: r for r in self.filtered}
         for i, values in enumerate(model.device_values(self.filtered)):
@@ -441,9 +442,10 @@ class LogViewer:
             text += f"  ·  相对时间 {rec.display_time} s" if model.number(rec.time) is not None else f"  ·  时间 {rec.time}"
         if rec.explanation:
             text += "\n" + rec.explanation
-        if rec.event == "SERIAL_SUBMITTED":
-            text += "\n此事件表示串口写入已提交，不等于 CAN 控制器发送完成。"
-        if rec.values:
+        translated = describe(rec.raw)
+        if translated:
+            text += "\n" + translated
+        elif rec.values:
             fields = []
             for key, value in rec.values.items():
                 display, unit = model.format_value(key, value)
@@ -462,6 +464,8 @@ class LogViewer:
         candidates += [Path(str(self.path) + ".json"), Path(str(self.path) + ".analysis.json")]
         if self.path.name.endswith(".verified.log"):
             candidates.append(self.path.with_name(self.path.name.replace(".verified.log", ".analysis.json")))
+        if self.path.name in ("board.log", "pc-frames.jsonl", "frames.csv"):
+            candidates.append(self.path.with_name("result.json"))
         self.report_path = next((p for p in candidates if p != self.path and p.is_file()), None)
         text = "概览统计范围：当前打开文件的全部已读取内容（不受筛选影响）。\n"
         text += "采集完成与固件 PASS 是不同结论；USB 串口提交次数也不等于 CAN 发送完成次数。\n\n"
@@ -505,6 +509,32 @@ class LogViewer:
                 Path(dest).write_bytes(self.path.read_bytes())
             except OSError as exc:
                 messagebox.showerror("保存失败", str(exc), parent=self.window)
+
+    def export_chinese(self):
+        if not self.path:
+            return
+        dest = filedialog.asksaveasfilename(parent=self.window, initialfile=self.path.stem + "_中文说明.log",
+                                          defaultextension=".log", filetypes=[("中文日志", "*.log"), ("所有文件", "*.*")])
+        if not dest:
+            return
+        dest = Path(dest)
+        try:
+            protected = [self.path, self.report_path] + [self.path.with_name(name) for name in
+                        ("board.log", "commands.jsonl", "pc-frames.jsonl", "frames.csv", "result.json")]
+            if any(p and p.resolve() == dest.resolve() for p in protected):
+                messagebox.showinfo("请选择说明文件的位置", "请换一个文件名，保留原始日志和复核报告。", parent=self.window)
+                return
+            result = self.json_document
+            if self.report_path:
+                try:
+                    result = json.loads(self.report_path.read_text(encoding="utf-8-sig"))
+                except (OSError, ValueError):
+                    pass
+            export_notes(dest, [self.path], result=result, name="PICO 历史实验")
+        except OSError as exc:
+            messagebox.showerror("导出失败", str(exc), parent=self.window)
+        else:
+            messagebox.showinfo("中文说明已导出", str(dest), parent=self.window)
 
     def close(self):
         for callback in (self.timer, self.pending):
