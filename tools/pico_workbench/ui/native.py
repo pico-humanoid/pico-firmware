@@ -504,7 +504,7 @@ class Desktop:
         dialog.geometry("1000x760")
         book = ttk.Notebook(dialog)
         book.pack(fill="both", expand=True, padx=12, pady=12)
-        for filename, title in [("Motor_CAN1.md", "当前电机接线"), ("RobStrideSPC_Adaptation.md", "官方控制库适配"), ("Motor_Tuning.md", "交互跟踪示波器"), ("Motor_Position_Diagnostic.md", "停机位置诊断"), ("wiring.json", "底板参考接线"),
+        for filename, title in [("Motor_CAN1.md", "当前电机接线"), ("RobStrideSPC_Adaptation.md", "官方控制库适配"), ("Motor_Tuning.md", "交互跟踪示波器"), ("wiring.json", "底板参考接线"),
                                 ("firmware.json", "固件功能"), ("device-read-validation.md", "设备验收说明")]:
             path = tools.ROOT / ("docs" if filename.endswith('.md') and filename!='device-read-validation.md' else "ui/data") / filename
             text = scrolledtext.ScrolledText(book, wrap="word", font=(FONT, 11))
