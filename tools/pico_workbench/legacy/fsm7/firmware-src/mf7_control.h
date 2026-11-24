@@ -15,10 +15,10 @@ typedef enum {
 } Mf7State;
 typedef struct {
     MotorNetwork net;
-    Mf7State state, target, after_stop;
+    Mf7State state, target, after_stop, resume_mode;
     const char *reason;
     uint32_t heartbeat_ms, entered_ms, arm_ms, last_step_ms, next_arm_ms;
-    uint32_t uid_ms;
+    uint32_t uid_ms, resume_ms;
     uint16_t kd_milli;
     uint32_t feedback_seq[MF7_COUNT], apply_feedback[MF7_COUNT];
     uint8_t uid[MF7_COUNT][8];

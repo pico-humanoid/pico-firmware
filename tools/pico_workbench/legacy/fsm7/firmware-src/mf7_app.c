@@ -134,7 +134,7 @@ static void emit_state(uint32_t now) {
     char buf[256];
     (void)snprintf(buf, sizeof buf,
         "# MF7_STATE,state=%s,source=HARDWARE,ready=%u,active=%u,stopped=%u,"
-        "reason=%s,target=%s,uid_count=%u,can_fault=0x%lX,t_ms=%lu,kd_set_milli=%u\r\n",
+        "reason=%s,target=%s,uid_count=%u,can_fault=0x%lX,t_ms=%lu,kd_set_milli=%u,debug_resume=1\r\n",
         Mf7_Name(control.state), Mf7_Ready(&control, now), Mf7_Active(&control),
         Mf7_Stopped(&control), control.reason, Mf7_Name(control.target), control.uid_count,
         (unsigned long)Mf7Can_Faults(MF7_BUS), (unsigned long)now, (unsigned)control.kd_milli);

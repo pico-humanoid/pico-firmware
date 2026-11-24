@@ -74,6 +74,7 @@ static void halt_to(Mf7 *f, uint32_t now, const char *reason, Mf7State after) {
 }
 
 void Mf7_Halt(Mf7 *f, uint32_t now, const char *reason) {
+    f->resume_mode = MF7_SELF_CHECK;
     halt_to(f, now, reason, MF7_FAULT_LOCKED);
 }
 
@@ -107,6 +108,13 @@ static void request_mode(Mf7 *f, Mf7State s, uint32_t now) {
     f->reason = "MODE_PENDING";
 }
 
+static void start_group(Mf7 *f, uint32_t now) {
+    f->arm_count = 0;
+    f->arm_ms = f->next_arm_ms = now;
+    f->stop_confirmed = false;
+    transition(f, MF7_STARTING, now, "ARMING");
+}
+
 void Mf7_Command(Mf7 *f, const char *cmd, uint32_t now) {
     if (strcmp(cmd, "KEEP") == 0) {
         f->heartbeat_ms = now;
@@ -120,18 +128,20 @@ void Mf7_Command(Mf7 *f, const char *cmd, uint32_t now) {
     if (!leased(f, now)) return;
 
     if (strcmp(cmd, "ARM") == 0 && Mf7_Ready(f, now) == MF7_COUNT) {
-        f->arm_count = 0;
-        f->arm_ms = f->next_arm_ms = now;
-        f->stop_confirmed = false;
-        transition(f, MF7_STARTING, now, "ARMING");
-    } else if (strcmp(cmd, "ZERO") == 0 && f->state == MF7_DEBUG_RESERVED && f->stop_confirmed) {
-        /* Fresh preflight and an explicit ARM are required to re-enable. */
+        start_group(f, now);
+    } else if (f->state == MF7_DEBUG_RESERVED && f->stop_confirmed &&
+               (strcmp(cmd, "ZERO") == 0 || strcmp(cmd, "DAMP") == 0)) {
+        /* This specific operator request authorizes re-enable after fresh preflight. */
+        const Mf7State destination = strcmp(cmd, "DAMP") == 0 ? MF7_DAMPING : MF7_ZERO_TORQUE;
         const uint32_t generation = f->net.stop_generation;
+        const uint16_t kd_milli = f->kd_milli;
         Mf7_Init(f);
         f->net.stop_generation = generation;
+        f->kd_milli = kd_milli;
         f->heartbeat_ms = now;
         f->heartbeat_seen = true;
-        f->uid_ms = now;
+        f->uid_ms = f->resume_ms = now;
+        f->resume_mode = destination;
     } else if (f->state == MF7_ZERO_TORQUE || f->state == MF7_DAMPING) {
         if (strcmp(cmd, "DEBUG") == 0) {
             halt_to(f, now, "DEBUG_REQUEST", MF7_DEBUG_RESERVED);
@@ -251,6 +261,11 @@ void Mf7_Step(Mf7 *f, uint32_t now, RobotMotorSend send, void *ctx) {
     f->last_step_ms = now;
     Gate g = {f, send, ctx};
 
+    if (f->resume_mode != MF7_SELF_CHECK) {
+        if (!leased(f, now)) Mf7_Halt(f, now, "HOST_TIMEOUT");
+        else if (now - f->resume_ms >= 10000U) Mf7_Halt(f, now, "MODE_TIMEOUT");
+    }
+
     if (f->state == MF7_SELF_CHECK) {
         if (!leased(f, now)) return;
         if (f->uid_count == MF7_COUNT) {
@@ -278,7 +293,12 @@ void Mf7_Step(Mf7 *f, uint32_t now, RobotMotorSend send, void *ctx) {
     }
     if (f->state == MF7_FAULT_LOCKED || f->state == MF7_DEBUG_RESERVED) return;
     if (f->state == MF7_READY) {
-        if (leased(f, now)) MotorNetwork_Step(&f->net, now, gate, &g);
+        if (leased(f, now)) {
+            if (f->resume_mode != MF7_SELF_CHECK && Mf7_Ready(f, now) == MF7_COUNT)
+                start_group(f, now);
+            else
+                MotorNetwork_Step(&f->net, now, gate, &g);
+        }
         return;
     }
 
@@ -291,7 +311,13 @@ void Mf7_Step(Mf7 *f, uint32_t now, RobotMotorSend send, void *ctx) {
 
     if (f->state == MF7_STARTING) {
         if (f->arm_count == MF7_COUNT && Mf7_Active(f) == MF7_COUNT) {
+            const bool damp = f->resume_mode == MF7_DAMPING;
+            f->resume_mode = MF7_SELF_CHECK;
             transition(f, MF7_ZERO_TORQUE, now, "OK");
+            if (damp) {
+                if (quiet(f, now)) request_mode(f, MF7_DAMPING, now);
+                else Mf7_Halt(f, now, "MOTORS_MOVING");
+            }
         } else if (f->arm_count < MF7_COUNT && (int32_t)(now - f->next_arm_ms) >= 0 &&
                    Mf7_Active(f) == f->arm_count &&
                    MotorNetwork_Enable(&f->net, f->arm_count + 1U, now)) {

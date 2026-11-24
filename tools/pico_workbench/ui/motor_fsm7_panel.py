@@ -14,6 +14,7 @@ KEEP_SECONDS = .1
 STALE_SECONDS = 1.6
 IDENTIFY_SECONDS = 4
 STOP_SECONDS = 2.5
+RESUME_SECONDS = 12
 KD_MAX_MILLI = 800
 KD_STEP_MILLI = 50
 KD_DEFAULT_MILLI = 600
@@ -165,7 +166,9 @@ def can_command(state, command):
         return (mode == "DAMPING" and state["active"] == "7"
                 or mode == "DEBUG_RESERVED" and state["stopped"] == "7" and state["active"] == "0")
     if command == "DAMP":
-        return mode == "ZERO_TORQUE" and state["active"] == "7"
+        return (mode == "ZERO_TORQUE" and state["active"] == "7"
+                or mode == "DEBUG_RESERVED" and state.get("debug_resume") == "1"
+                and state["stopped"] == "7" and state["active"] == "0")
     if command == "DEBUG":
         return mode in ("ZERO_TORQUE", "DAMPING") and state["active"] == "7"
     return False
@@ -175,7 +178,9 @@ def command_description(command, state):
     kd = kd_request(command)
     if kd is not None:
         return f"设定阻尼 Kd={kd/1000:.2f} N·m/(rad/s)"
-    if command == "ZERO" and state and state["state"] == "DEBUG_RESERVED":
+    if command in ("ZERO", "DAMP") and state and state["state"] == "DEBUG_RESERVED":
+        if state.get("debug_resume") == "1":
+            return "退出调试预留，经自检和逐台使能后" + COMMAND[command]
         return "退出调试预留并回到就绪（仍需手动启用）"
     return COMMAND[command]
 
@@ -235,14 +240,15 @@ class SerialSession:
             if previous is None or any(previous.get(key) != state.get(key) for key in relevant):
                 self.publish("state", state)
             if self.pending == "STOP" or self.close_at is not None:
-                if stopped_state(state):
+                if state["state"] == "FAULT_LOCKED" and stopped_state(state):
                     self.stop_confirmed = True
                     self.pending = None
                     self.pending_until = None
                     self.publish("stop", True)
                     if self.close_at is not None:
                         self.done = True
-            elif self.pending and previous is not None and state["state"] != previous["state"]:
+            elif (self.pending and
+                  (state["state"] == self.pending_destination or state["state"] == "FAULT_LOCKED")):
                 self.pending = None
                 self.pending_until = None
                 self.publish("pending", None)
@@ -274,7 +280,11 @@ class SerialSession:
         self.send(command)
         self.stop_confirmed = False
         self.pending = command
-        self.pending_until = now + STOP_SECONDS
+        legacy_debug = (self.state["state"] == "DEBUG_RESERVED" and self.state.get("debug_resume") != "1")
+        self.pending_destination = {"ARM": "ZERO_TORQUE", "ZERO": "READY" if legacy_debug else "ZERO_TORQUE",
+                                    "DAMP": "DAMPING", "DEBUG": "DEBUG_RESERVED"}.get(command)
+        self.pending_until = now + (RESUME_SECONDS if self.state["state"] == "DEBUG_RESERVED" or command == "ARM"
+                                    else STOP_SECONDS)
         self.publish("pending", command)
         return True
 
@@ -496,6 +506,7 @@ class MotorFsm7Panel:
             button = ttk.Button(row, text=title, command=lambda value=key: self.command(value))
             button.pack(side="left", padx=(0, 6))
             self.buttons[key] = button
+        ttk.Button(row, text="状态转换图", command=self.show_diagram).pack(side="right")
         ttk.Label(body, textvariable=self.phase, font=("", 13, "bold"), wraplength=960).pack(anchor="w", pady=(4, 2))
         ttk.Label(body, textvariable=self.status, wraplength=960).pack(anchor="w", pady=(0, 8))
 
@@ -541,6 +552,46 @@ class MotorFsm7Panel:
         self.refresh_ports(selected_port)
         self.render_controls()
         self.timer = self.window.after(75, self.poll)
+
+    def show_diagram(self):
+        from tkinter import messagebox
+        figure = BASE / "data" / "mf7-transitions.png"
+        if not figure.is_file():
+            figure = BASE / "七电机状态机转换图.png"
+        dialog = self.tk.Toplevel(self.window)
+        dialog.title("七电机状态转换图")
+        dialog.transient(self.window)
+        previous = dialog.grab_current()
+        try:
+            picture = self.tk.PhotoImage(master=dialog, file=str(figure))
+        except self.tk.TclError as exc:
+            dialog.destroy()
+            messagebox.showerror("无法打开状态图", str(exc), parent=self.window)
+            return
+        screen_w, screen_h = dialog.winfo_screenwidth(), dialog.winfo_screenheight()
+        width = min(picture.width(), screen_w - 75)
+        height = min(picture.height(), screen_h - 110)
+        widget = self.tk.Canvas(dialog, width=width, height=height, background="white",
+            scrollregion=(0, 0, picture.width(), picture.height()), highlightthickness=0)
+        widget.image = picture
+        widget.create_image(0, 0, anchor="nw", image=picture)
+        widget.grid(row=0, column=0, sticky="nsew")
+        dialog.grid_rowconfigure(0, weight=1)
+        dialog.grid_columnconfigure(0, weight=1)
+        for axis, row, column, sticky in (("y", 0, 1, "ns"), ("x", 1, 0, "ew")):
+            scroll = self.ttk.Scrollbar(dialog, orient="vertical" if axis == "y" else "horizontal",
+                                         command=getattr(widget, axis + "view"))
+            scroll.grid(row=row, column=column, sticky=sticky)
+            widget.configure(**{axis + "scrollcommand": scroll.set})
+
+        def done(_event=None):
+            dialog.destroy()
+            if previous and previous.winfo_exists():
+                previous.grab_set()
+        dialog.protocol("WM_DELETE_WINDOW", done)
+        dialog.bind("<Escape>", done)
+        dialog.wait_visibility()
+        dialog.grab_set()
 
     def reset_rows(self):
         self.table.delete(*self.table.get_children())
@@ -623,7 +674,8 @@ class MotorFsm7Panel:
             allowed = linked and (key == "STOP" or not self.pending and can_command(self.state, key))
             button.configure(state="normal" if allowed else "disabled")
         returning = bool(self.state and self.state["state"] == "DEBUG_RESERVED")
-        self.buttons["ZERO"].configure(text="退出调试（回就绪）" if returning else "零力矩")
+        legacy = returning and self.state.get("debug_resume") != "1"
+        self.buttons["ZERO"].configure(text="退出调试（回就绪）" if legacy else "零力矩")
         can_set = linked and not self.pending and can_set_kd(self.state)
         self.kd_slider.configure(state="normal" if can_set else "disabled")
         self.kd_apply.configure(state="normal" if can_set else "disabled")

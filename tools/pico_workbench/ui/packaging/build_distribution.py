@@ -91,7 +91,7 @@ def assemble(output, workbench, seed, built):
             copy_tree(rules, result / "usb-permissions")
     if os.name!='nt' and (workbench/'ui/packaging/ubuntu/README_使用说明.md').exists():
         shutil.copy2(workbench/'ui/packaging/ubuntu/README_使用说明.md',result/'README_使用说明.md')
-    manifest = {"version": "2026.11.23", "platform": system, "contains": ["PICOConsole", "PICOLogViewer", "PICOCLI", "Python/Tk runtime", "latest single and dual motor firmware profiles", "source workspace"],
+    manifest = {"version": "2026.11.24", "platform": system, "contains": ["PICOConsole", "PICOLogViewer", "PICOCLI", "Python/Tk runtime", "latest single and dual motor firmware profiles", "source workspace"],
                 "development_tools_bundled": False, "usb_hardware_validation": "not_run_in_package_test"}
     write_text(result / "bundle.json", json.dumps(manifest, ensure_ascii=False, indent=2))
     return result
